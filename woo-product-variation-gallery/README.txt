@@ -4,7 +4,7 @@ Tags: product variation gallery, woocommerce variation image gallery, additional
 Requires at least: 4.8
 Tested up to: 6.6
 Requires PHP: 7.4
-Stable tag: 2.3.13
+Stable tag: 2.3.14
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -121,6 +121,10 @@ Yes, it is.
 3. Advanced Settings
 
 == Changelog ==
+
+= 2.3.14 ( Oct 02, 2024 ) =
+* Fixed: Grid Layout Preloader Issue fixed For single product
+* fixed: Image width Issue
 
 = 2.3.13 ( June 24, 2024 ) =
 * Fixed: Settings Page Not Saving Issue.

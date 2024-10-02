@@ -454,7 +454,7 @@
     return this;
   };
   $(window).on('load', function () {
-    $('.rtwpvg-wrapper:not(.rtwpvg-product-type-variable)').rtWpVGallery();
+    $('.rtwpvg-wrapper:not(.rtwpvg-product-type-variable), .rtwpvg-grid-wrapper').rtWpVGallery();
   });
   $(document).on('wc_variation_form', '.variations_form', function () {
     $('.rtwpvg-wrapper, .rtwpvg-grid-wrapper').rtWpVGallery();

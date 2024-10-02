@@ -120,6 +120,9 @@ $wrapper_classes = apply_filters('rtwpvg_image_classes', array(
 ));
 $post_thumbnail_id = (int)apply_filters('rtwpvg_post_thumbnail_id', $post_thumbnail_id, $attachment_ids, $product);
 $attachment_ids = (array)apply_filters('rtwpvg_attachment_ids', $attachment_ids, $post_thumbnail_id, $product);
+
+$total_images =  absint( $post_thumbnail_id ? 1 : 0 ) + count($attachment_ids);
+$wrapper_classes[] = 'rtwpvg-total-images-' . $total_images;
 ?>
 
 <div style="<?php echo esc_attr(Functions::generate_inline_style($inline_style)) ?>"

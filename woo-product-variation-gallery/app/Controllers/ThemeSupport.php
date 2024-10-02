@@ -29,16 +29,12 @@ class ThemeSupport
 	}
 
     function after_setup_theme() {
-        $single_product_summary = [
-            'woostify',
-            // 'blocksy'
-        ];
         if ( function_exists( 'woostify_is_woocommerce_activated' ) ) {
             remove_action('woocommerce_before_single_product_summary', 'woostify_single_product_gallery_image_slide', 30);
             remove_action('woocommerce_before_single_product_summary', 'woostify_single_product_gallery_thumb_slide', 40);
         }
 
-        if ( in_array( rtwpvg()->active_theme(), $single_product_summary ) ) {
+        if ( 'woostify' === rtwpvg()->active_theme() ) {
             add_action( 'woocommerce_before_single_product_summary', [ $this, 'woocommerce_show_product_images'], 22 );
         }
         if( 'blocksy' === rtwpvg()->active_theme() ){

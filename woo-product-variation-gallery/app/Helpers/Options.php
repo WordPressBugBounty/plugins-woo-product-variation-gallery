@@ -121,7 +121,7 @@ class Options
                         'title' => esc_html__('Reset Variation Gallery', 'woo-product-variation-gallery'),
                         'type' => 'switch',
                         'default' => true,
-                        'desc' => esc_html__('Always Reset Gallery After Variation Select', 'woo-product-variation-gallery'),
+                        'desc' => esc_html__('Always Reset Gallery After Variation Select. It serves as the default selection for variation options. The control effect will not be visible when using the variation swatches plugin.', 'woo-product-variation-gallery'),
                         'id' => 'reset_on_variation_change'
                     )
                 ))
