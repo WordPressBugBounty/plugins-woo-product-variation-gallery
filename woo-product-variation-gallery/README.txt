@@ -2,9 +2,9 @@
 Contributors: techlabpro1
 Tags: product variation gallery, woocommerce variation image gallery, additional variation image gallery, product variation image gallery, product variation image
 Requires at least: 4.8
-Tested up to: 6.6
+Tested up to: 6.7
 Requires PHP: 7.4
-Stable tag: 2.3.14
+Stable tag: 2.3.15
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -121,6 +121,10 @@ Yes, it is.
 3. Advanced Settings
 
 == Changelog ==
+
+= 2.3.15 ( Nov 18, 2024 ) =
+* Fixed: Woostify Theme Support
+* Fixed: Compatible with WP version
 
 = 2.3.14 ( Oct 02, 2024 ) =
 * Fixed: Grid Layout Preloader Issue fixed For single product

@@ -309,6 +309,14 @@ class Options
                             'class' => 'rt-feature'
                         ),
                         'html' => Functions::get_product_list_html(array(
+                            'rtsb-pro' => array(
+                                'price'     => '$41.00 – $209.00',
+                                'title'     => "ShopBuilder – Elementor WooCommerce Builder Addons",
+                                'image_url' => rtwpvg()->get_images_uri('shopbuilde.png'),
+                                'url'       => 'https://www.radiustheme.com/downloads/woocommerce-bundle/',
+                                'demo_url'  => 'https://shopbuilderwp.com/',
+                                'buy_url'   => 'https://www.radiustheme.com/downloads/woocommerce-bundle/',
+                            ),
                             'rtwpvg-pro' => array(
                                 'price'     => '$29.00 – $549.00',
                                 'title'     => "Variation Images Gallery for WooCommerce Pro",
