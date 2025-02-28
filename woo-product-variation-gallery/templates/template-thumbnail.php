@@ -13,7 +13,7 @@ defined('ABSPATH') || exit;
     <# if( data.gallery_thumbnail_src ) { #>
     <# swiperClass = ( rtwpvg.using_swiper ) ? 'swiper-slide' : '' #>
 
-    <div class="rtwpvg-thumbnail-image {{swiperClass}} {{hasVideo}}">
+    <div class="rtwpvg-thumbnail-image {{swiperClass}} {{hasVideo}}  rtwpvg-thumbnail-image-{{data.image_id}}">
         <div>
             <img width="{{data.gallery_thumbnail_src_w}}" height="{{data.gallery_thumbnail_src_h}}" src="{{data.gallery_thumbnail_src}}" alt="{{data.alt}}" title="{{data.title}}"/>
         </div>

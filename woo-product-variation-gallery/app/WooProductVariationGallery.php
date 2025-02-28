@@ -197,6 +197,10 @@ if ( ! class_exists( 'WooProductVariationGallery' ) ) :
 		}
 	}
 
+
+	// Plugin Support: Product Video Gallery for Woocommerce.
+	remove_action( 'plugins_loaded', 'nickx_remove_woo_hooks' );
+
 	/**
 	 * @return WooProductVariationGallery|null
 	 */

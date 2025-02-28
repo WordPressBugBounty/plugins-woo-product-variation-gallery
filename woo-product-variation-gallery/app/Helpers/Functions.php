@@ -45,6 +45,9 @@ class Functions {
 
 
 	public static function get_gallery_image_html( $attachment_id, $options = array() ) {
+        if ( ! $attachment_id  ){
+            return ;
+        }
 		$defaults     = array( 'is_main_thumbnail' => false, 'has_only_thumbnail' => false );
 		$using_swiper = rtwpvg()->get_option( 'upgrade_slider_scripts' );
 		$thumbnail_style = apply_filters('rtwpvg_thumbnail_position', 'bottom');
@@ -72,7 +75,8 @@ class Functions {
 		// If require thumbnail
 		if ( ! $options['is_main_thumbnail'] ) {
 			$classes = apply_filters( 'rtwpvg_thumbnail_image_html_class', array(
-				'rtwpvg-thumbnail-image'
+				'rtwpvg-thumbnail-image',
+                'rtwpvg-thumbnail-image-' . $attachment_id
 			), $attachment_id, $image );
 
 			if ( $using_swiper ) {
@@ -274,7 +278,9 @@ class Functions {
 
 			if ( is_array( $attachment_ids ) && ! empty( $attachment_ids ) ) {
 				foreach ( $attachment_ids as $i => $image_id ) {
-					$images[ $i ] = Functions::get_gallery_image_props( $image_id );
+                    if ( $image_id ){
+                        $images[ $i ] = Functions::get_gallery_image_props( $image_id );
+                    }
 				}
 			}
 

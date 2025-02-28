@@ -4,7 +4,7 @@ Tags: product variation gallery, woocommerce variation image gallery, additional
 Requires at least: 4.8
 Tested up to: 6.7
 Requires PHP: 7.4
-Stable tag: 2.3.16
+Stable tag: 2.3.17
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -121,6 +121,10 @@ Yes, it is.
 3. Advanced Settings
 
 == Changelog ==
+
+= 2.3.17 ( February 28, 2025 ) =
+* Fixed: Gallery Thumbnail Active Opacity
+* Fixed: Remove Missing attachment_id
 
 = 2.3.16 ( December 27, 2024 ) =
 * Added: Gallery Thumbnail Size Images URL Added To Variation Change

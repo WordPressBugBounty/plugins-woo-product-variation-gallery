@@ -104,13 +104,17 @@
       }
       if (!rtwpvg.enable_thumbnail_slide) {
         this._thumbnail.addClass('loaded-thumbnail-no-slider');
+        that.swiperSlider.slideTo(0, mainSliderOptions.speed);
         this._thumbnail.not('.swiper-initialized').find('.rtwpvg-thumbnail-image').each(function (i, item) {
           $(item).find('div, img').on('click', function (event) {
+            that._thumbnail.find('.rtwpvg-thumbnail-image').removeClass('swiper-slide-thumb-active');
             event.preventDefault();
             event.stopPropagation();
             that.swiperSlider.slideTo(i, mainSliderOptions.speed);
+            $(item).addClass('swiper-slide-thumb-active');
           });
         });
+        this._thumbnail.not('.swiper-initialized').find('.rtwpvg-thumbnail-image').first().addClass('swiper-slide-thumb-active');
       }
     };
     this.loadSlider = function () {
@@ -317,10 +321,16 @@
       var thumbnail_html = '';
       if (this._slider.length) {
         var slider_html = images.map(function (image) {
+          if (!image.image_id) {
+            return '';
+          }
           var template = wp.template('rtwpvg-slider-template');
           return template(image);
         }).join('');
         thumbnail_html = images.map(function (image) {
+          if (!image.image_id) {
+            return '';
+          }
           var template = wp.template('rtwpvg-thumbnail-template');
           return template(image);
         }).join('');
