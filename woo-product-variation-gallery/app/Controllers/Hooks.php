@@ -21,7 +21,7 @@ class Hooks {
 		add_action( 'woocommerce_product_after_variable_attributes', [ $this, 'gallery_admin_html' ], 10, 3 );
 
 		add_filter( 'woocommerce_available_variation', [ $this, 'available_variation_gallery' ], 90, 3 );
-        // 60 For support Avanam.
+		// 60 For support Avanam.
 		add_filter( 'wc_get_template', [ $this, 'gallery_template_override' ], 60, 2 );
 
 		add_action( 'wp_ajax_rtwpvg_get_default_gallery_images', [ $this, 'get_default_gallery_images' ] );
@@ -32,22 +32,22 @@ class Hooks {
 		add_action( 'rtwpvg_product_badge', [ __CLASS__, 'add_yith_badge' ] );
 		// rtwpvg_disable_enqueue_scripts
 		add_filter( 'rtwpvg_disable_enqueue_scripts', [ $this, 'disable_enqueue_scripts' ], 10 );
-        // Old Version Compatibility
-        if( defined('RTWPVGP_VERSION') && version_compare(RTWPVGP_VERSION, '2.2.2', '<=') ){
-		    add_filter( 'rtwpvg_thumbnail_style', [ $this, 'rtwpvg_thumbnail_style' ], 15 );
-        }
+		// Old Version Compatibility
+		if ( defined( 'RTWPVGP_VERSION' ) && version_compare( RTWPVGP_VERSION, '2.2.2', '<=' ) ) {
+			add_filter( 'rtwpvg_thumbnail_style', [ $this, 'rtwpvg_thumbnail_style' ], 15 );
+		}
 
 		add_filter( 'woocommerce_gallery_thumbnail_size', [ __CLASS__, 'rtwpvg_gallery_thumbnail_size' ], 15 );
 
-        if( ! defined( 'RTWPVGP_VERSION' ) || ( defined( 'RTWPVGP_VERSION' ) && version_compare(RTWPVGP_VERSION, '2.3.6', '>=') ) ){
-		    add_filter( 'woocommerce_product_export_meta_value', [ __CLASS__, 'product_export_meta_value' ], 15, 4 );
-		    add_filter( 'woocommerce_product_import_process_item_data', [ __CLASS__, 'product_import_process_item_data' ], 15 );
-        }
-
+		if ( ! defined( 'RTWPVGP_VERSION' ) || ( defined( 'RTWPVGP_VERSION' ) && version_compare( RTWPVGP_VERSION, '2.3.6', '>=' ) ) ) {
+			add_filter( 'woocommerce_product_export_meta_value', [ __CLASS__, 'product_export_meta_value' ], 15, 4 );
+			add_filter( 'woocommerce_product_import_process_item_data', [ __CLASS__, 'product_import_process_item_data' ], 15 );
+		}
 	}
 
 	/**
 	 * Export Image
+	 *
 	 * @param $meta_value
 	 * @param $meta
 	 * @param $product
@@ -55,8 +55,8 @@ class Hooks {
 	 *
 	 * @return mixed|string
 	 */
-	public static function product_export_meta_value( $meta_value, $meta, $product, $row) {
-		if( 'rtwpvg_images' !== $meta->key || ! ( is_array( $meta_value ) && count( $meta_value ) ) ){
+	public static function product_export_meta_value( $meta_value, $meta, $product, $row ) {
+		if ( 'rtwpvg_images' !== $meta->key || ! ( is_array( $meta_value ) && count( $meta_value ) ) ) {
 			return $meta_value;
 		}
 		$images = [];
@@ -76,38 +76,38 @@ class Hooks {
 	 */
 	public static function product_import_process_item_data( $data ) {
 
-		if( empty( $data['meta_data'] ) || ! is_array( $data['meta_data'] ) || ! count( $data['meta_data'] ) ){
+		if ( empty( $data['meta_data'] ) || ! is_array( $data['meta_data'] ) || ! count( $data['meta_data'] ) ) {
 			return $data;
 		}
 		foreach ( $data['meta_data'] as $key => $meta ) {
-			if( 'rtwpvg_images' !== $meta['key'] ){
+			if ( 'rtwpvg_images' !== $meta['key'] ) {
 				continue;
 			}
-			if( empty( $meta['value'] ) ){
-				unset($data['meta_data'][$key]);
+			if ( empty( $meta['value'] ) ) {
+				unset( $data['meta_data'][ $key ] );
 				continue;
 			}
 			$images_url = explode( ',', $meta['value'] );
-			$images_id = [];
+			$images_id  = [];
 			foreach ( $images_url as $url ) {
 				$images_id[] = Functions::get_attachment_id_from_url( $url, $data['id'] );
 			}
-			unset( $data['meta_data'][$key]['value'] );
-			$data['meta_data'][$key]['value'] = $images_id;
+			unset( $data['meta_data'][ $key ]['value'] );
+			$data['meta_data'][ $key ]['value'] = $images_id;
 		}
 		return $data;
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	public static function rtwpvg_gallery_thumbnail_size( $size ) {
 		$thumbnail_size = rtwpvg()->get_option( 'gallery_thumbnail_size' );
 		return $thumbnail_size ? $thumbnail_size : $size; // thumbnail, full, 'medium'
 	}
 	/**
-     * Old Version Compatibility
-     *
+	 * Old Version Compatibility
+	 *
 	 * @param $style
 	 *
 	 * @return mixed
@@ -115,7 +115,7 @@ class Hooks {
 	public static function rtwpvg_thumbnail_style( $style ) {
 		$style['left']  = esc_html__( 'Position Left', 'woo-product-variation-gallery' );
 		$style['right'] = esc_html__( 'Position Right', 'woo-product-variation-gallery' );
-        return $style;
+		return $style;
 	}
 
 	/**
@@ -130,6 +130,11 @@ class Hooks {
 			return $bool;
 		}
 		if ( is_singular( 'product' ) ) {
+			global $post;
+			$disabled = get_post_meta( $post->ID, '_rtwpvg_disable_valiation_gallery', true );
+			if ( 'yes' === $disabled ) {
+				return true;
+			}
 			return $bool;
 		}
 		if ( rtwpvg()->get_option( 'load_scripts' ) ) {
@@ -198,9 +203,16 @@ class Hooks {
 	}
 
 	function gallery_template_override( $template, $template_name ) {
-		$using_swiper               = rtwpvg()->get_option( 'upgrade_slider_scripts' );
+		global $product;
+		if ( is_a( $product, 'WC_Product' ) ) {
+			$disabled = get_post_meta( $product->get_id(), '_rtwpvg_disable_valiation_gallery', true );
+			if ( 'yes' === $disabled ) {
+				return $template;
+			}
+		}
+		$using_swiper    = rtwpvg()->get_option( 'upgrade_slider_scripts' );
 		$template_prefix = $using_swiper ? 'swiper-' : null;
-		$old_template = $template;
+		$old_template    = $template;
 
 		// Disable gallery on specific product
 
@@ -216,7 +228,7 @@ class Hooks {
 			$template = rtwpvg()->locate_template( 'product-thumbnails' );
 		}
 
-        return apply_filters( 'rtwpvg_gallery_template_override_location', $template, $template_name, $old_template );
+		return apply_filters( 'rtwpvg_gallery_template_override_location', $template, $template_name, $old_template );
 	}
 
 	public function enable_theme_support() {
@@ -327,5 +339,4 @@ class Hooks {
 		$images     = Functions::get_gallery_images( $product_id );
 		wp_send_json_success( apply_filters( 'rtwpvg_get_default_gallery_images', $images, $product_id ) );
 	}
-
 }

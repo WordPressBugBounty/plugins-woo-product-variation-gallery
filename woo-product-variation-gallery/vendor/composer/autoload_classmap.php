@@ -11,6 +11,7 @@ return array(
     'Rtwpvg\\Controllers\\Install' => $baseDir . '/app/Controllers/Install.php',
     'Rtwpvg\\Controllers\\Notifications' => $baseDir . '/app/Controllers/Notifications.php',
     'Rtwpvg\\Controllers\\Offer' => $baseDir . '/app/Controllers/Offer.php',
+    'Rtwpvg\\Controllers\\ProductMeta' => $baseDir . '/app/Controllers/ProductMeta.php',
     'Rtwpvg\\Controllers\\Review' => $baseDir . '/app/Controllers/Review.php',
     'Rtwpvg\\Controllers\\ScriptLoader' => $baseDir . '/app/Controllers/ScriptLoader.php',
     'Rtwpvg\\Controllers\\SettingsAPI' => $baseDir . '/app/Controllers/SettingsAPI.php',

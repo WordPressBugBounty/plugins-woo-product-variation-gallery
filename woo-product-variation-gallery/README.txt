@@ -2,9 +2,9 @@
 Contributors: techlabpro1
 Tags: product variation gallery, woocommerce variation image gallery, additional variation image gallery, product variation image gallery, product variation image
 Requires at least: 4.8
-Tested up to: 6.7
+Tested up to: 6.8
 Requires PHP: 7.4
-Stable tag: 2.3.17
+Stable tag: 2.3.18
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -121,6 +121,10 @@ Yes, it is.
 3. Advanced Settings
 
 == Changelog ==
+
+= 2.3.18 ( April 11, 2025 ) =
+* Added: Option to disable gallery for specific products
+* Added: Option to choose slide image effect: Fade or Slide
 
 = 2.3.17 ( February 28, 2025 ) =
 * Fixed: Gallery Thumbnail Active Opacity

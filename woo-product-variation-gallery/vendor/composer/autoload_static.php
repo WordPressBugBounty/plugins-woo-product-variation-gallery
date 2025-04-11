@@ -26,6 +26,7 @@ class ComposerStaticInitb502db0f24f171c143e9c21fd5b166bb
         'Rtwpvg\\Controllers\\Install' => __DIR__ . '/../..' . '/app/Controllers/Install.php',
         'Rtwpvg\\Controllers\\Notifications' => __DIR__ . '/../..' . '/app/Controllers/Notifications.php',
         'Rtwpvg\\Controllers\\Offer' => __DIR__ . '/../..' . '/app/Controllers/Offer.php',
+        'Rtwpvg\\Controllers\\ProductMeta' => __DIR__ . '/../..' . '/app/Controllers/ProductMeta.php',
         'Rtwpvg\\Controllers\\Review' => __DIR__ . '/../..' . '/app/Controllers/Review.php',
         'Rtwpvg\\Controllers\\ScriptLoader' => __DIR__ . '/../..' . '/app/Controllers/ScriptLoader.php',
         'Rtwpvg\\Controllers\\SettingsAPI' => __DIR__ . '/../..' . '/app/Controllers/SettingsAPI.php',

@@ -3,6 +3,7 @@
 use Rtwpvg\Controllers\Hooks;
 use Rtwpvg\Controllers\Offer;
 use Rtwpvg\Controllers\Install;
+use Rtwpvg\Controllers\ProductMeta;
 use Rtwpvg\Controllers\ProHooks;
 use Rtwpvg\Controllers\SettingsAPI;
 use Rtwpvg\Controllers\ScriptLoader;
@@ -49,6 +50,7 @@ if ( ! class_exists( 'WooProductVariationGallery' ) ) :
 			if ( $this->is_valid_php_version() && $this->is_wc_active() ) {
 				add_action( 'init', [ $this, 'settings_api' ], 6 );
 				new ScriptLoader();
+				new ProductMeta();
 				new Hooks();
 				new ThemeSupport();
 			}

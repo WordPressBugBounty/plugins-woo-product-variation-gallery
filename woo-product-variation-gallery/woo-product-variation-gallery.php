@@ -4,11 +4,11 @@
  * Plugin Name:         Variation Images Gallery for WooCommerce
  * Plugin URI:          https://radiustheme.com
  * Description:         Variation Images Gallery for WooCommerce plugin allows to add UNLIMITED additional images for each variation of product.
- * Version:             2.3.17
+ * Version:             2.3.18
  * Author:              RadiusTheme
  * Author URI:          https://radiustheme.com
  * Requires at least:   4.8
- * Tested up to:        6.7
+ * Tested up to:        6.8
  * WC requires at least:3.2
  * WC tested up to:     8.6.1
  * Domain Path:         /languages
@@ -25,7 +25,7 @@ define( 'RTWPVG_PLUGIN_PATH', plugin_dir_path(__FILE__) );
 
 // Define RTWPVG_VERSION.
 if (!defined('RTWPVG_VERSION')) {
-  define('RTWPVG_VERSION', '2.3.17');
+  define('RTWPVG_VERSION', '2.3.18');
 }
 
 if (!class_exists('WooProductVariationGallery')) {
