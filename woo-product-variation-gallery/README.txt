@@ -16,7 +16,7 @@ Variation Images Gallery for WooCommerce plugin allows to add UNLIMITED addition
 
 This additional variation images gallery plugin gives your customers an extra feature to showcase your products that gives visitors to multiple view of your products.  This will help to increase your sales.
 
-[Plugin Demo](https://radiustheme.com/demo/wordpress/wooplugins/product/woocommerce-variation-images-gallery/) | [Documentation](https://www.radiustheme.com/how-to-use-woocommerce-variation-images-gallery/) | [Get Pro](https://www.radiustheme.com/downloads/woocommerce-variation-images-gallery/?utm_source=WordPress&utm_medium=gallery&utm_campaign=pro_click)
+👉 [Plugin Demo](https://radiustheme.com/demo/wordpress/wooplugins/product/woocommerce-variation-images-gallery/) | [Documentation](https://www.radiustheme.com/docs/variation-gallery/) | [Get Pro](https://www.radiustheme.com/downloads/woocommerce-variation-images-gallery/?utm_source=WordPress&utm_medium=gallery&utm_campaign=pro_click) 👈
 
 [youtube https://www.youtube.com/watch?v=PS9myy5AYHE]
 
@@ -28,7 +28,7 @@ This additional variation image gallery for WooCommerce plugin give you the oppo
 
 This plugin is easy to use and included detail settings there is no limit to use this free version. This plugin will give your WooCoomerce store a new look to your visitors to showcase your variation images.
 
-== Features ==
+== 🚀 Features ==
 * UNLIMITED additional images for each product variation
 * Drag & Drop custom sorting option.
 * Delete option for Variation images.
