@@ -224,6 +224,7 @@
 
 #rtwpvg-settings-wrapper #rtwpvg-settings-tabs {
   background: #FFFFFF;
+  padding-top: 25px;
 }
 #rtwpvg-settings-wrapper #rtwpvg-settings-tabs .section-heading {
   background: #ffffff;
@@ -283,6 +284,9 @@
 #rtwpvg-settings-wrapper .nav-tab-wrapper {
   border-bottom: 0;
   padding-top: 0;
+  gap: 0;
+  margin: 0 !important;
+  padding-left: 0 !important;
 }
 #rtwpvg-settings-wrapper nav a.nav-tab.rtwpvg-setting-nav-tab {
   position: relative;

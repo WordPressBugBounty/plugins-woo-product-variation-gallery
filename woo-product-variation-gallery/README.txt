@@ -4,7 +4,7 @@ Tags: product variation gallery, woocommerce variation image gallery, additional
 Requires at least: 4.8
 Tested up to: 6.8
 Requires PHP: 7.4
-Stable tag: 2.3.18
+Stable tag: 2.3.19
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -18,7 +18,7 @@ This additional variation images gallery plugin gives your customers an extra fe
 
 👉 [Plugin Demo](https://radiustheme.com/demo/wordpress/wooplugins/product/woocommerce-variation-images-gallery/) | [Documentation](https://www.radiustheme.com/docs/variation-gallery/) | [Get Pro](https://www.radiustheme.com/downloads/woocommerce-variation-images-gallery/?utm_source=WordPress&utm_medium=gallery&utm_campaign=pro_click) 👈
 
-[youtube https://www.youtube.com/watch?v=PS9myy5AYHE]
+[youtube https://www.youtube.com/watch?v=zQKKUx2ECa8]
 
 By default, [WooCommerce](https://wordpress.org/plugins/woocommerce/) has only single image to insert as variation there is not gallery or multiple image add option.
 
@@ -121,6 +121,11 @@ Yes, it is.
 3. Advanced Settings
 
 == Changelog ==
+
+= 2.3.19 ( Aug 28, 2025 ) =
+* Added: TikTok Video Support For Gallery Images
+* Fixed: Security issue resolve
+* Fixed: phpcs issue resolve
 
 = 2.3.18 ( April 11, 2025 ) =
 * Added: Option to disable gallery for specific products

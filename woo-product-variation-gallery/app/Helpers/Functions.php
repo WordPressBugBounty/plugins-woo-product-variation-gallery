@@ -15,25 +15,27 @@ class Functions {
 	public static $slug = 'rtwpvg';
 
 	static function get_simple_embed_url( $media_link ) {
-		// Youtube
-		$re    = '@https?://(www.)?youtube.com/watch\?v=([^&]+)@';
+		// YouTube.
+		$re    = '#https?://(www\.)?youtube\.com/watch\?v=([^&]+)#';
 		$subst = 'https://www.youtube.com/embed/$2?feature=oembed';
+		$link  = preg_replace( $re, $subst, $media_link, 1 );
 
-		$link = preg_replace( $re, $subst, $media_link, 1 );
-
-		// Vimeo
-		$re    = '@https?://(www.)?vimeo.com/([^/]+)@';
+		// Vimeo.
+		$re    = '#https?://(www\.)?vimeo\.com/([^/]+)#';
 		$subst = 'https://player.vimeo.com/video/$2';
+		$link  = preg_replace( $re, $subst, $link, 1 );
 
-		$link = preg_replace( $re, $subst, $link, 1 );
-
+		// TikTok.
+		$re    = '#https?://(www\.)?tiktok\.com/@[^/]+/video/([0-9]+)#';
+		$subst = 'https://www.tiktok.com/embed/v2/$2';
+		$link  = preg_replace( $re, $subst, $link, 1 );
 
 		return apply_filters( 'rtwpvg_get_simple_embed_url', $link, $media_link );
 	}
 
-	public static function generate_inline_style( $styles = array() ) {
+	public static function generate_inline_style( $styles = [] ) {
 
-		$generated = array();
+		$generated = [];
 		if ( ! empty( $styles ) ) {
 			foreach ( $styles as $property => $value ) {
 				$generated[] = "{$property}: $value";
@@ -44,23 +46,31 @@ class Functions {
 	}
 
 
-	public static function get_gallery_image_html( $attachment_id, $options = array() ) {
-        if ( ! $attachment_id  ){
-            return ;
-        }
-		$defaults     = array( 'is_main_thumbnail' => false, 'has_only_thumbnail' => false );
-		$using_swiper = rtwpvg()->get_option( 'upgrade_slider_scripts' );
-		$thumbnail_style = apply_filters('rtwpvg_thumbnail_position', 'bottom');
-		$options      = wp_parse_args( $options, $defaults );
+	public static function get_gallery_image_html( $attachment_id, $options = [] ) {
+		if ( ! $attachment_id ) {
+			return;
+		}
+		$defaults        = [
+			'is_main_thumbnail'  => false,
+			'has_only_thumbnail' => false,
+		];
+		$using_swiper    = rtwpvg()->get_option( 'upgrade_slider_scripts' );
+		$thumbnail_style = apply_filters( 'rtwpvg_thumbnail_position', 'bottom' );
+		$options         = wp_parse_args( $options, $defaults );
 
 		$image = self::get_gallery_image_props( $attachment_id );
 		if ( empty( $image['src'] ) ) {
 			return '';
 		}
-		$classes = apply_filters( 'rtwpvg_image_html_class', array(
-			'rtwpvg-gallery-image',
-			'rtwpvg-gallery-image-id-' . $attachment_id
-		), $attachment_id, $image );
+		$classes = apply_filters(
+			'rtwpvg_image_html_class',
+			[
+				'rtwpvg-gallery-image',
+				'rtwpvg-gallery-image-id-' . $attachment_id,
+			],
+			$attachment_id,
+			$image
+		);
 
 		if ( $using_swiper && 'grid' !== $thumbnail_style ) {
 			$classes[] = 'swiper-slide';
@@ -74,10 +84,15 @@ class Functions {
 
 		// If require thumbnail
 		if ( ! $options['is_main_thumbnail'] ) {
-			$classes = apply_filters( 'rtwpvg_thumbnail_image_html_class', array(
-				'rtwpvg-thumbnail-image',
-                'rtwpvg-thumbnail-image-' . $attachment_id
-			), $attachment_id, $image );
+			$classes = apply_filters(
+				'rtwpvg_thumbnail_image_html_class',
+				[
+					'rtwpvg-thumbnail-image',
+					'rtwpvg-thumbnail-image-' . $attachment_id,
+				],
+				$attachment_id,
+				$image
+			);
 
 			if ( $using_swiper ) {
 				$classes[] = 'swiper-slide';
@@ -92,18 +107,18 @@ class Functions {
 	}
 
 	/*
-    public static function locate_template($name) {
-        // Look within passed path within the theme - this is priority.
-        $template = apply_filters( 'rtwpvg_add_locate_template', array(
-	        trailingslashit(rtwpvg()->dirname()) . "$name.php"
-        ) );
+	public static function locate_template($name) {
+		// Look within passed path within the theme - this is priority.
+		$template = apply_filters( 'rtwpvg_add_locate_template', array(
+			trailingslashit(rtwpvg()->dirname()) . "$name.php"
+		) );
 
-        if (!$template_file = locate_template($template)) {
-            $template_file = rtwpvg()->get_template_file_path($name);
-        }
+		if (!$template_file = locate_template($template)) {
+			$template_file = rtwpvg()->get_template_file_path($name);
+		}
 
-        return apply_filters('rtwpvg_locate_template', $template_file, $name);
-    }
+		return apply_filters('rtwpvg_locate_template', $template_file, $name);
+	}
 	*/
 	static function get_template( $fileName, $args = null ) {
 
@@ -117,7 +132,7 @@ class Functions {
 
 		if ( ! file_exists( $located ) ) {
 			/* translators: %s template */
-			self::doing_it_wrong( __FUNCTION__, sprintf( __( '%s does not exist.', 'classified-listing' ), '<code>' . $located . '</code>' ), '1.0' );
+			self::doing_it_wrong( __FUNCTION__, sprintf( __( '%s does not exist.', 'woo-product-variation-gallery' ), '<code>' . $located . '</code>' ), '1.0' );
 
 			return;
 		}
@@ -130,15 +145,13 @@ class Functions {
 		include $located;
 
 		do_action( 'rtwpvg_after_template_part', $fileName, $located, $args );
-
 	}
 
-	static public function get_template_html( $template_name, $args = null ) {
+	public static function get_template_html( $template_name, $args = null ) {
 		ob_start();
 		self::get_template( $template_name, $args );
 
 		return ob_get_clean();
-
 	}
 
 

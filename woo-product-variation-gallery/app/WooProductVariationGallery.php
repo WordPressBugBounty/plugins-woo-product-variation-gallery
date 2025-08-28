@@ -42,7 +42,7 @@ if ( ! class_exists( 'WooProductVariationGallery' ) ) :
 		}
 
 		public function hooks() {
-			$this->load_plugin_textdomain();
+			// $this->load_plugin_textdomain();
 			new Notifications();
 			 new Offer();
 			// new Review();
@@ -145,13 +145,13 @@ if ( ! class_exists( 'WooProductVariationGallery' ) ) :
 		 *      - WP_LANG_DIR/woo-product-variation-gallery/woo-product-variation-gallery-LOCALE.mo
 		 *      - WP_LANG_DIR/plugins/woo-product-variation-gallery-LOCALE.mo.
 		 */
-		public function load_plugin_textdomain() {
-			$locale = is_admin() && function_exists( 'get_user_locale' ) ? get_user_locale() : get_locale();
-			$locale = apply_filters( 'plugin_locale', $locale, 'woo-product-variation-gallery' );
-			unload_textdomain( 'woo-product-variation-gallery' );
-			load_textdomain( 'woo-product-variation-gallery', WP_LANG_DIR . '/woo-product-variation-gallery-pro/woo-product-variation-gallery-' . $locale . '.mo' );
-			load_plugin_textdomain( 'woo-product-variation-gallery', false, trailingslashit( $this->dirname() ) . 'languages' );
-		}
+		// public function load_plugin_textdomain() {
+		// $locale = is_admin() && function_exists( 'get_user_locale' ) ? get_user_locale() : get_locale();
+		// $locale = apply_filters( 'plugin_locale', $locale, 'woo-product-variation-gallery' );
+		// unload_textdomain( 'woo-product-variation-gallery' );
+		// load_textdomain( 'woo-product-variation-gallery', WP_LANG_DIR . '/woo-product-variation-gallery-pro/woo-product-variation-gallery-' . $locale . '.mo' );
+		// load_plugin_textdomain( 'woo-product-variation-gallery', false, trailingslashit( $this->dirname() ) . 'languages' );
+		// }
 
 		public function get_assets_uri( $file ) {
 			$file = ltrim( $file, '/' );

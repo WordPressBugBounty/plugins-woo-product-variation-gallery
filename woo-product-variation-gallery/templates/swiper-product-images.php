@@ -125,7 +125,7 @@ $wrapper_classes[] = 'rtwpvg-total-images-' . $total_images;
 
 	<div class="<?php echo rtwpvg()->get_option( 'preloader' ) ? 'loading-rtwpvg' : ''; ?> rtwpvg-wrapper rtwpvg-thumbnail-position-<?php echo esc_attr( $thumbnail_position ); ?> rtwpvg-product-type-<?php echo esc_attr( $product_type ); ?>" data-thumbnail_position='<?php echo esc_attr( $thumbnail_position ); ?>'>
 
-		<div class="rtwpvg-container rtwpvg-preload-style-<?php echo trim( rtwpvg()->get_option( 'preload_style' ) ?? '' ); ?>">
+		<div class="rtwpvg-container rtwpvg-preload-style-<?php echo esc_attr( trim( rtwpvg()->get_option( 'preload_style' ) ?? '' ) ); ?>">
 
 			<div class="rtwpvg-slider-wrapper ">
 				<?php do_action( 'rtwpvg_product_badge', $product ); ?>
@@ -134,7 +134,7 @@ $wrapper_classes[] = 'rtwpvg-total-images-' . $total_images;
 				if ( $has_post_thumbnail && rtwpvg()->get_option( 'lightbox' ) ) :
 					?>
 					<a href="#"
-					   class="rtwpvg-trigger rtwpvg-trigger-position-<?php echo rtwpvg()->get_option( 'zoom_position' ); ?><?php echo rtwpvg()->get_option( 'lightbox_image_click' ) ? ' rtwpvg-image-trigger' : ''; ?>">
+					   class="rtwpvg-trigger rtwpvg-trigger-position-<?php echo esc_attr( rtwpvg()->get_option( 'zoom_position' ) ); ?><?php echo rtwpvg()->get_option( 'lightbox_image_click' ) ? ' rtwpvg-image-trigger' : ''; ?>">
 						<?php ob_start(); ?>
 						<span class="dashicons dashicons-search">
 									<span class="screen-reader-text">
@@ -143,40 +143,41 @@ $wrapper_classes[] = 'rtwpvg-total-images-' . $total_images;
 								</span>
 						<?php
 						$icon_html = ob_get_clean();
-						echo apply_filters( 'rtwpvg_trigger_icon', $icon_html );
+						echo apply_filters( 'rtwpvg_trigger_icon', $icon_html ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 						?>
 					</a>
 				<?php endif; ?>
 
 				<div class="rtwpvg-slider swiper"
-					 data-options='<?php echo htmlspecialchars( wp_json_encode( $gallery_slider_js_options ) ); // WPCS: XSS ok. ?>'>
+					 data-options='<?php echo htmlspecialchars( wp_json_encode( $gallery_slider_js_options ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>'>
 					<!-- Additional required wrapper -->
 					<div class="swiper-wrapper">
 						<?php
 
 						if ( ! $has_post_thumbnail && ! count( $attachment_ids ) > 0 ) {
 							echo '<div class="rtwpvg-gallery-image rtwpvg-gallery-image-placeholder swiper-slide">';
-							echo sprintf( '<img src="%s" alt="%s" class="wp-post-image" />', esc_url( wc_placeholder_img_src() ), esc_html__( 'Awaiting product image', 'woocommerce' ) );
+							echo sprintf( '<img src="%s" alt="%s" class="wp-post-image" />', esc_url( wc_placeholder_img_src() ), esc_html__( 'Awaiting product image', 'woo-product-variation-gallery' ) );
 							echo '</div>';
 						}
-						// Main  Image
+						// Main  Image.
 						if ( $has_post_thumbnail ) {
-							echo Functions::get_gallery_image_html(
+							echo Functions::get_gallery_image_html( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 								$post_thumbnail_id,
 								[
 									'is_main_thumbnail'  => true,
-									'has_only_thumbnail' => $only_has_post_thumbnail,
+									'has_only_thumbnail' => $only_has_post_thumbnail, // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 								]
 							);
 						}
-						// Gallery attachment Images
+						// Gallery attachment Images.
 						if ( count( $attachment_ids ) > 0 ) :
 							foreach ( $attachment_ids as $attachment_id ) :
+                                // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 								echo Functions::get_gallery_image_html(
 									$attachment_id,
 									[
 										'is_main_thumbnail'  => true,
-										'has_only_thumbnail' => $only_has_post_thumbnail,
+										'has_only_thumbnail' => $only_has_post_thumbnail, // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 									]
 								);
 							endforeach;
@@ -197,15 +198,15 @@ $wrapper_classes[] = 'rtwpvg-total-images-' . $total_images;
 			if ( apply_filters( 'rtwpvg_show_product_thumbnail_slider', true ) ) {
 				?>
 				<div class="rtwpvg-thumbnail-wrapper">
-					<div class="rtwpvg-thumbnail-slider swiper <?php echo rtwpvg()->get_option( 'thumbnail_slide' ) ? 'thumbnail-slider-active' : 'thumbnail-slider-deactive'; ?> rtwpvg-thumbnail-columns-<?php echo esc_attr( $columns ); ?> rtwpvg-thumbnail-sm-columns-<?php echo esc_attr( $columns_sm ); ?> rtwpvg-thumbnail-xs-columns-<?php echo esc_attr( $columns_xs ); ?>" data-options='<?php echo htmlspecialchars( wp_json_encode( $thumbnail_slider_js_options ) ); // WPCS: XSS ok. ?>'>
+					<div class="rtwpvg-thumbnail-slider swiper <?php echo rtwpvg()->get_option( 'thumbnail_slide' ) ? 'thumbnail-slider-active' : 'thumbnail-slider-deactive'; ?> rtwpvg-thumbnail-columns-<?php echo esc_attr( $columns ); ?> rtwpvg-thumbnail-sm-columns-<?php echo esc_attr( $columns_sm ); ?> rtwpvg-thumbnail-xs-columns-<?php echo esc_attr( $columns_xs ); ?>" data-options='<?php echo htmlspecialchars( wp_json_encode( $thumbnail_slider_js_options ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>'>
 						<div class="swiper-wrapper">
 							<?php
 							if ( $has_gallery_thumbnail ) :
-								echo Functions::get_gallery_image_html( $post_thumbnail_id, [ 'is_main_thumbnail' => false ] );
+								echo Functions::get_gallery_image_html( $post_thumbnail_id, [ 'is_main_thumbnail' => false ] ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 							endif;
 							if ( count( $attachment_ids ) > 0 ) :
 								foreach ( $attachment_ids as $key => $attachment_id ) :
-									echo Functions::get_gallery_image_html( $attachment_id, [ 'is_main_thumbnail' => false ] );
+									echo Functions::get_gallery_image_html( $attachment_id, [ 'is_main_thumbnail' => false ] ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 								endforeach;
 							endif;
 							?>

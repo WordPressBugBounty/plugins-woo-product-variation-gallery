@@ -19,6 +19,7 @@ class Options {
 							'type'     => 'number',
 							'default'  => absint( apply_filters( 'rtwpvg_thumbnails_columns', 4 ) ),
 							'desc_tip' => esc_html__( 'Product Thumbnails Item Image', 'woo-product-variation-gallery' ),
+							/* translators: %s: Default value */
 							'desc'     => sprintf( esc_html__( 'Product Thumbnails Item Image. Default value is: %d. Limit: 2-8. The field required for slider.', 'woo-product-variation-gallery' ), absint( apply_filters( 'rtwpvg_thumbnails_columns', 4 ) ) ),
 							'id'       => 'thumbnails_columns',
 							'min'      => 2,
@@ -30,6 +31,7 @@ class Options {
 							'type'     => 'number',
 							'default'  => absint( apply_filters( 'rtwpvg_md_thumbnails_columns', 4 ) ),
 							'desc_tip' => esc_html__( 'Product Thumbnails Item Image For (Medium Device)', 'woo-product-variation-gallery' ),
+							/* translators: %s: Default value */
 							'desc'     => sprintf( esc_html__( 'Product Thumbnails Item Image. Default value is: %d. Limit: 2-8. The field required for slider.', 'woo-product-variation-gallery' ), absint( apply_filters( 'rtwpvg_thumbnails_columns', 4 ) ) ),
 							'id'       => 'thumbnails_columns_sm',
 							'min'      => 2,
@@ -41,6 +43,7 @@ class Options {
 							'type'     => 'number',
 							'default'  => absint( apply_filters( 'rtwpvg_sm_thumbnails_columns', 3 ) ),
 							'desc_tip' => esc_html__( 'Product Thumbnails Item Image For (Small Device)', 'woo-product-variation-gallery' ),
+							/* translators: %s: Default value */
 							'desc'     => sprintf( esc_html__( 'Product Thumbnails Item Image. Default value is: %d. Limit: 2-8. The field required for slider.', 'woo-product-variation-gallery' ), absint( apply_filters( 'rtwpvg_thumbnails_columns', 4 ) ) ),
 							'id'       => 'thumbnails_columns_xs',
 							'min'      => 2,
@@ -52,6 +55,7 @@ class Options {
 							'type'     => 'number',
 							'default'  => absint( apply_filters( 'rtwpvg_thumbnails_gap', 0 ) ),
 							'desc_tip' => esc_html__( 'Product Thumbnails Gap In Pixel', 'woo-product-variation-gallery' ),
+							/* translators: %s: Default value */
 							'desc'     => sprintf( esc_html__( 'Product Thumbnails Gap In Pixel. Default value is: %d. Limit: 0-20.', 'woo-product-variation-gallery' ), apply_filters( 'rtwpvg_thumbnails_gap', 0 ) ),
 							'id'       => 'thumbnails_gap',
 							'min'      => 0,
@@ -64,6 +68,7 @@ class Options {
 							'type'     => 'number',
 							'default'  => absint( apply_filters( 'rtwpvg_gallery_width', 46 ) ),
 							'desc_tip' => esc_html__( 'Slider gallery width in % for large devices.', 'woo-product-variation-gallery' ),
+							/* translators: %s: Default value */
 							'desc'     => 'For large devices.<br>' . sprintf( __( 'Slider Gallery Width in percentage. Default value is: %d. Limit: 10-100.', 'woo-product-variation-gallery' ), absint( apply_filters( 'rtwpvg_default_width', 30 ) ) ),
 							'id'       => 'gallery_width',
 							'min'      => 10,
@@ -76,6 +81,7 @@ class Options {
 							'type'     => 'number',
 							'default'  => absint( apply_filters( 'rtwpvg_gallery_md_width', 0 ) ),
 							'desc_tip' => esc_html__( 'Slider gallery width in % for medium devices, small desktop', 'woo-product-variation-gallery' ),
+							/* translators: %s: width */
 							'desc'     => 'For medium devices.<br>' . esc_html__( 'Slider gallery width in % for medium devices, small desktop. Default value is: 0. Limit: 0-100. Media query (max-width : 992px)', 'woo-product-variation-gallery' ),
 							'id'       => 'gallery_md_width',
 							'min'      => 0,
@@ -88,6 +94,7 @@ class Options {
 							'type'     => 'number',
 							'default'  => absint( apply_filters( 'rtwpvg_gallery_sm_width', 100 ) ),
 							'desc_tip' => esc_html__( 'Slider gallery width in % for small devices, tablets', 'woo-product-variation-gallery' ),
+							/* translators: %s: width */
 							'desc'     => 'For small devices, tablets.<br>' . esc_html__( 'Slider gallery width in % for medium devices, small desktop. Default value is: 100. Limit: 0-100. Media query (max-width : 768px)', 'woo-product-variation-gallery' ),
 							'id'       => 'gallery_sm_width',
 							'min'      => 0,
@@ -112,6 +119,7 @@ class Options {
 							'type'     => 'number',
 							'default'  => absint( apply_filters( 'rtwpvg_gallery_margin', 30 ) ),
 							'desc_tip' => esc_html__( 'Slider gallery bottom margin in pixel', 'woo-product-variation-gallery' ),
+							/* translators: %s: margin */
 							'desc'     => sprintf( esc_html__( 'Slider gallery bottom margin in pixel. Default value is: %d. Limit: 10-100.', 'woo-product-variation-gallery' ), apply_filters( 'gallery_margin', 30 ) ),
 							'id'       => 'gallery_margin',
 							'min'      => 10,
@@ -177,7 +185,6 @@ class Options {
 								]
 							),
 						],
-						// TODO:: Need Implementations
 						[
 							'title'   => esc_html__( 'Gallery Thumbnail Size', 'woo-product-variation-gallery' ),
 							'id'      => 'gallery_thumbnail_size',
@@ -222,7 +229,7 @@ class Options {
 						[
 							'id'    => 'preloader_image',
 							'type'  => 'image',
-							'title' => esc_html__( 'Preloader Image', 'woo-product-variation-swatches' ),
+							'title' => esc_html__( 'Preloader Image', 'woo-product-variation-gallery' ),
 							'desc'  => esc_html__( 'Here you can change by default preloader image', 'woo-product-variation-gallery' ),
 						],
 						[
@@ -352,7 +359,6 @@ class Options {
 										'url'       => 'https://www.radiustheme.com/downloads/woocommerce-variation-images-gallery/?utm_source=WordPress&utm_medium=gallery&utm_campaign=pro_click',
 										'demo_url'  => 'https://radiustheme.com/demo/wordpress/woopluginspro/product/woocommerce-variation-images-gallery/',
 										'buy_url'   => 'https://www.radiustheme.com/downloads/woocommerce-variation-images-gallery/?utm_source=WordPress&utm_medium=gallery&utm_campaign=pro_click',
-										// 'doc_url'   => 'https://www.radiustheme.com/docs/variation-gallery/'
 									],
 									'rtwpvs-pro' => [
 										'title'     => 'Variation Swatches for WooCommerce Pro',
@@ -361,7 +367,6 @@ class Options {
 										'url'       => 'https://www.radiustheme.com/downloads/woocommerce-variation-swatches/',
 										'demo_url'  => 'https://radiustheme.com/demo/wordpress/woopluginspro/',
 										'buy_url'   => 'https://www.radiustheme.com/downloads/woocommerce-variation-swatches/',
-										// 'doc_url' => 'https://www.radiustheme.com/setup-configure-woocommerce-product-variation-swatches-pro/'
 									],
 									'metro'      => [
 										'title'     => 'Metro – Minimal WooCommerce WordPress Theme',
@@ -369,7 +374,6 @@ class Options {
 										'url'       => 'https://www.radiustheme.com/downloads/metro-minimal-woocommerce-wordpress-theme/',
 										'demo_url'  => 'https://www.radiustheme.com/demo/wordpress/themes/metro/preview/',
 										'buy_url'   => 'https://www.radiustheme.com/downloads/metro-minimal-woocommerce-wordpress-theme/',
-										// 'doc_url' => 'https://www.radiustheme.com/demo/wordpress/themes/metro/docs/'
 									],
 								]
 							),

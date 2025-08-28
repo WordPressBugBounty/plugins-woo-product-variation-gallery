@@ -15,7 +15,7 @@ class Hooks {
 		add_filter( 'body_class', [ $this, 'body_class' ] );
 		add_filter( 'post_class', [ $this, 'product_loop_post_class' ], 25, 3 );
 
-		add_action( 'after_setup_theme', [ $this, 'enable_theme_support' ], 200 ); // Enable theme support
+		add_action( 'after_setup_theme', [ $this, 'enable_theme_support' ], 200 ); // Enable theme support.
 
 		add_action( 'woocommerce_save_product_variation', [ $this, 'save_variation_gallery' ], 10, 2 );
 		add_action( 'woocommerce_product_after_variable_attributes', [ $this, 'gallery_admin_html' ], 10, 3 );
@@ -30,9 +30,9 @@ class Hooks {
 		add_filter( 'rtwpvg_inline_style', [ $this, 'rtwpvg_add_inline_style' ], 9 );
 		add_action( 'woocommerce_update_product', [ $this, 'delete_cache_data' ], 10, 1 );
 		add_action( 'rtwpvg_product_badge', [ __CLASS__, 'add_yith_badge' ] );
-		// rtwpvg_disable_enqueue_scripts
+		// rtwpvg_disable_enqueue_scripts.
 		add_filter( 'rtwpvg_disable_enqueue_scripts', [ $this, 'disable_enqueue_scripts' ], 10 );
-		// Old Version Compatibility
+		// Old Version Compatibility.
 		if ( defined( 'RTWPVGP_VERSION' ) && version_compare( RTWPVGP_VERSION, '2.2.2', '<=' ) ) {
 			add_filter( 'rtwpvg_thumbnail_style', [ $this, 'rtwpvg_thumbnail_style' ], 15 );
 		}
@@ -147,7 +147,7 @@ class Hooks {
 	 */
 	public static function add_yith_badge( $product ) {
 		if ( ( defined( 'YITH_WCBM_VERSION' ) && YITH_WCBM_VERSION ) || ( defined( 'YITH_WCBM_PREMIUM' ) && YITH_WCBM_PREMIUM ) ) {
-			echo apply_filters( 'woocommerce_single_product_image_thumbnail_html', '<div class="rtwpvg-yith-badge"></div>', $product->get_image_id() );
+			echo apply_filters( 'woocommerce_single_product_image_thumbnail_html', '<div class="rtwpvg-yith-badge"></div>', $product->get_image_id() ); // phpcs:ignore
 		}
 	}
 
@@ -237,7 +237,10 @@ class Hooks {
 	}
 
 	public function save_variation_gallery( $variation_id, $loop ) {
-		if ( isset( $_POST['rtwpvg'] ) ) {
+
+        check_ajax_referer( 'save-variations', 'security' );
+
+        if ( isset( $_POST['rtwpvg'] ) ) {
 			if ( isset( $_POST['rtwpvg'][ $variation_id ] ) ) {
 				$rtwpvg_ids = (array) array_map( 'absint', $_POST['rtwpvg'][ $variation_id ] );
 				$rtwpvg_ids = array_values( array_unique( $rtwpvg_ids ) );
@@ -335,6 +338,7 @@ class Hooks {
 	}
 
 	public function get_default_gallery_images() {
+        // phpcs:ignore WordPress.Security.NonceVerification.Missing
 		$product_id = isset( $_POST['product_id'] ) ? absint( $_POST['product_id'] ) : 0;
 		$images     = Functions::get_gallery_images( $product_id );
 		wp_send_json_success( apply_filters( 'rtwpvg_get_default_gallery_images', $images, $product_id ) );

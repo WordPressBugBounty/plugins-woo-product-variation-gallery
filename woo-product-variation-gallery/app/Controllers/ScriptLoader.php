@@ -94,7 +94,7 @@ class ScriptLoader {
 			wp_enqueue_script( 'wc-admin-variation-meta-boxes' );
 
 		}
-		if ( ( isset( $_GET['post_type'] ) && $_GET['post_type'] == 'product' ) || $screen_id === 'product' || ( ( isset( $_GET['page'] ) && $_GET['page'] == "wc-settings" ) && ( isset( $_GET['tab'] ) && $_GET['tab'] == "rtwpvg" ) ) ) {
+		if ( ( isset( $_GET['post_type'] ) && $_GET['post_type'] == 'product' ) || $screen_id === 'product' || ( ( isset( $_GET['page'] ) && $_GET['page'] == "wc-settings" ) && ( isset( $_GET['tab'] ) && $_GET['tab'] == "rtwpvg" ) ) ) { // phpcs:ignore
 			wp_enqueue_style( 'wp-color-picker' );
 			if ( apply_filters( 'rtwpvg_disable_alpha_color_picker', false ) ) {
 				wp_enqueue_script( 'wp-color-picker' );

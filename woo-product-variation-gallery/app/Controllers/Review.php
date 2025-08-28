@@ -70,19 +70,19 @@ class Review {
      */
 	public static function rtwpvg_spare_me() {
 
-		if ( ! isset( $_REQUEST['_wpnonce'] ) || ! wp_verify_nonce( $_REQUEST['_wpnonce'], 'rtwpvg_notice_nonce' ) ) {
+		if ( ! isset( $_REQUEST['_wpnonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_REQUEST['_wpnonce'] ) ), 'rtwpvg_notice_nonce' ) ) {
 			return;
 		}
 
 		if ( isset( $_GET['rtwpvg_spare_me'] ) && ! empty( $_GET['rtwpvg_spare_me'] ) ) {
-			$spare_me = $_GET['rtwpvg_spare_me'];
+			$spare_me = sanitize_text_field( wp_unslash( $_GET['rtwpvg_spare_me'] ) );
 			if ( 1 == $spare_me ) {
 				update_option( 'rtwpvg_spare_me', '1' );
 			}
 		}
 
 		if ( isset( $_GET['rtwpvg_remind_me'] ) && ! empty( $_GET['rtwpvg_remind_me'] ) ) {
-			$remind_me = $_GET['rtwpvg_remind_me'];
+			$remind_me = sanitize_text_field( wp_unslash( $_GET['rtwpvg_remind_me'] ) );
 			if ( 1 == $remind_me ) {
 				$get_activation_time = strtotime( 'now' );
 				update_option( 'rtwpvg_remind_me', $get_activation_time );
@@ -91,7 +91,7 @@ class Review {
 		}
 
 		if ( isset( $_GET['rtwpvg_rated'] ) && ! empty( $_GET['rtwpvg_rated'] ) ) {
-			$rtwpvg_rated = $_GET['rtwpvg_rated'];
+			$rtwpvg_rated = sanitize_text_field( wp_unslash( $_GET['rtwpvg_rated'] ) );
 			if ( 1 == $rtwpvg_rated ) {
 				update_option( 'rtwpvg_rated', 'yes' );
 				update_option( 'rtwpvg_spare_me', '3' );
