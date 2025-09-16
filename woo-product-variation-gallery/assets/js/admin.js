@@ -271,10 +271,10 @@
       var preloader = $("#preloader-field").is(':checked');
       if (preloader) {
         $("#preloader_image-wrapper").show();
-        $("#preload_style-wrapper").show();
+        //$("#preload_style-wrapper").show();
       } else {
         $("#preloader_image-wrapper").hide();
-        $("#preload_style-wrapper").hide();
+        //$("#preload_style-wrapper").hide();
       }
     }
     preloader_option();
@@ -336,6 +336,7 @@
         } else {
           $(this).parent().remove();
         }
+        $('button.woocommerce-save-button').removeAttr('disabled');
       }
     });
 

@@ -4,7 +4,7 @@ Tags: product variation gallery, woocommerce variation image gallery, additional
 Requires at least: 4.8
 Tested up to: 6.8
 Requires PHP: 7.4
-Stable tag: 2.3.19
+Stable tag: 2.3.20
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -121,6 +121,9 @@ Yes, it is.
 3. Advanced Settings
 
 == Changelog ==
+
+= 2.3.20 ( Sep 16, 2025 ) =
+* Fixed: Gallery Change Effect And Preloader Issue Resolved
 
 = 2.3.19 ( Aug 28, 2025 ) =
 * Added: TikTok Video Support For Gallery Images

@@ -233,7 +233,7 @@ class Options {
 							'desc'  => esc_html__( 'Here you can change by default preloader image', 'woo-product-variation-gallery' ),
 						],
 						[
-							'title'   => esc_html__( 'Preload Style', 'woo-product-variation-gallery' ),
+							'title'   => esc_html__( 'Gallery Change Effect', 'woo-product-variation-gallery' ),
 							'type'    => 'select',
 							'default' => 'blur',
 							'id'      => 'preload_style',

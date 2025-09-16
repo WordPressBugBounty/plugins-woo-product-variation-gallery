@@ -34,7 +34,10 @@
       speed: 400
     };
     this.removeLoading = function () {
-      this._item.removeClass('loading-rtwpvg');
+      var that = this;
+      setTimeout(function () {
+        that._item.removeClass('loading-rtwpvg');
+      }, 300);
     };
     this.addLoading = function () {
       this._item.addClass('loading-rtwpvg');
@@ -189,36 +192,10 @@
         zoomTarget.trigger('zoom.destroy');
         zoomTarget.zoom(zoom_options);
         // Reset the zoom of the current image
-        //const currentImage = this._slider.slick("getSlick").$slides.eq(currentSlide);
-        // let mouseReenter = true;
-        // // First Time mouseleave/mouseenter functionality Enable
-        // $(zoomTarget).on('mousemove', function(event) {
-        //     // Trigger mouse leave event on the current image
-        //     if ( mouseReenter && that.isMouseOnElement(zoomTarget, event) ) {
-        //        // zoomTarget.trigger('mouseleave');
-        //        // console.log( 'First time mouseleave' )
-        //         setTimeout(function () {
-        //            // zoomTarget.trigger('mouseenter');
-        //             mouseReenter = false;
-        //            // console.log( 'First time mouseenter' )
-        //         }, 1);
-        //     }
-        // });
       }
     };
 
     // Function to check if the mouse is on the specified element
-    // this.isMouseOnElement = function (element, event) {
-    //     let rect = element[0].getBoundingClientRect();
-    //     let mouseX = event.clientX;
-    //     let mouseY = event.clientY;
-    //     return (
-    //         mouseX >= rect.left &&
-    //         mouseX <= rect.right &&
-    //         mouseY >= rect.top &&
-    //         mouseY <= rect.bottom
-    //     );
-    // }
 
     this.loadPhotoSwipe = function () {
       var that = this;
@@ -266,14 +243,6 @@
         that.stopVideo(pswpElement);
       });
       photoSwipe.init();
-
-      // if( that.is_grid_layout ) {
-      //     let current_click = $(event.target).parents('.rtwpvg-gallery-image').find('.rtwpvg-single-image-container img').attr('src');
-      //     let index = items.findIndex(function (item) {
-      //         return item.src === current_click;
-      //     });
-      //     photoSwipe.goTo(index);
-      // }
     };
     this.getGalleryItems = function () {
       var items = [];
@@ -316,6 +285,7 @@
     };
     this.loadGallery = function (images) {
       var that = this;
+      that.addLoading();
       var hasGallery = images.length > 1;
       this._item.trigger('before_rtwpvg_load', [images]);
       var thumbnail_html = '';
@@ -365,18 +335,13 @@
         that.imagesLoaded();
         that.hasVideo();
       }, 1);
-      setTimeout(function () {
-        that.removeLoading();
-      }, 1);
+      that.removeLoading();
     };
     this.resetGallery = function () {
       var that = this;
       if (this._default_gallery_images.length > 0) {
         this.loadGallery(this._default_gallery_images);
       }
-      setTimeout(function () {
-        that.removeLoading();
-      }, 1);
     };
     this.imagesLoaded = function () {
       var that = this;
@@ -398,19 +363,15 @@
       this._variation_form.off('show_variation.rtwpvg');
       if (rtwpvg.reset_on_variation_change) {
         this._variation_form.on('reset_image.rtwpvg', function (event) {
-          that.addLoading();
           that.resetGallery();
         });
       } else {
         this._variation_form.on('click.rtwpvg', '.show_variation', function (event) {
-          that.addLoading();
           that.resetGallery();
         });
       }
       this._variation_form.on('show_variation.rtwpvg', function (event, variation) {
-        that.addLoading();
         that.loadGallery(variation.variation_gallery_images);
-        // that.loadSlider();
       });
     };
     this.hasVideo = function () {
@@ -434,8 +395,8 @@
           that.loadZoom(that.is_grid_layout);
         }
         that.loadPhotoSwipe();
-        that.removeLoading();
       }, 10);
+      that.removeLoading();
     };
     this.start = function () {
       if (this._is_bundle_product) {
@@ -443,13 +404,6 @@
       }
       this.loadDefaultGalleryImages();
       this.loadEvents();
-
-      // if (  this.is_variation_product) {
-      //     if( this._slider.length ){
-      //        this.initSlider();
-      //     }
-      // }
-
       if (!this.is_variation_product || this._is_bundle_product) {
         this.imagesLoaded();
       }
