@@ -7,6 +7,7 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'Composer\\InstalledVersions' => $vendorDir . '/composer/InstalledVersions.php',
+    'Rtwpvg\\Controllers\\BlackFridayV2' => $baseDir . '/app/Controllers/BlackFridayV2.php',
     'Rtwpvg\\Controllers\\Hooks' => $baseDir . '/app/Controllers/Hooks.php',
     'Rtwpvg\\Controllers\\Install' => $baseDir . '/app/Controllers/Install.php',
     'Rtwpvg\\Controllers\\Notifications' => $baseDir . '/app/Controllers/Notifications.php',

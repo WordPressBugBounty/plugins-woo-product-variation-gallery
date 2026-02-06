@@ -2,9 +2,9 @@
 Contributors: techlabpro1
 Tags: product variation gallery, woocommerce variation image gallery, additional variation image gallery, product variation image gallery, product variation image
 Requires at least: 4.8
-Tested up to: 6.8
+Tested up to: 6.9
 Requires PHP: 7.4
-Stable tag: 2.3.20
+Stable tag: 2.3.22
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -16,7 +16,7 @@ Variation Images Gallery for WooCommerce plugin allows to add UNLIMITED addition
 
 This additional variation images gallery plugin gives your customers an extra feature to showcase your products that gives visitors to multiple view of your products.  This will help to increase your sales.
 
-👉 [Plugin Demo](https://radiustheme.com/demo/wordpress/wooplugins/product/woocommerce-variation-images-gallery/) | [Documentation](https://www.radiustheme.com/docs/variation-gallery/) | [Get Pro](https://www.radiustheme.com/downloads/woocommerce-variation-images-gallery/?utm_source=WordPress&utm_medium=gallery&utm_campaign=pro_click) 👈
+👉 [Plugin Demo](https://radiustheme.com/demo/wooplugins/variation-gallery) | [Documentation](https://www.radiustheme.com/docs/variation-gallery/) | [Get Pro](https://www.radiustheme.com/downloads/woocommerce-variation-images-gallery/?utm_source=WordPress&utm_medium=gallery&utm_campaign=pro_click) 👈
 
 [youtube https://www.youtube.com/watch?v=zQKKUx2ECa8]
 
@@ -115,12 +115,25 @@ Yes, it is.
 * **PHP version:** >= 7.4
 
 == Screenshots ==
-1. Variation Gallery
-2. Variation Gallery at product variation
-3. General Settings
-3. Advanced Settings
+1. Variation Image Gallery
+2. Image Gallery Right Side
+3. Image Gallery Left Side
+4. Image Gallery Grid Layout
+5. Support Video Gallery
+6. General Settings
+7. Advanced Settings
+8. Style Settings
+9. Tools Settings
 
 == Changelog ==
+
+= 2.3.22 (Nov 13, 2025) =
+* Added: Banner image support
+* Improved: General code cleanup and optimization
+
+= 2.3.21 ( Oct 21, 2025 ) =
+* Improvement: User-friendly gallery settings added.
+* Fix: YouTube Short video compatibility with Pro version.
 
 = 2.3.20 ( Sep 16, 2025 ) =
 * Fixed: Gallery Change Effect And Preloader Issue Resolved

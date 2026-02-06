@@ -1,5 +1,6 @@
 <?php
 
+use Rtwpvg\Controllers\BlackFridayV2;
 use Rtwpvg\Controllers\Hooks;
 use Rtwpvg\Controllers\Offer;
 use Rtwpvg\Controllers\Install;
@@ -44,8 +45,8 @@ if ( ! class_exists( 'WooProductVariationGallery' ) ) :
 		public function hooks() {
 			// $this->load_plugin_textdomain();
 			new Notifications();
-			 new Offer();
-			// new Review();
+            // new Offer();
+            new BlackFridayV2();
 
 			if ( $this->is_valid_php_version() && $this->is_wc_active() ) {
 				add_action( 'init', [ $this, 'settings_api' ], 6 );

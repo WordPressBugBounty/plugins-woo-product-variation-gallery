@@ -10,8 +10,8 @@ defined('ABSPATH') || exit;
 
     <# hasVideo = (  data.rtwpvg_video_link ) ? 'rtwpvg-gallery-video' : '' #>
     <# thumbnailSrc = (  data.rtwpvg_video_link ) ? data.video_thumbnail_src : data.gallery_thumbnail_src #>
-    <# videoHeight = ( data.rtwpvg_video_width ) ? data.rtwpvg_video_width : 'auto' #>
-    <# videoWidth = ( data.rtwpvg_video_height ) ? data.rtwpvg_video_height : '100%' #>
+    <# videoWidth = ( data.rtwpvg_video_width ) ? data.rtwpvg_video_width : 'auto' #>
+    <# videoHeight = ( data.rtwpvg_video_height ) ? data.rtwpvg_video_height : '100%' #>
     <# swiperClass = ( rtwpvg.using_swiper ) ? 'swiper-slide' : '' #>
 
     <div class="rtwpvg-gallery-image {{swiperClass}} {{hasVideo}} rtwpvg-gallery-image-{{data.image_id}}">
@@ -33,7 +33,6 @@ defined('ABSPATH') || exit;
         <# } #>
         <# }else{ #>
             <# if( data.src ){ #>
-
                 <div class="rtwpvg-single-image-container">
                     <# if( data.srcset ){ #>
                     <img class="{{data.class}}" width="{{data.src_w}}" height="{{data.src_h}}" src="{{data.src}}"

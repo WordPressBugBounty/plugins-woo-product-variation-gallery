@@ -238,9 +238,9 @@ class Hooks {
 
 	public function save_variation_gallery( $variation_id, $loop ) {
 
-        check_ajax_referer( 'save-variations', 'security' );
+		check_ajax_referer( 'save-variations', 'security' );
 
-        if ( isset( $_POST['rtwpvg'] ) ) {
+		if ( isset( $_POST['rtwpvg'] ) ) {
 			if ( isset( $_POST['rtwpvg'][ $variation_id ] ) ) {
 				$rtwpvg_ids = (array) array_map( 'absint', $_POST['rtwpvg'][ $variation_id ] );
 				$rtwpvg_ids = array_values( array_unique( $rtwpvg_ids ) );
@@ -256,9 +256,9 @@ class Hooks {
 	public function gallery_admin_html( $loop, $variation_data, $variation ) {
 		$variation_id   = absint( $variation->ID );
 		$gallery_images = get_post_meta( $variation_id, 'rtwpvg_images', true );
-		?>
+        ?>
 		<div class="form-row form-row-full rtwpvg-gallery-wrapper">
-			<h4><?php esc_html_e( 'Variation Image Gallery', 'woo-product-variation-gallery' ); ?></h4>
+			<h4><?php esc_html_e( 'Variation Image/Video Gallery', 'woo-product-variation-gallery' ); ?></h4>
 			<div class="rtwpvg-image-container">
 				<ul class="rtwpvg-images">
 					<?php
@@ -275,9 +275,13 @@ class Hooks {
 							<li class="image<?php echo esc_html( $add_video_class ); ?>">
 								<input type="hidden" name="rtwpvg[<?php echo esc_attr( $variation_id ); ?>][]" value="<?php echo absint( $image_id ); ?>">
 								<img src="<?php echo esc_url( $image[0] ); ?>">
-								<a href="#" class="delete rtwpvg-remove-image">
-									<span  class="dashicons dashicons-dismiss"></span>
-								</a>
+								<div class="rtwpvg-action-button">
+									<span class="rtwpvg-media-video-popup woocommerce-help-tip dashicons dashicons-video-alt3" data-tip="Add Video" ></span>
+									<span class="rtwpvg-gallery-edit woocommerce-help-tip dashicons dashicons-edit" data-tip="Edit Image" ></span>
+									<a href="#" class="delete rtwpvg-remove-image woocommerce-help-tip " data-tip="Remove">
+										<span class="dashicons dashicons-no"></span>
+									</a>
+								</div>
 							</li>
 							<?php
 						endforeach;

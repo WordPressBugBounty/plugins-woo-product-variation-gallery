@@ -20,6 +20,11 @@ class Functions {
 		$subst = 'https://www.youtube.com/embed/$2?feature=oembed';
 		$link  = preg_replace( $re, $subst, $media_link, 1 );
 
+		// YouTube Shorts.
+		$re    = '#https?://(www\.)?youtube\.com/shorts/([^/?]+)#';
+		$subst = 'https://www.youtube.com/embed/$2?feature=oembed';
+		$link  = preg_replace( $re, $subst, $link, 1 );
+
 		// Vimeo.
 		$re    = '#https?://(www\.)?vimeo\.com/([^/]+)#';
 		$subst = 'https://player.vimeo.com/video/$2';

@@ -4,6 +4,10 @@
   if ($.fn.wpColorPicker) {
     $('input.rtwpvg-color-picker').wpColorPicker();
   }
+  // If you append / update variation HTML in custom code, call this:
+  function rtwpvg_refresh_tooltips() {
+    $(document.body).trigger('init_tooltips');
+  }
   $('#rtwpvg-settings-wrapper').on('click', '.nav-tab', function (event) {
     event.preventDefault();
     var self = $(this),
@@ -66,6 +70,19 @@
       }
     });
   });
+
+  // Helper function to compare versions
+  function isVersionCompatible(current, minimum) {
+    var cur = current.split('.').map(Number);
+    var min = minimum.split('.').map(Number);
+    for (var i = 0; i < Math.max(cur.length, min.length); i++) {
+      var c = cur[i] || 0;
+      var m = min[i] || 0;
+      if (c > m) return true;
+      if (c < m) return false;
+    }
+    return true;
+  }
   function setGetParameter(paramName, paramValue) {
     var url = window.location.href;
     var hash = location.hash;
@@ -87,8 +104,11 @@
   }
   function imageUploader() {
     $(document).off('click', '.rtwpvg-add-image');
+    $(document).off('click', '.rtwpvg-gallery-edit');
+    $(document).off('click', '.rtwpvg-media-video-popup');
     $(document).on('click', '.rtwpvg-add-image', addImage);
     $(document).on('click', '.rtwpvg-remove-image', removeImage);
+    $(document).on('click', '.rtwpvg-gallery-edit', galleryEdit);
     $(document).on('click', '.rtwpvg-media-video-popup', addMediaVideo);
     $('.woocommerce_variation').each(function () {
       var optionsWrapper = $(this).find('.options');
@@ -157,40 +177,127 @@
     }
   }
   function addMediaVideo(e) {
+    var _rtwpvg_admin;
     e.preventDefault();
     e.stopPropagation();
-    var that = this;
-    var video_frame = 0;
-    if (typeof wp !== 'undefined' && wp.media && wp.media.editor) {
-      // If the media frame already exists, reopen it.
-      if (video_frame) {
-        video_frame.open();
-        return;
-      }
+    var imgList = $(e.currentTarget).parents('li.image');
+    var imageIdField = imgList.find('input');
+    var imageId = imageIdField.val();
+    if (!imageId) return;
+    var attachment = wp.media.attachment(imageId);
+    var proVersion = ((_rtwpvg_admin = rtwpvg_admin) === null || _rtwpvg_admin === void 0 ? void 0 : _rtwpvg_admin.pro_version) || null;
+    var minProVersion = '2.3.12';
+    var hasProAndCompatible = proVersion && isVersionCompatible(proVersion, minProVersion);
+    attachment.fetch().done(function () {
+      var data = attachment.toJSON();
+      var videoLink = (data === null || data === void 0 ? void 0 : data.rtwpvg_video_link) || '';
+      var videoWidth = (data === null || data === void 0 ? void 0 : data.rtwpvg_video_width) || '';
+      var videoHeight = (data === null || data === void 0 ? void 0 : data.rtwpvg_video_height) || '';
+      // Create custom modal HTML
+      var modalHtml = "\n            <div class=\"custom-edit-modal\" style=\"position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 999999; display: flex; align-items: center; justify-content: center;\">\n                <div class=\"modal-inner-wrapper\" style=\"background: white; padding: 30px; border-radius: 8px; max-width: 400px; width: 90%;\">\n                    <div class=\"modal-form-section\" >\n                        <h2 style=\"margin-top:0\">Poster Image</h2>\n                        <hr/>\n                        <div class=\"image-wrap\" style=\"display: flex;justify-content: center;\"><img src=\"".concat(data.url, "\" style=\"max-width: 250px; height: auto; margin-bottom: 20px;\"></div>\n                        ").concat(!hasProAndCompatible ? "\n                        <div style=\"background: #fef7e0; border: 1px solid #e0c97d; color: #7a6000; padding: 10px 15px; border-radius: 6px; margin-bottom: 15px;\">\n                            Video options are available in the <a href=\"https://www.radiustheme.com/downloads/woocommerce-variation-images-gallery/\" style=\"color: red;font-size: 16px\" target=\"_blank\"><strong>Pro version</strong></a> <br/> (minimum version ".concat(minProVersion, ")\n                        </div>\n                        ") : '', "\n                        <label style=\"display: block; margin-bottom: 15px;\">\n                            <strong>Video Url: </strong>\n                            <input ").concat(hasProAndCompatible ? '' : 'disabled', " type=\"text\" id=\"rtwpvg_video_link\" value=\"").concat(videoLink, "\" placeholder=\"https://www.youtube.com/watch?v=zQKKUx2ECa8\" style=\"width: 100%; padding: 8px; margin-top: 5px;\">\n                            <p class=\"help\">You can add a YouTube, Vimeo, TikTok, or uploaded video. <b>Example: https://www.youtube.com/watch?v=zQKKUx2ECa8</b> <br/> <a href=\"").concat(rtwpvg_admin.admin_url, "upload.php?mode=grid&attachment-filter=post_mime_type%3Avideo\" target=\"_blank\">Upload your video <span class=\"dashicons dashicons-video-alt3\"></span></a></p>\n                        </label>\n                        <label style=\"display: block; margin-bottom: 15px;\">\n                            <strong>Video Width: </strong>\n                            <input ").concat(hasProAndCompatible ? '' : 'disabled', " type=\"text\" id=\"rtwpvg_video_width\" value=\"").concat(videoWidth, "\" style=\"width: 100%; padding: 8px; margin-top: 5px;\">\n                            <p class=\"help\">Video Width. px or %. Empty for default. <b>Example: 575px</b> </p>\n                        </label>\n                        <label style=\"display: block; margin-bottom: 15px;\">\n                            <strong>Video Height: </strong>\n                            <input ").concat(hasProAndCompatible ? '' : 'disabled', " type=\"text\" id=\"rtwpvg_video_height\" value=\"").concat(videoHeight, "\" style=\"width: 100%; padding: 8px; margin-top: 5px;\">\n                            <p class=\"help\">Video Height. px or %. Empty for default. <b>Example: 550px</b></p>\n                        </label>\n                    </div>\n                     <hr/>\n                    <div style=\"text-align: right;margin-top:15px\">\n                        <button class=\"button\" id=\"cancel-edit\" style=\"margin-right: 10px;\">Cancel</button>\n                        <button class=\"button button-primary\" id=\"save-edit\">Update</button>\n                    </div>\n                </div>\n            </div>");
+      $('body').append(modalHtml);
 
-      // Create the media frame.
-      video_frame = wp.media.frames.select_image = wp.media({
-        title: rtwpvg_admin.choose_video,
-        button: {
-          text: rtwpvg_admin.add_video
-        },
-        library: {
-          type: ['video']
-        },
-        multiple: false
+      // Cancel button
+      $('#cancel-edit').on('click', function () {
+        $('.custom-edit-modal').remove();
       });
-
-      // When a file is selected, run a callback.
-      video_frame.on('select', function () {
-        var video = video_frame.state().get('selection').first().toJSON();
-        if (video.type === 'video') {
-          $(that).closest('.compat-attachment-fields').find('.compat-field-rtwpvg_video_link input').val(video.url).change();
+      // Save button
+      $('#save-edit').on('click', function () {
+        var _rtwpvg_admin2;
+        var videoLinkField = $('body').find('#rtwpvg_video_link');
+        var videoWidthField = $('body').find('#rtwpvg_video_width');
+        var videoHeightField = $('body').find('#rtwpvg_video_height');
+        // If any required field is not found in DOM, stop submission
+        if (!videoLinkField.length || !videoWidthField.length || !videoHeightField.length) {
+          alert('Required video fields are missing. Please reload the page.');
+          return;
+        }
+        if ((_rtwpvg_admin2 = rtwpvg_admin) !== null && _rtwpvg_admin2 !== void 0 && _rtwpvg_admin2.pro_version) {
+          // Save via AJAX
+          $.ajax({
+            url: ajaxurl,
+            type: 'POST',
+            data: {
+              action: 'rtwpvg_update_attachment_video_meta',
+              attachment_id: imageId,
+              video_link: videoLinkField.val(),
+              video_width: videoWidthField.val(),
+              video_height: videoHeightField.val(),
+              _wpnonce: rtwpvg_admin.nonce || ''
+            },
+            success: function success(response) {
+              var _response$data, _response$data2, _response$data3;
+              // Optional: update your preview image dynamically
+              if (response !== null && response !== void 0 && (_response$data = response.data) !== null && _response$data !== void 0 && _response$data.hasVideo) {
+                imgList.addClass('video');
+              } else {
+                imgList.removeClass('video');
+              }
+              $('body').find('.modal-inner-wrapper').html(response === null || response === void 0 || (_response$data2 = response.data) === null || _response$data2 === void 0 ? void 0 : _response$data2.message);
+              if (response !== null && response !== void 0 && response.success) {
+                setTimeout(function () {
+                  $('body').find('.custom-edit-modal').remove();
+                }, 800);
+              }
+              console.log(response === null || response === void 0 || (_response$data3 = response.data) === null || _response$data3 === void 0 ? void 0 : _response$data3.message);
+            }
+          });
+        } else {
+          alert('It\'s Pro Feature');
         }
       });
+    }).fail(function () {
+      console.error('Failed to load attachment');
+    });
+  }
+  function galleryEdit(event) {
+    event.preventDefault();
+    event.stopPropagation();
+    var imgList = $(event.currentTarget).parents('li.image');
+    var imageIdField = imgList.find('input');
+    var imageId = imageIdField.val();
+    // Create the media frame
+    var frame = wp.media({
+      title: 'Edit Image',
+      button: {
+        text: 'Update Image'
+      },
+      library: {
+        type: 'image'
+      },
+      multiple: false
+    });
+    // When the frame opens, preselect the current image
+    frame.on('open', function () {
+      if (imageId) {
+        var selection = frame.state().get('selection');
+        var attachment = wp.media.attachment(imageId);
+        attachment.fetch();
+        selection.add(attachment);
+      }
+    });
+    // When the user selects a new image
+    frame.on('select', function () {
+      var _attachment$sizes;
+      var attachment = frame.state().get('selection').first().toJSON();
+      // ✅ Get thumbnail URL (fallback to full if not exist)
+      var thumbUrl = ((_attachment$sizes = attachment.sizes) === null || _attachment$sizes === void 0 || (_attachment$sizes = _attachment$sizes.thumbnail) === null || _attachment$sizes === void 0 ? void 0 : _attachment$sizes.url) || attachment.url;
+      // Optional: update your preview image dynamically
+      var img = imgList.find('img');
+      if (attachment !== null && attachment !== void 0 && attachment.rtwpvg_video_link) {
+        imgList.addClass('video');
+      } else {
+        imgList.removeClass('video');
+      }
+      if (img.length) {
+        img.attr('src', thumbUrl);
+      }
+      imageIdField.val(attachment.id);
+    });
 
-      // Finally, open the modal.
-      video_frame.open();
-    }
+    // Open the frame
+    frame.open();
+    variationChanged(this);
   }
   function removeImage(event) {
     event.preventDefault();
@@ -198,7 +305,7 @@
     var that = this;
     variationChanged(this);
     setTimeout(function () {
-      $(that).parent().remove();
+      $(that).parents('li.image').remove();
     }, 1);
   }
   function variationChanged(element) {
@@ -251,7 +358,7 @@
     sortable();
   });
   $('#woocommerce-product-images .add_product_images').on('click', 'a', function (event) {
-    $(document).on('click', '.rtwpvg-media-video-popup', addMediaVideo);
+    // $(document).on('click', '.rtwpvg-media-video-popup', addMediaVideo);
   });
   //techlabpro23
   $(function () {
@@ -346,6 +453,12 @@
       e.preventDefault();
       settingsThumbnailPosition();
     });
+
+    // Re-init when variations are loaded/added or when you modify the DOM
+    $('#woocommerce-product-data').on('woocommerce_variations_loaded woocommerce_variations_added', function () {
+      rtwpvg_refresh_tooltips();
+    });
+    rtwpvg_refresh_tooltips();
   });
 
   //end tachlabpro23

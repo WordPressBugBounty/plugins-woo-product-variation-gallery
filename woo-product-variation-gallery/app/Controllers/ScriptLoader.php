@@ -104,11 +104,8 @@ class ScriptLoader {
 		$screen    = get_current_screen();
 		$screen_id = $screen ? $screen->id : '';
 		if ( in_array( $screen_id, [ 'product', 'edit-product' ] ) ) {
-			// wp_deregister_script('wc-admin-variation-meta-boxes');
-			// wp_register_script('wc-admin-variation-meta-boxes', rtwpvg()->get_assets_uri("/js/meta-boxes-product-variation{$this->suffix}.js"), ['wc-admin-meta-boxes', 'serializejson', 'media-models', 'backbone', 'jquery-ui-sortable', 'wc-backbone-modal'], $this->version);
 			wp_dequeue_script( 'wc-admin-variation-meta-boxes' );
 			wp_enqueue_script( 'wc-admin-variation-meta-boxes' );
-
 		}
 		if ( ( isset( $_GET['post_type'] ) && $_GET['post_type'] == 'product' ) || $screen_id === 'product' || ( ( isset( $_GET['page'] ) && $_GET['page'] == "wc-settings" ) && ( isset( $_GET['tab'] ) && $_GET['tab'] == "rtwpvg" ) ) ) { // phpcs:ignore
 			wp_enqueue_style( 'wp-color-picker' );
@@ -126,7 +123,6 @@ class ScriptLoader {
 				];
 				wp_localize_script( 'wp-color-picker-alpha', 'wpColorPickerL10n', $colorpicker_l10n );
 			}
-
 			wp_enqueue_media();
 			wp_enqueue_style( 'rtwpvg-admin', esc_url( rtwpvg()->get_assets_uri( "css/admin{$this->suffix}.css" ) ), [], $this->version );
 			wp_enqueue_script(
@@ -146,6 +142,8 @@ class ScriptLoader {
 				'rtwpvg_admin',
 				[
 					'ajaxurl'      => esc_url( admin_url( 'admin-ajax.php', 'relative' ) ),
+					'admin_url'    => esc_url( admin_url() ),
+					'pro_version'  => defined( 'RTWPVGP_VERSION' ) ? RTWPVGP_VERSION : false,
 					'nonce'        => wp_create_nonce( 'rtwpvg_nonce' ),
 					'choose_image' => esc_html__( 'Choose Image', 'woo-product-variation-gallery' ),
 					'choose_video' => esc_html__( 'Choose Video', 'woo-product-variation-gallery' ),

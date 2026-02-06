@@ -31,6 +31,11 @@
   margin: 3px;
   background: #F7F7F7;
   border-radius: 2px;
+  width: 125px;
+}
+.rtwpvg-gallery-wrapper .rtwpvg-images li:hover .rtwpvg-action-button {
+  visibility: visible;
+  opacity: 1;
 }
 .rtwpvg-gallery-wrapper .rtwpvg-images li.rtwpvg-sortable-placeholder {
   position: relative;
@@ -59,29 +64,65 @@
   color: #DDDDDD;
 }
 .rtwpvg-gallery-wrapper .rtwpvg-images li img {
-  width: 80px;
+  width: 100%;
   display: block;
   height: auto;
   border: 1px solid #D5D5D5;
 }
+.rtwpvg-gallery-wrapper .rtwpvg-images li .rtwpvg-media-video-popup,
+.rtwpvg-gallery-wrapper .rtwpvg-images li .rtwpvg-gallery-edit,
 .rtwpvg-gallery-wrapper .rtwpvg-images li .delete {
-  position: absolute;
-  right: -5px;
-  top: -5px;
+  cursor: pointer;
   z-index: 1;
   text-decoration: none;
+  width: 30px;
+  height: 25px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #000;
+  color: #fff;
+  font-size: 17px;
+  border-radius: 3px;
+  margin: 0;
+}
+.rtwpvg-gallery-wrapper .rtwpvg-images li .rtwpvg-media-video-popup span,
+.rtwpvg-gallery-wrapper .rtwpvg-images li .rtwpvg-gallery-edit span,
+.rtwpvg-gallery-wrapper .rtwpvg-images li .delete span {
+  color: #fff;
+  font-size: 18px;
+  width: initial;
+  height: initial;
+}
+.rtwpvg-gallery-wrapper .rtwpvg-images li .rtwpvg-action-button {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 99;
+  transform: translate(-50%, -50%);
+  display: flex;
+  justify-content: space-between;
+  gap: 5px;
+  visibility: hidden;
+  opacity: 0;
+  transition: 0.3s all;
+}
+.rtwpvg-gallery-wrapper .rtwpvg-images li .rtwpvg-action-button .woocommerce-help-tip::after, .rtwpvg-gallery-wrapper .rtwpvg-images li .rtwpvg-action-button .woocommerce-product-type-tip::after {
+  content: "";
+  cursor: pointer;
 }
 .rtwpvg-gallery-wrapper .rtwpvg-images li.video::after {
   content: "\f236";
   position: absolute;
   font-family: dashicons, serif;
   font-size: 30px;
-  top: 30px;
-  left: 23px;
+  top: 50%;
+  left: 50%;
   color: #fff;
   margin: 0;
   padding: 0;
   line-height: 30px;
+  transform: translate(-50%, -50%);
 }
 .rtwpvg-gallery-wrapper .rtwpvg-images li.video::before {
   content: "";
@@ -745,4 +786,15 @@ input:checked + .rtwpvg-switch-slider:before {
 
 #woocommerce-product-images .inside #product_images_container ul ul.actions {
   z-index: 99999;
+}
+
+.custom-edit-modal p {
+  margin: 5px 0;
+}
+.custom-edit-modal input {
+  height: 40px;
+  padding: 5px;
+}
+.custom-edit-modal input:disabled {
+  background: #eee;
 }
