@@ -91,6 +91,9 @@ class SettingsAPI {
 		$license_status = $this->get_option( 'license_status' );
 		$status         = ( ! empty( $license_status ) && $license_status === 'valid' ) ? true : false;
 		if ( $license_key && ! $status ) {
+			if ( ! class_exists( Licensing::class ) ) {
+				return;
+			}
 			$api_params = [
 				'edd_action' => 'activate_license',
 				'license'    => $license_key,
@@ -107,8 +110,13 @@ class SettingsAPI {
 			);
 
 			if ( is_wp_error( $response ) || 200 !== wp_remote_retrieve_response_code( $response ) ) {
-				$err     = $response->get_error_message();
-				$message = ( is_wp_error( $response ) && ! empty( $err ) ) ? $err : __( 'An error occurred, please try again.', 'woo-product-variation-gallery' );
+				if ( is_wp_error( $response ) && ! empty( $response->get_error_message() ) ) {
+					$message = $response->get_error_message();
+				} elseif ( isset( $response['response'] ) && is_array( $response['response'] ) && isset( $response['response']['message'] ) ) {
+					$message = 'sss' . $response['response']['message'];
+				} else {
+					$message = esc_html__( 'An error occurred, please try again.', 'woo-product-variation-gallery' );
+				}
 			} else {
 				$license_data = json_decode( wp_remote_retrieve_body( $response ) );
 				if ( false === $license_data->success ) {
@@ -283,8 +291,8 @@ class SettingsAPI {
 		foreach ( (array) $fields as $field ) {
 			$custom_attributes = $this->array2html_attr( isset( $field['attributes'] ) ? $field['attributes'] : [] );
 			$wrapper_id        = ! empty( $field['id'] ) ? esc_attr( $field['id'] ) . '-wrapper' : '';
-			$dependency = ! empty( $field['require'] ) ? '' : '';
-			$html       = '';
+			$dependency        = ! empty( $field['require'] ) ? '' : '';
+			$html              = '';
 			if ( $field['type'] == 'title' ) {
 				$html .= sprintf(
 					'<div class="rtwpvg-item-title">%s%s</div>',

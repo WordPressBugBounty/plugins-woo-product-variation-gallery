@@ -4,7 +4,7 @@ Tags: product variation gallery, woocommerce variation image gallery, additional
 Requires at least: 4.8
 Tested up to: 6.9
 Requires PHP: 7.4
-Stable tag: 2.3.22
+Stable tag: 2.3.23
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -126,6 +126,14 @@ Yes, it is.
 9. Tools Settings
 
 == Changelog ==
+
+= 2.3.23 (Mar 18, 2026) =
+Fixed: Prevented fatal error when saving settings without the pro plugin active
+Fixed: Prevented fatal error in product loop when a product is trashed or deleted (product_loop_post_class)
+Fixed: Prevented fatal error when parent product is missing during variation gallery loading (available_variation_gallery)
+Fixed: Prevented fatal error in AJAX default gallery images request with invalid product ID (get_gallery_images)
+Fixed: Prevented fatal error when resolving default variation with invalid product ID (get_product_default_variation_id)
+Fixed: Prevented fatal error when generating image alt text with invalid product ID (get_gallery_image_props)
 
 = 2.3.22 (Nov 13, 2025) =
 * Added: Banner image support

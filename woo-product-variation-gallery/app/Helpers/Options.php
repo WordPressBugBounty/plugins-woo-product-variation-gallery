@@ -10,7 +10,7 @@ class Options {
 			'general'         => [
 				'id'     => 'general',
 				'title'  => esc_html__( 'General', 'woo-product-variation-gallery' ),
-				'desc'   => esc_html__( 'Simple change some visual styles', 'woo-product-variation-gallery' ),
+				'desc'   => esc_html__( 'Configure gallery layout, thumbnail display, and responsive width settings.', 'woo-product-variation-gallery' ),
 				'fields' => apply_filters(
 					'rtwpvg_general_setting_fields',
 					[
@@ -140,7 +140,7 @@ class Options {
 			'advanced'        => [
 				'id'     => 'advanced',
 				'title'  => esc_html__( 'Advanced', 'woo-product-variation-gallery' ),
-				'desc'   => esc_html__( 'Advanced change some visual styles', 'woo-product-variation-gallery' ),
+				'desc'   => esc_html__( 'Configure zoom, lightbox, slider behavior, preloader, and transition effects.', 'woo-product-variation-gallery' ),
 				'fields' => apply_filters(
 					'rtwpvg_advanced_setting_fields',
 					[
@@ -148,17 +148,20 @@ class Options {
 							'title'   => esc_html__( 'Zoom Gallery image', 'woo-product-variation-gallery' ),
 							'type'    => 'switch',
 							'default' => true,
+							'desc'    => esc_html__( 'Enable mouse hover zoom effect on the main gallery image. Hovering over the product image will show a magnified view.', 'woo-product-variation-gallery' ),
 							'id'      => 'zoom',
 						],
 						[
 							'title'   => esc_html__( 'LightBox', 'woo-product-variation-gallery' ),
 							'type'    => 'switch',
 							'default' => true,
+							'desc'    => esc_html__( 'Enable the lightbox icon on the gallery image. Users can click the icon to open a full-screen lightbox view.', 'woo-product-variation-gallery' ),
 							'id'      => 'lightbox',
 						],
 						[
 							'title' => esc_html__( 'LightBox on image click', 'woo-product-variation-gallery' ),
 							'type'  => 'switch',
+							'desc'  => esc_html__( 'Open the lightbox when clicking directly on the main gallery image, instead of requiring the lightbox icon click.', 'woo-product-variation-gallery' ),
 							'id'    => 'lightbox_image_click',
 						],
 						[
@@ -174,6 +177,7 @@ class Options {
 						],
 						[
 							'title'   => esc_html__( 'Thumbnail Style', 'woo-product-variation-gallery' ),
+							'desc'    => esc_html__( 'Set the position of thumbnail images relative to the main gallery image. Pro version offers additional positions like left, right, and dot navigation.', 'woo-product-variation-gallery' ),
 							'id'      => 'thumbnail_position',
 							'is_pro'  => true,
 							'type'    => 'select',
@@ -187,6 +191,7 @@ class Options {
 						],
 						[
 							'title'   => esc_html__( 'Gallery Thumbnail Size', 'woo-product-variation-gallery' ),
+							'desc'    => esc_html__( 'Select the registered image size to use for gallery thumbnails. Choose from available WordPress image sizes configured in your site.', 'woo-product-variation-gallery' ),
 							'id'      => 'gallery_thumbnail_size',
 							'type'    => 'select',
 							'default' => 'bottom',
@@ -196,6 +201,7 @@ class Options {
 							'title'   => esc_html__( 'Slider Navigation (Arrow)', 'woo-product-variation-gallery' ),
 							'type'    => 'switch',
 							'default' => true,
+							'desc'    => esc_html__( 'Show previous/next navigation arrows on the main gallery slider. Requires the pro version.', 'woo-product-variation-gallery' ),
 							'id'      => 'slider_arrow',
 							'is_pro'  => true,
 						],
@@ -203,13 +209,14 @@ class Options {
 							'title'   => esc_html__( 'Slider Adaptive Height', 'woo-product-variation-gallery' ),
 							'type'    => 'switch',
 							'default' => true,
+							'desc'    => esc_html__( 'Automatically adjust the slider height based on the current slide image dimensions. Disable to use a fixed height.', 'woo-product-variation-gallery' ),
 							'id'      => 'slider_adaptive_height',
 						],
 						[
-							'title'   => esc_html__( 'Featured Image Remove', 'woo-product-variation-gallery' ),
+							'title'   => esc_html__( 'Remove Featured/Thumbnail Image', 'woo-product-variation-gallery' ),
 							'type'    => 'switch',
 							'default' => false,
-							'desc'    => esc_html__( 'Featured image and thumbnail remove from slider when choose swathes', 'woo-product-variation-gallery' ),
+							'desc'    => esc_html__( 'Enable this option to remove the Featured/Thumbnail image from the slider when a variation is selected.', 'woo-product-variation-gallery' ),
 							'id'      => 'remove_featured_thumbnail',
 						],
 
@@ -217,6 +224,7 @@ class Options {
 							'title'   => esc_html__( 'Thumbnail Slider', 'woo-product-variation-gallery' ),
 							'type'    => 'switch',
 							'default' => true,
+							'desc'    => esc_html__( 'Enable sliding/scrolling behavior for thumbnail images when there are more thumbnails than visible slots. Requires the pro version.', 'woo-product-variation-gallery' ),
 							'id'      => 'thumbnail_slide',
 							'is_pro'  => true,
 						],
@@ -224,18 +232,20 @@ class Options {
 							'title'   => esc_html__( 'Preloader', 'woo-product-variation-gallery' ),
 							'type'    => 'switch',
 							'default' => true,
+							'desc'    => esc_html__( 'Show a loading animation while the gallery images are being loaded. Improves perceived performance on slower connections.', 'woo-product-variation-gallery' ),
 							'id'      => 'preloader',
 						],
 						[
 							'id'    => 'preloader_image',
 							'type'  => 'image',
 							'title' => esc_html__( 'Preloader Image', 'woo-product-variation-gallery' ),
-							'desc'  => esc_html__( 'Here you can change by default preloader image', 'woo-product-variation-gallery' ),
+							'desc'  => esc_html__( 'Upload a custom preloader image to replace the default loading animation. Recommended size: 60x60 pixels.', 'woo-product-variation-gallery' ),
 						],
 						[
 							'title'   => esc_html__( 'Gallery Change Effect', 'woo-product-variation-gallery' ),
 							'type'    => 'select',
 							'default' => 'blur',
+							'desc'    => esc_html__( 'Choose the visual effect applied to the gallery when switching between variations. Blur, Fade, or Gray effect will be shown during the image transition.', 'woo-product-variation-gallery' ),
 							'id'      => 'preload_style',
 							'options' => [
 								'blur' => esc_html__( 'Blur', 'woo-product-variation-gallery' ),
@@ -247,6 +257,7 @@ class Options {
 							'title'   => esc_html__( 'Zoom Button Position', 'woo-product-variation-gallery' ),
 							'type'    => 'select',
 							'default' => 'top-right',
+							'desc'    => esc_html__( 'Set the position of the lightbox/zoom icon on the main gallery image.', 'woo-product-variation-gallery' ),
 							'id'      => 'zoom_position',
 							'options' => [
 								'top-right'    => esc_html__( 'Top right', 'woo-product-variation-gallery' ),
@@ -261,7 +272,7 @@ class Options {
 			'style'           => [
 				'id'     => 'style',
 				'title'  => esc_html__( 'Style', 'woo-product-variation-gallery' ),
-				'desc'   => esc_html__( 'Style change some visual styles', 'woo-product-variation-gallery' ),
+				'desc'   => esc_html__( 'Customize the colors of slider navigation arrows. Requires the pro version.', 'woo-product-variation-gallery' ),
 				'active' => apply_filters( 'rtwpvg_style_setting_active', false ),
 				'fields' => apply_filters(
 					'rtwpvg_style_setting_fields',
@@ -271,6 +282,7 @@ class Options {
 							'is_pro'  => true,
 							'type'    => 'color',
 							'title'   => esc_html__( 'Arrow background', 'woo-product-variation-gallery' ),
+							'desc'    => esc_html__( 'Set the background color of the slider navigation arrows. Supports alpha transparency.', 'woo-product-variation-gallery' ),
 							'default' => 'rgba(0, 0, 0, 0.5)',
 							'alpha'   => true,
 						],
@@ -279,6 +291,7 @@ class Options {
 							'is_pro'  => true,
 							'type'    => 'color',
 							'title'   => esc_html__( 'Arrow background hover', 'woo-product-variation-gallery' ),
+							'desc'    => esc_html__( 'Set the background color of the slider navigation arrows on mouse hover.', 'woo-product-variation-gallery' ),
 							'default' => 'rgba(0, 0, 0, 0.9)',
 						],
 						[
@@ -287,12 +300,14 @@ class Options {
 							'type'    => 'color',
 							'default' => '#ffffff',
 							'title'   => esc_html__( 'Arrow text color', 'woo-product-variation-gallery' ),
+							'desc'    => esc_html__( 'Set the color of the arrow icon inside the slider navigation buttons.', 'woo-product-variation-gallery' ),
 						],
 						[
 							'id'      => 'arrow_text_hover_color',
 							'is_pro'  => true,
 							'type'    => 'color',
 							'title'   => esc_html__( 'Arrow text hover color', 'woo-product-variation-gallery' ),
+							'desc'    => esc_html__( 'Set the color of the arrow icon inside the slider navigation buttons on mouse hover.', 'woo-product-variation-gallery' ),
 							'default' => '#ffffff',
 						],
 					]
@@ -301,7 +316,7 @@ class Options {
 			'tools'           => [
 				'id'     => 'tools',
 				'title'  => esc_html__( 'Tools', 'woo-product-variation-gallery' ),
-				'desc'   => esc_html__( 'Tools define some system tasks', 'woo-product-variation-gallery' ),
+				'desc'   => esc_html__( 'Manage plugin data, script loading, and slider library settings.', 'woo-product-variation-gallery' ),
 				'active' => apply_filters( 'rtwpvg_tools_setting_active', false ),
 				'fields' => apply_filters(
 					'rtwpvg_tools_setting_fields',
@@ -310,7 +325,7 @@ class Options {
 							'id'    => 'remove_all_data',
 							'type'  => 'switch',
 							'title' => esc_html__( 'Enable to delete all data', 'woo-product-variation-gallery' ),
-							'desc'  => esc_html__( 'Enable / Disable Allow to delete all data for WooCommerce Product variation Gallery plugin during delete this plugin', 'woo-product-variation-gallery' ),
+							'desc'  => esc_html__( 'When enabled, all plugin data will be permanently removed from the database upon plugin deletion. Keep disabled to preserve settings if you plan to reinstall.', 'woo-product-variation-gallery' ),
 						],
 						[
 							'id'      => 'upgrade_slider_scripts',
@@ -323,7 +338,7 @@ class Options {
 							'id'      => 'load_scripts',
 							'type'    => 'checkbox',
 							'title'   => esc_html__( 'Load Scripts', 'woo-product-variation-gallery' ),
-							'desc'    => __( 'Load Scripts to all over the site. [if checked then it will load the scripts to all over the site]', 'woo-product-variation-gallery' ),
+							'desc'    => esc_html__( 'By default, gallery scripts load only on product and shop pages. Enable this to load scripts site-wide, useful if you display products via shortcodes or custom templates on other pages.', 'woo-product-variation-gallery' ),
 							'default' => false,
 						],
 					]

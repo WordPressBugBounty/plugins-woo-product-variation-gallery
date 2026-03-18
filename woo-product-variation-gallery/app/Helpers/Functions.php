@@ -243,7 +243,7 @@ class Functions {
 			$product = wc_get_product( $product );
 		}
 
-		if ( ! $product->is_type( 'variable' ) ) {
+		if ( ! $product || ! $product->is_type( 'variable' ) ) {
 			return 0;
 		}
 
@@ -281,7 +281,10 @@ class Functions {
 	public static function get_gallery_images( $product_id ) {
 		$transient_name = Functions::get_transient_name( $product_id, "default-images" );
 		if ( false === ( $images = get_transient( $transient_name ) ) ) {
-			$product           = wc_get_product( $product_id );
+			$product = wc_get_product( $product_id );
+			if ( ! $product ) {
+				return apply_filters( 'rtwpvg_get_gallery_images', [], $product_id );
+			}
 			$product_id        = $product->get_id();
 			$attachment_ids    = $product->get_gallery_image_ids();
 			$post_thumbnail_id = $product->get_image_id();
@@ -421,8 +424,10 @@ class Functions {
 			$alt_text = array( trim( wp_strip_all_tags( get_post_meta( $attachment_id, '_wp_attachment_image_alt', true ) ) ?? '' ), $props['caption'], wp_strip_all_tags( $attachment->post_title ) );
 
 			if ( $product_id ) {
-				$product    = wc_get_product( $product_id );
-				$alt_text[] = wp_strip_all_tags( get_the_title( $product->get_id() ) );
+				$product = wc_get_product( $product_id );
+				if ( $product ) {
+					$alt_text[] = wp_strip_all_tags( get_the_title( $product->get_id() ) );
+				}
 			}
 
 			$alt_text     = array_filter( $alt_text );

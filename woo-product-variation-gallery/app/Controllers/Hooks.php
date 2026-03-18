@@ -184,7 +184,7 @@ class Hooks {
 
 		if ( 'product' === get_post_type( $product_id ) ) {
 			$product = wc_get_product( $product_id );
-			if ( $product->is_type( 'variable' ) ) {
+			if ( $product && $product->is_type( 'variable' ) ) {
 				$classes[] = 'rtwpvg-product';
 			}
 		}
@@ -323,11 +323,13 @@ class Hooks {
 			if ( $variation_image_id ) {
 				array_unshift( $gallery_images, $variation_image_id );
 			} else {
-				$parent_product          = wc_get_product( $product_id );
-				$parent_product_image_id = $parent_product->get_image_id();
+				$parent_product = wc_get_product( $product_id );
+				if ( $parent_product ) {
+					$parent_product_image_id = $parent_product->get_image_id();
 
-				if ( ! empty( $parent_product_image_id ) ) {
-					array_unshift( $gallery_images, $parent_product_image_id );
+					if ( ! empty( $parent_product_image_id ) ) {
+						array_unshift( $gallery_images, $parent_product_image_id );
+					}
 				}
 			}
 		}
