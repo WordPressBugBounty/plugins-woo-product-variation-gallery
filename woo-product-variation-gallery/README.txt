@@ -1,10 +1,10 @@
 === Variation Images Gallery for WooCommerce ===
-Contributors: techlabpro1
+Contributors: techlabpro1, mamunnu
 Tags: product variation gallery, woocommerce variation image gallery, additional variation image gallery, product variation image gallery, product variation image
 Requires at least: 4.8
-Tested up to: 6.9
+Tested up to: 7.0
 Requires PHP: 7.4
-Stable tag: 2.3.23
+Stable tag: 2.3.24
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -127,169 +127,11 @@ Yes, it is.
 
 == Changelog ==
 
-= 2.3.23 (Mar 18, 2026) =
-Fixed: Prevented fatal error when saving settings without the pro plugin active
-Fixed: Prevented fatal error in product loop when a product is trashed or deleted (product_loop_post_class)
-Fixed: Prevented fatal error when parent product is missing during variation gallery loading (available_variation_gallery)
-Fixed: Prevented fatal error in AJAX default gallery images request with invalid product ID (get_gallery_images)
-Fixed: Prevented fatal error when resolving default variation with invalid product ID (get_product_default_variation_id)
-Fixed: Prevented fatal error when generating image alt text with invalid product ID (get_gallery_image_props)
+= 2.3.24 ( Jun 10, 2026) =
+Added: Gallery Settings Override for Individual Products
+Improved: Variation galleries now load on demand via AJAX for only the selected variation (with server and browser caching) instead of building every variation's gallery on each page load, greatly improving performance on products with many variation images.
 
-= 2.3.22 (Nov 13, 2025) =
-* Added: Banner image support
-* Improved: General code cleanup and optimization
+[See changelog for all versions.](https://raw.githubusercontent.com/radiustheme/changelog/refs/heads/main/woo-product-variation-gallery.txt)
 
-= 2.3.21 ( Oct 21, 2025 ) =
-* Improvement: User-friendly gallery settings added.
-* Fix: YouTube Short video compatibility with Pro version.
-
-= 2.3.20 ( Sep 16, 2025 ) =
-* Fixed: Gallery Change Effect And Preloader Issue Resolved
-
-= 2.3.19 ( Aug 28, 2025 ) =
-* Added: TikTok Video Support For Gallery Images
-* Fixed: Security issue resolve
-* Fixed: phpcs issue resolve
-
-= 2.3.18 ( April 11, 2025 ) =
-* Added: Option to disable gallery for specific products
-* Added: Option to choose slide image effect: Fade or Slide
-
-= 2.3.17 ( February 28, 2025 ) =
-* Fixed: Gallery Thumbnail Active Opacity
-* Fixed: Remove Missing attachment_id
-
-= 2.3.16 ( December 27, 2024 ) =
-* Added: Gallery Thumbnail Size Images URL Added To Variation Change
-
-= 2.3.15 ( Nov 18, 2024 ) =
-* Fixed: Woostify Theme Support
-* Fixed: Compatible with WP version
-
-= 2.3.14 ( Oct 02, 2024 ) =
-* Fixed: Grid Layout Preloader Issue fixed For single product
-* fixed: Image width Issue
-
-= 2.3.13 ( June 24, 2024 ) =
-* Fixed: Settings Page Not Saving Issue.
-* Fixed: Number Field Max Min Value Hardly Checking For Setting Page.
-* Fixed: Default Value Set For Null Value For Responsive.
-* Fixed: Remove Un-wanted Notice.
-
-= 2.3.12 ( March 15, 2024 ) =
-* Fixed: Save Settings
-
-= 2.3.11 ( February 06, 2024 ) =
-* Fixed: Plugin Support
-* Fixed: Zoom Image Bg
-* Fixed: Text Domain Issue For Loco Translator
-
-= 2.3.10 ( January 31, 2024 ) =
-* Fixed: Swiper Image Height Issue
-* Fixed: Video Height Issue
-* Support: Avanam Theme.
-
-= 2.3.9 ( January 12, 2024 ) =
-* Added: Swiper Slider Added.
-
-= 2.3.8 ( November 20, 2023 ) =
-* Fixed: RTL issue
-
-= 2.3.7 ( November 07, 2023 ) =
-* Added: Gallery Image size option
-* Support: Export Import Support
-
-= 2.3.6 ( August 23, 2023 ) =
-* Fixed: HPOS Declare compatibility
-
-= 2.3.5 ( August 10, 2023 ) =
-* Fixed: PHP 8.2 issue
-* Fixed: Image Zoom with slick slider
-
-= 2.3.4 ( July 04, 2023 ) =
-* Fixed: Vulnerability XSS in Variation
-* Fixed: Video Height
-* Fixed: Zoom Image
-* Added: Backward Support
-
-= 2.3.3 ( June 19, 2023 ) =
-* Fixed: Fixed Responsive issue.
-
-= 2.3.2 ( June 07, 2023 ) =
-* Fixed: Mobile Devices Issue fixed.
-
-= 2.3.1 ( May 30, 2023 ) =
-* Fixed: Added Theme Support ( Woostify ).
-
-= 2.3.0 ( May 12, 2023 ) =
-* Fixed: Double Gallery fix.
-* Fixed: Make Compatible with WC latest version .
-* Added: Responsive Gallery Settings
-
-= 2.2.8 (  April 17, 2023 ) =
-* Fixed: Divi double gallery issue fixed
-* Fixed: Css Issue Fixed
-
-= 2.2.7 (  February 20, 2023 ) =
-* Fixed: Notice and Image width issue fix.
-
-= 2.2.6 (  January 30, 2023 ) =
-* Fixed: Shopkeeper/woostify theme support.
-
-= 2.2.5 ( December 15, 2022 ) =
-* Fixed: Security Issue Fixed.
-
-= 2.2.4 ( November 22, 2022 ) =
-* Fixed: Css issue fixed.
-
-= 2.2.3 ( August 15, 2022 ) =
-* Fixed: Sanitization.
-* Fixed: Asset Loding issue.
-
-= 2.2.2 (June 15, 2022) =
-* Fixed: Video issue for plugin main gallery.
-
-= 2.2.1.7 (Apr 12, 2022) =
-* Fixed: Duplicate gallery image.
-
-= 2.2.1.6 (Feb 16, 2022) =
-* Add WP 5.9 support
-
-= 2.2.1.5 (Nov 23, 2021) =
-* Fixed: Some functional issue
-
-= Version 2.2.1.4 (Nov 10, 2021) =
-* Added: Featured image disable settings for swatches gallery
-* Fixed: Slider arrow visibility in mobile device
-
-= Version 2.1.1.3 (Sep 27, 2021) =
-* Added: Preloader off/on option
-* Added: Preloader image chaning option
-
-= Version 2.0.1.3 (Sep 09, 2021) =
-* Added: Support Flatsome Theme Builder Product Gallery Element
-* Added: Support Elementor Page Builder Product Gallery Addon
-
-= 2.0.1.2 =
-* Improve: Slider adaptiveHeight setting move to free version
-
-= 2.0.1.1 =
-* Fixed: Minir CSS Issue
-
-= 2.0.1 =
-* Fixed: Licensing tab error
-
-= 2.0.0 =
-* Add modular system
-* Update coding structure
-
-= 1.1.23.2 =
-* Add WordPress 5.7 Support
-
-= 1.1.23.1 =
-* Add WordPress 5.6 Support
-
-= 1.1.23 =
-* Compatible with Wordpress 5.5
 
 == Upgrade Notice ==

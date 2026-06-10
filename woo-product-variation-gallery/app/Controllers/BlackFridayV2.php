@@ -123,7 +123,7 @@ class BlackFridayV2 {
 				// Check user permissions.
 				if ( ! current_user_can( 'manage_options' ) ) {
 					wp_send_json_error(
-						new \WP_Error( 'rtsb_block_user_permission', __( 'User permission error', 'shopbuilder' ) )
+						new \WP_Error( 'rtsb_block_user_permission', __( 'User permission error', 'woo-product-variation-gallery' ) )
 					);
 				}
 				// Verify nonce.

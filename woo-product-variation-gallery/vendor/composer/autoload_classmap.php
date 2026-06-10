@@ -19,4 +19,5 @@ return array(
     'Rtwpvg\\Controllers\\ThemeSupport' => $baseDir . '/app/Controllers/ThemeSupport.php',
     'Rtwpvg\\Helpers\\Functions' => $baseDir . '/app/Helpers/Functions.php',
     'Rtwpvg\\Helpers\\Options' => $baseDir . '/app/Helpers/Options.php',
+    'Rtwpvg\\WooProductVariationGallery' => $baseDir . '/app/WooProductVariationGallery.php',
 );

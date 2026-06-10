@@ -1,8 +1,8 @@
 <?php
+namespace Rtwpvg;
 
 use Rtwpvg\Controllers\BlackFridayV2;
 use Rtwpvg\Controllers\Hooks;
-use Rtwpvg\Controllers\Offer;
 use Rtwpvg\Controllers\Install;
 use Rtwpvg\Controllers\ProductMeta;
 use Rtwpvg\Controllers\ProHooks;
@@ -10,14 +10,13 @@ use Rtwpvg\Controllers\SettingsAPI;
 use Rtwpvg\Controllers\ScriptLoader;
 use Rtwpvg\Controllers\ThemeSupport;
 use Rtwpvg\Controllers\Notifications;
-use Rtwpvg\Controllers\Review;
 
 defined( 'ABSPATH' ) or die( 'Keep Quit' );
 
-require_once RTWPVG_PLUGIN_PATH . 'vendor/autoload.php';
 
 if ( ! class_exists( 'WooProductVariationGallery' ) ) :
 	final class WooProductVariationGallery {
+
 		protected static $_instance = null;
 
 		private $_settings_api;
@@ -203,17 +202,5 @@ if ( ! class_exists( 'WooProductVariationGallery' ) ) :
 
 	// Plugin Support: Product Video Gallery for Woocommerce.
 	remove_action( 'plugins_loaded', 'nickx_remove_woo_hooks' );
-
-	/**
-	 * @return WooProductVariationGallery|null
-	 */
-	function rtwpvg() {
-		return WooProductVariationGallery::get_instance();
-	}
-
-	register_activation_hook( RTWPVG_PLUGIN_FILE, [ Install::class, 'activated' ] );
-	register_deactivation_hook( RTWPVG_PLUGIN_FILE, [ Install::class, 'deactivated' ] );
-
-	add_action( 'plugins_loaded', 'rtwpvg' );
 
 endif;

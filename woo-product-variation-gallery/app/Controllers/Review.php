@@ -125,7 +125,7 @@ class Review {
 			$dont_disturb = add_query_arg( $args + [ 'rtwpvg_spare_me' => '1' ], self::rtwpvg_current_admin_url() );
 			$remind_me    = add_query_arg( $args + [ 'rtwpvg_remind_me' => '1' ], self::rtwpvg_current_admin_url() );
 			$rated        = add_query_arg( $args + [ 'rtwpvg_rated' => '1' ], self::rtwpvg_current_admin_url() );
-			$reviewurl    = 'https://wordpress.org/support/plugin/woo-product-variation-gallery/reviews/?filter=5#new-post';
+			$reviewurl    = 'https://wordpress.org/support/plugin/woo-product-variation-gallery/reviews/';
 
 			?>
 			<div class="notice rtrs-review-notice rtrs-review-notice--extended"> 

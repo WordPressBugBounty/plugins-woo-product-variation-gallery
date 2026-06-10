@@ -83,6 +83,17 @@ class SettingsAPI {
 	public function update_settings() {
 		woocommerce_update_options( $this->get_settings() );
 		$this->update_licencing_status();
+		$this->clear_all_gallery_transients();
+	}
+
+	/**
+	 * Clear all gallery image transients when settings change.
+	 *
+	 * @return void
+	 */
+	private function clear_all_gallery_transients() {
+		global $wpdb;
+		$wpdb->query( "DELETE FROM {$wpdb->options} WHERE option_name LIKE '_transient_rtwpvg_%' OR option_name LIKE '_transient_timeout_rtwpvg_%'" );
 	}
 
 	private function update_licencing_status() {
@@ -278,7 +289,7 @@ class SettingsAPI {
 					<div class="item-content">
 						<p>Thank you for choosing Variation Gallery for WooCommerce. If you have found our plugin useful and makes you smile, please consider giving us a 5-star rating on WordPress.org. It will help us to grow.</p>
 						<a target="_blank"
-						   href="https://wordpress.org/support/plugin/woo-product-variation-gallery/reviews/?filter=5#new-post"
+						   href="https://wordpress.org/support/plugin/woo-product-variation-gallery/reviews/"
 						   class="rt-admin-btn">Yes, You Deserve It</a>
 					</div>
 				</div>

@@ -27,16 +27,14 @@ class Hooks {
 		add_action( 'wp_ajax_rtwpvg_get_default_gallery_images', [ $this, 'get_default_gallery_images' ] );
 		add_action( 'wp_ajax_nopriv_rtwpvg_get_default_gallery_images', [ $this, 'get_default_gallery_images' ] );
 
+		add_action( 'wp_ajax_rtwpvg_get_variation_gallery', [ $this, 'get_variation_gallery' ] );
+		add_action( 'wp_ajax_nopriv_rtwpvg_get_variation_gallery', [ $this, 'get_variation_gallery' ] );
+
 		add_filter( 'rtwpvg_inline_style', [ $this, 'rtwpvg_add_inline_style' ], 9 );
 		add_action( 'woocommerce_update_product', [ $this, 'delete_cache_data' ], 10, 1 );
 		add_action( 'rtwpvg_product_badge', [ __CLASS__, 'add_yith_badge' ] );
 		// rtwpvg_disable_enqueue_scripts.
 		add_filter( 'rtwpvg_disable_enqueue_scripts', [ $this, 'disable_enqueue_scripts' ], 10 );
-		// Old Version Compatibility.
-		if ( defined( 'RTWPVGP_VERSION' ) && version_compare( RTWPVGP_VERSION, '2.2.2', '<=' ) ) {
-			add_filter( 'rtwpvg_thumbnail_style', [ $this, 'rtwpvg_thumbnail_style' ], 15 );
-		}
-
 		add_filter( 'woocommerce_gallery_thumbnail_size', [ __CLASS__, 'rtwpvg_gallery_thumbnail_size' ], 15 );
 
 		if ( ! defined( 'RTWPVGP_VERSION' ) || ( defined( 'RTWPVGP_VERSION' ) && version_compare( RTWPVGP_VERSION, '2.3.6', '>=' ) ) ) {
@@ -99,23 +97,43 @@ class Hooks {
 	}
 
 	/**
+	 * Get image size data by size name.
 	 *
+	 * @param string $size Image size name.
+	 *
+	 * @return array|null Array with width, height, crop keys or null if not found.
+	 */
+	public static function get_image_size_data( $size ) {
+		global $_wp_additional_image_sizes;
+
+		if ( in_array( $size, [ 'thumbnail', 'medium', 'medium_large', 'large' ], true ) ) {
+			return [
+				'width'  => (int) get_option( "{$size}_size_w" ),
+				'height' => (int) get_option( "{$size}_size_h" ),
+				'crop'   => (bool) get_option( "{$size}_crop" ),
+			];
+		}
+
+		if ( isset( $_wp_additional_image_sizes[ $size ] ) ) {
+			return $_wp_additional_image_sizes[ $size ];
+		}
+
+		return null;
+	}
+
+	/**
+	 * Override gallery thumbnail size from plugin settings.
+	 *
+	 * @param string|array $size Default thumbnail size.
+	 *
+	 * @return array Filtered thumbnail size as [width, height].
 	 */
 	public static function rtwpvg_gallery_thumbnail_size( $size ) {
 		$thumbnail_size = rtwpvg()->get_option( 'gallery_thumbnail_size' );
-		return $thumbnail_size ? $thumbnail_size : $size; // thumbnail, full, 'medium'
-	}
-	/**
-	 * Old Version Compatibility
-	 *
-	 * @param $style
-	 *
-	 * @return mixed
-	 */
-	public static function rtwpvg_thumbnail_style( $style ) {
-		$style['left']  = esc_html__( 'Position Left', 'woo-product-variation-gallery' );
-		$style['right'] = esc_html__( 'Position Right', 'woo-product-variation-gallery' );
-		return $style;
+		if ( $thumbnail_size ) {
+			return $thumbnail_size;
+		}
+		return $size;
 	}
 
 	/**
@@ -169,6 +187,14 @@ class Hooks {
 
 	function delete_cache_data( $product_id ) {
 		Functions::delete_transients( $product_id );
+
+		// Also clear the per-variation gallery cache for each child variation.
+		$product = wc_get_product( $product_id );
+		if ( $product && $product->is_type( 'variable' ) ) {
+			foreach ( $product->get_children() as $variation_id ) {
+				Functions::delete_transients( absint( $variation_id ), 'variation' );
+			}
+		}
 	}
 
 
@@ -251,12 +277,15 @@ class Hooks {
 		} else {
 			delete_post_meta( $variation_id, 'rtwpvg_images' );
 		}
+
+		// Bust the per-variation gallery cache so the new images are served on demand.
+		Functions::delete_transients( $variation_id, 'variation' );
 	}
 
 	public function gallery_admin_html( $loop, $variation_data, $variation ) {
 		$variation_id   = absint( $variation->ID );
 		$gallery_images = get_post_meta( $variation_id, 'rtwpvg_images', true );
-        ?>
+		?>
 		<div class="form-row form-row-full rtwpvg-gallery-wrapper">
 			<h4><?php esc_html_e( 'Variation Image/Video Gallery', 'woo-product-variation-gallery' ); ?></h4>
 			<div class="rtwpvg-image-container">
@@ -267,7 +296,7 @@ class Hooks {
 						foreach ( $gallery_images as $image_id ) :
 							$image = wp_get_attachment_image_src( $image_id );
 							$video = Functions::gallery_has_video( $image_id );
-							if ( empty( $image[0] ) ) {
+							if ( ! is_array( $image ) || empty( $image[0] ) ) {
 								continue;
 							}
 							$add_video_class = $video ? ' video' : '';
@@ -308,38 +337,20 @@ class Hooks {
 	 */
 	public function available_variation_gallery( $available_variation, $variationProductObject, $variation ) {
 
-		$product_id                   = absint( $variation->get_parent_id() );
-		$variation_id                 = absint( $variation->get_id() );
-		$variation_image_id           = absint( $variation->get_image_id() );
-		$has_variation_gallery_images = (bool) get_post_meta( $variation_id, 'rtwpvg_images', true );
-		if ( $has_variation_gallery_images ) {
-			$gallery_images = (array) get_post_meta( $variation_id, 'rtwpvg_images', true );
-		} else {
-			$gallery_images = $variationProductObject->get_gallery_image_ids();
-		}
+		$product_id = absint( $variation->get_parent_id() );
 
-		$featured_thumbnail = rtwpvg()->get_option( 'remove_featured_thumbnail' ) ? false : true;
-		if ( apply_filters( 'rtwpvg_variation_gallery_images_enable_feature_image', $featured_thumbnail ) ) {
-			if ( $variation_image_id ) {
-				array_unshift( $gallery_images, $variation_image_id );
-			} else {
-				$parent_product = wc_get_product( $product_id );
-				if ( $parent_product ) {
-					$parent_product_image_id = $parent_product->get_image_id();
-
-					if ( ! empty( $parent_product_image_id ) ) {
-						array_unshift( $gallery_images, $parent_product_image_id );
-					}
-				}
-			}
-		}
-
-		$available_variation['variation_gallery_images'] = [];
-		$gallery_images                                  = array_values( array_unique( $gallery_images ) );
-		foreach ( $gallery_images as $i => $variation_gallery_image_id ) {
-			$available_variation['variation_gallery_images'][ $i ] = Functions::get_gallery_image_props( $variation_gallery_image_id );
-		}
-
+		/**
+		 * Gallery image props are no longer built here for every variation on each
+		 * page load (a major performance cost on image-heavy products). They are now
+		 * fetched on demand, per selected variation, via the
+		 * `rtwpvg_get_variation_gallery` AJAX endpoint and cached.
+		 *
+		 * The `variation_id` that WooCommerce already includes in the variation data
+		 * is what the frontend uses to request the gallery, so nothing extra is added
+		 * to the inline/AJAX variation payload here.
+		 *
+		 * @see \Rtwpvg\Helpers\Functions::get_variation_gallery()
+		 */
 		return apply_filters( 'rtwpvg_available_variation_gallery', $available_variation, $variation, $product_id );
 	}
 
@@ -348,5 +359,30 @@ class Hooks {
 		$product_id = isset( $_POST['product_id'] ) ? absint( $_POST['product_id'] ) : 0;
 		$images     = Functions::get_gallery_images( $product_id );
 		wp_send_json_success( apply_filters( 'rtwpvg_get_default_gallery_images', $images, $product_id ) );
+	}
+
+	/**
+	 * AJAX: Return a single variation's gallery image props on demand.
+	 *
+	 * This is a public, read-only endpoint serving public product image data. It is
+	 * intentionally nonce-less, mirroring WooCommerce core's own variation AJAX, so
+	 * it keeps working on pages served from a full-page cache (where a localised
+	 * nonce would be stale). All input is sanitised.
+	 *
+	 * @return void
+	 */
+	public function get_variation_gallery() {
+		// phpcs:ignore WordPress.Security.NonceVerification.Missing -- Public, read-only endpoint (mirrors WooCommerce core's nonce-less variation AJAX) for full-page-cache compatibility.
+		$variation_id = isset( $_POST['variation_id'] ) ? absint( $_POST['variation_id'] ) : 0;
+		// phpcs:ignore WordPress.Security.NonceVerification.Missing
+		$product_id = isset( $_POST['product_id'] ) ? absint( $_POST['product_id'] ) : 0;
+
+		if ( ! $variation_id ) {
+			wp_send_json_error( [], 400 );
+		}
+
+		$images = Functions::get_variation_gallery( $product_id, $variation_id );
+
+		wp_send_json_success( apply_filters( 'rtwpvg_get_variation_gallery', $images, $variation_id, $product_id ) );
 	}
 }

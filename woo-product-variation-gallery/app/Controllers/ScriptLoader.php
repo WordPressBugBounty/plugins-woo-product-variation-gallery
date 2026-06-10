@@ -4,11 +4,9 @@ namespace Rtwpvg\Controllers;
 
 class ScriptLoader {
 
-	private $suffix;
 	private $version;
 
 	public function __construct() {
-		$this->suffix  = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
 		$this->version = defined( 'WP_DEBUG' ) ? time() : rtwpvg()->version();
 
 		add_action( 'admin_footer', [ $this, 'admin_template_js' ] );
@@ -40,7 +38,7 @@ class ScriptLoader {
 			wp_enqueue_style( 'swiper', esc_url( rtwpvg()->get_assets_uri( '/css/swiper-bundle.min.css' ) ), [], '8.4.5' );
 			wp_enqueue_script(
 				'rtwpvg',
-				esc_url( rtwpvg()->get_assets_uri( "/js/rtwpvg{$this->suffix}.js" ) ),
+				esc_url( rtwpvg()->get_assets_uri( "/js/rtwpvg.js" ) ),
 				[
 					'jquery',
 					'wp-util',
@@ -51,11 +49,11 @@ class ScriptLoader {
 			);
 		} else {
 			// legacy support
-			wp_enqueue_script( 'rtwpvg-slider', esc_url( rtwpvg()->get_assets_uri( "/js/slick{$this->suffix}.js" ) ), [ 'jquery' ], '1.8.1', true );
-			wp_enqueue_style( 'rtwpvg-slider', esc_url( rtwpvg()->get_assets_uri( "/css/slick{$this->suffix}.css" ) ), [], '1.8.1' );
+			wp_enqueue_script( 'rtwpvg-slider', esc_url( rtwpvg()->get_assets_uri( "/js/slick.js" ) ), [ 'jquery' ], '1.8.1', true );
+			wp_enqueue_style( 'rtwpvg-slider', esc_url( rtwpvg()->get_assets_uri( "/css/slick.css" ) ), [], '1.8.1' );
 			wp_enqueue_script(
 				'rtwpvg',
-				esc_url( rtwpvg()->get_assets_uri( "/js/slick-rtwpvg{$this->suffix}.js" ) ),
+				esc_url( rtwpvg()->get_assets_uri( "/js/slick-rtwpvg.js" ) ),
 				[
 					'jquery',
 					'wp-util',
@@ -77,7 +75,7 @@ class ScriptLoader {
 					'hasPreloader'              => rtwpvg()->get_option( 'preloader' ),
 					'enable_lightbox'           => rtwpvg()->get_option( 'lightbox' ),
 					'lightbox_image_click'      => rtwpvg()->get_option( 'lightbox_image_click' ),
-					'enable_thumbnail_slide'    => rtwpvg()->active_pro() && rtwpvg()->get_option( 'thumbnail_slide' ) ? true : false, // Mobile Crash Issue fixed
+					'enable_thumbnail_slide'    => rtwpvg()->active_pro() && ( in_array( $thumbnail_position, [ 'left', 'right' ] ) || rtwpvg()->get_option( 'thumbnail_slide' ) ) ? true : false,
 					'thumbnails_columns'        => $gallery_thumbnails_columns,
 					'is_vertical'               => in_array( $thumbnail_position, [ 'left', 'right' ] ) ? true : false,
 					'thumbnail_position'        => $thumbnail_position,
@@ -92,10 +90,10 @@ class ScriptLoader {
 		);
 
 		if ( $using_swiper ) {
-			wp_enqueue_style( 'rtwpvg', esc_url( rtwpvg()->get_assets_uri( "/css/rtwpvg{$this->suffix}.css" ) ), [ 'dashicons' ], $this->version );
+			wp_enqueue_style( 'rtwpvg', esc_url( rtwpvg()->get_assets_uri( "/css/rtwpvg.css" ) ), [ 'dashicons' ], $this->version );
 		} else {
 			// legacy support
-			wp_enqueue_style( 'rtwpvg', esc_url( rtwpvg()->get_assets_uri( "/css/slick-rtwpvg{$this->suffix}.css" ) ), [ 'dashicons' ], $this->version );
+			wp_enqueue_style( 'rtwpvg', esc_url( rtwpvg()->get_assets_uri( "/css/slick-rtwpvg.css" ) ), [ 'dashicons' ], $this->version );
 		}
 		$this->add_inline_style();
 	}
@@ -112,7 +110,7 @@ class ScriptLoader {
 			if ( apply_filters( 'rtwpvg_disable_alpha_color_picker', false ) ) {
 				wp_enqueue_script( 'wp-color-picker' );
 			} else {
-				wp_enqueue_script( 'wp-color-picker-alpha', rtwpvg()->get_assets_uri( "/js/wp-color-picker-alpha{$this->suffix}.js" ), [ 'wp-color-picker' ], '2.1.4', true );
+				wp_enqueue_script( 'wp-color-picker-alpha', rtwpvg()->get_assets_uri( "/js/wp-color-picker-alpha.js" ), [ 'wp-color-picker' ], '2.1.4', true );
 				$colorpicker_l10n = [
 					'clear'            => __( 'Clear', 'woo-product-variation-gallery' ),
 					'defaultString'    => __( 'Default', 'woo-product-variation-gallery' ),
@@ -124,10 +122,10 @@ class ScriptLoader {
 				wp_localize_script( 'wp-color-picker-alpha', 'wpColorPickerL10n', $colorpicker_l10n );
 			}
 			wp_enqueue_media();
-			wp_enqueue_style( 'rtwpvg-admin', esc_url( rtwpvg()->get_assets_uri( "css/admin{$this->suffix}.css" ) ), [], $this->version );
+			wp_enqueue_style( 'rtwpvg-admin', esc_url( rtwpvg()->get_assets_uri( "css/admin.css" ) ), [], $this->version );
 			wp_enqueue_script(
 				'rtwpvg-admin',
-				esc_url( rtwpvg()->get_assets_uri( "js/admin{$this->suffix}.js" ) ),
+				esc_url( rtwpvg()->get_assets_uri( "js/admin.js" ) ),
 				[
 					'jquery',
 					'jquery-ui-sortable',

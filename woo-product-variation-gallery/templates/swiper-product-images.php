@@ -15,14 +15,14 @@ use Rtwpvg\Helpers\Functions;
 
 defined( 'ABSPATH' ) || exit;
 
+global $product;
+
 $columns    = absint( apply_filters( 'rtwpvg_thumbnails_columns', rtwpvg()->get_option( 'thumbnails_columns' ) ) );
 $columns_sm = absint( apply_filters( 'rtwpvg_sm_thumbnails_columns', rtwpvg()->get_option( 'thumbnails_columns_sm' ) ) ) ?? 4;
 $columns_xs = absint( apply_filters( 'rtwpvg_xs_thumbnails_columns', rtwpvg()->get_option( 'thumbnails_columns_xs' ) ) ) ?? 3;
 
 $effect = rtwpvg()->get_option( 'gallery_change_effect' );
 $effect = $effect ?? 'slide';
-
-global $product;
 
 $product_id           = $product->get_id();
 $default_attributes   = Functions::get_product_default_attributes( $product_id );
@@ -42,8 +42,9 @@ if ( 'variable' === $product_type && $default_variation_id > 0 ) {
 		$has_post_thumbnail = true;
 	}
 
-	if ( isset( $product_variation['variation_gallery_images'] ) ) {
-		$attachment_ids = wp_list_pluck( $product_variation['variation_gallery_images'], 'image_id' );
+	$variation_gallery_images = Functions::get_variation_gallery( $product_id, $default_variation_id );
+	if ( ! empty( $variation_gallery_images ) ) {
+		$attachment_ids = wp_list_pluck( $variation_gallery_images, 'image_id' );
 		array_shift( $attachment_ids );
 	}
 }
@@ -72,8 +73,10 @@ $thumbnail_slider_js_options = apply_filters(
 		'loop'                 => false,
 		'autoplay'             => false,
 		'pagination'           => false,
-		'centeredSlides'       => $columns % 2 !== 0 ? true : false,
-		'centeredSlidesBounds' => $columns % 2 !== 0 ? true : false,
+		'centeredSlides'       => false,
+		'centeredSlidesBounds' => false,
+		'watchSlidesProgress'  => true,
+		'slideToClickedSlide'  => false,
 		'direction'            => in_array( $thumbnail_position, [ 'left', 'right' ] ) ? 'vertical' : 'horizontal',
 		'navigation'           => [
 			'nextEl' => '.rtwpvg-thumbnail-next-arrow',
@@ -118,12 +121,40 @@ $attachment_ids    = (array) apply_filters( 'rtwpvg_attachment_ids', $attachment
 
 $total_images      = absint( $post_thumbnail_id ? 1 : 0 ) + count( $attachment_ids );
 $wrapper_classes[] = 'rtwpvg-total-images-' . $total_images;
+
+// Calculate slider height for left/right position to prevent CLS.
+$rtwpvg_slider_height_css = '';
+if ( in_array( $thumbnail_position, [ 'left', 'right' ] ) && $post_thumbnail_id ) {
+	$img_data = wp_get_attachment_image_src( $post_thumbnail_id, 'woocommerce_single' );
+	if ( $img_data && $img_data[1] > 0 && $img_data[2] > 0 ) {
+		$ratio = $img_data[2] / $img_data[1]; // height / width
+		// Slider wrapper is 80% of container minus gap, height = that width * ratio
+		$rtwpvg_slider_height_css = sprintf(
+			'--rtwpvg-slider-ratio: %s;',
+			esc_attr( number_format( $ratio, 4, '.', '' ) )
+		);
+	}
+}
+
+$is_thumbnail_slide = rtwpvg()->get_option( 'thumbnail_slide' );
+$per_product_slide  = get_post_meta( $product_id, '_rtwpvg_thumbnail_slide', true );
+if ( ! empty( $per_product_slide ) ) {
+	$is_thumbnail_slide = 'yes' === $per_product_slide;
+}
+// For left/right positions, slider is always enabled.
+if ( in_array( $thumbnail_position, [ 'left', 'right' ] ) ) {
+	$is_thumbnail_slide = true;
+}
+// The thumbnail slider is a Pro feature; force it off when Pro is not active.
+if ( ! rtwpvg()->active_pro() ) {
+	$is_thumbnail_slide = false;
+}
 ?>
 
-<div style="<?php echo esc_attr( Functions::generate_inline_style( $inline_style ) ); ?>"
+<div style="<?php echo esc_attr( Functions::generate_inline_style( $inline_style ) ); ?><?php echo $rtwpvg_slider_height_css ? ' ' . esc_attr( $rtwpvg_slider_height_css ) : ''; ?>"
 	 class="<?php echo esc_attr( implode( ' ', array_map( 'sanitize_html_class', array_unique( $wrapper_classes ) ) ) ); ?>">
 
-	<div class="<?php echo rtwpvg()->get_option( 'preloader' ) ? 'loading-rtwpvg' : ''; ?> rtwpvg-wrapper rtwpvg-thumbnail-position-<?php echo esc_attr( $thumbnail_position ); ?> rtwpvg-product-type-<?php echo esc_attr( $product_type ); ?>" data-thumbnail_position='<?php echo esc_attr( $thumbnail_position ); ?>'>
+	<div class="<?php echo rtwpvg()->get_option( 'preloader' ) ? 'loading-rtwpvg' : ''; ?> rtwpvg-wrapper rtwpvg-thumbnail-position-<?php echo esc_attr( $thumbnail_position ); ?> rtwpvg-product-type-<?php echo esc_attr( $product_type ); ?>" data-thumbnail_position='<?php echo esc_attr( $thumbnail_position ); ?>' data-thumbnail_slide='<?php echo esc_attr( $is_thumbnail_slide ? '1' : '0' ); ?>'>
 
 		<div class="rtwpvg-container rtwpvg-preload-style-<?php echo esc_attr( trim( rtwpvg()->get_option( 'preload_style' ) ?? '' ) ); ?>">
 
@@ -198,7 +229,7 @@ $wrapper_classes[] = 'rtwpvg-total-images-' . $total_images;
 			if ( apply_filters( 'rtwpvg_show_product_thumbnail_slider', true ) ) {
 				?>
 				<div class="rtwpvg-thumbnail-wrapper">
-					<div class="rtwpvg-thumbnail-slider swiper <?php echo rtwpvg()->get_option( 'thumbnail_slide' ) ? 'thumbnail-slider-active' : 'thumbnail-slider-deactive'; ?> rtwpvg-thumbnail-columns-<?php echo esc_attr( $columns ); ?> rtwpvg-thumbnail-sm-columns-<?php echo esc_attr( $columns_sm ); ?> rtwpvg-thumbnail-xs-columns-<?php echo esc_attr( $columns_xs ); ?>" data-options='<?php echo htmlspecialchars( wp_json_encode( $thumbnail_slider_js_options ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>'>
+					<div class="rtwpvg-thumbnail-slider swiper <?php echo in_array( $thumbnail_position, [ 'left', 'right' ] ) ? 'swiper-vertical' : ''; ?> <?php echo $is_thumbnail_slide ? 'thumbnail-slider-active' : 'thumbnail-slider-deactive'; ?> rtwpvg-thumbnail-columns-<?php echo esc_attr( $columns ); ?> rtwpvg-thumbnail-sm-columns-<?php echo esc_attr( $columns_sm ); ?> rtwpvg-thumbnail-xs-columns-<?php echo esc_attr( $columns_xs ); ?>" data-options='<?php echo htmlspecialchars( wp_json_encode( $thumbnail_slider_js_options ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>'>
 						<div class="swiper-wrapper">
 							<?php
 							if ( $has_gallery_thumbnail ) :

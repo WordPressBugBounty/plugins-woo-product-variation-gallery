@@ -64,6 +64,7 @@ class Functions {
 		$options         = wp_parse_args( $options, $defaults );
 
 		$image = self::get_gallery_image_props( $attachment_id );
+
 		if ( empty( $image['src'] ) ) {
 			return '';
 		}
@@ -81,9 +82,12 @@ class Functions {
 			$classes[] = 'swiper-slide';
 		}
 
-		$template = '<div class="rtwpvg-single-image-container"><img width="%d" height="%d" src="%s" class="%s" alt="%s" title="%s" data-caption="%s" data-src="%s" data-large_image="%s" data-large_image_width="%d" data-large_image_height="%d" srcset="%s" sizes="%s" %s /></div>';
+		$main_aspect_ratio = ( $image['src_w'] && $image['src_h'] )
+			? sprintf( 'style="aspect-ratio: %d / %d;"', absint( $image['src_w'] ), absint( $image['src_h'] ) )
+			: '';
+		$template = '<div class="rtwpvg-single-image-container"><img width="%d" height="%d" src="%s" class="%s" alt="%s" title="%s" data-caption="%s" data-src="%s" data-large_image="%s" data-large_image_width="%d" data-large_image_height="%d" srcset="%s" sizes="%s" %s %s /></div>';
 
-		$inner_html = sprintf( $template, esc_attr( $image['src_w'] ), esc_attr( $image['src_h'] ), esc_url( $image['src'] ), esc_attr( $image['class'] ), esc_attr( $image['alt'] ), esc_attr( $image['title'] ), esc_attr( $image['caption'] ), esc_url( $image['full_src'] ), esc_url( $image['full_src'] ), esc_attr( $image['full_src_w'] ), esc_attr( $image['full_src_h'] ), esc_attr( $image['srcset'] ), esc_attr( $image['sizes'] ), $image['extra_params'] );
+		$inner_html = sprintf( $template, esc_attr( $image['src_w'] ), esc_attr( $image['src_h'] ), esc_url( $image['src'] ), esc_attr( $image['class'] ), esc_attr( $image['alt'] ), esc_attr( $image['title'] ), esc_attr( $image['caption'] ), esc_url( $image['full_src'] ), esc_url( $image['full_src'] ), esc_attr( $image['full_src_w'] ), esc_attr( $image['full_src_h'] ), esc_attr( $image['srcset'] ), esc_attr( $image['sizes'] ), $image['extra_params'], $main_aspect_ratio );
 
 		$inner_html = apply_filters( 'rtwpvg_gallery_image_inner_html', $inner_html, $image, $template, $attachment_id, $options );
 
@@ -103,9 +107,12 @@ class Functions {
 				$classes[] = 'swiper-slide';
 			}
 
-			$template   = '<img width="%d" height="%d" src="%s" class="%s" alt="%s" title="%s" />';
-			$inner_html = sprintf( $template, esc_attr( $image['gallery_thumbnail_src_w'] ), esc_attr( $image['gallery_thumbnail_src_h'] ), esc_url( $image['gallery_thumbnail_src'] ), esc_attr( $image['gallery_thumbnail_class'] ), esc_attr( $image['alt'] ), esc_attr( $image['title'] ) );
-			$inner_html = apply_filters( 'rtwpvg_thumbnail_image_inner_html', $inner_html, $image, $template, $attachment_id, $options );
+			$has_video      = self::gallery_has_video( $attachment_id );
+			$inner_class    = $has_video ? 'rtwpvg-thumbnail-video-overlay' : 'rtwpvg-thumbnail-image-inner';
+			$template       = '<img width="%d" height="%d" src="%s" class="%s" alt="%s" title="%s" />';
+			$inner_html     = sprintf( $template, esc_attr( $image['gallery_thumbnail_src_w'] ), esc_attr( $image['gallery_thumbnail_src_h'] ), esc_url( $image['gallery_thumbnail_src'] ), esc_attr( $image['gallery_thumbnail_class'] ), esc_attr( $image['alt'] ), esc_attr( $image['title'] ) );
+			$inner_html     = '<div class="' . esc_attr( $inner_class ) . '">' . $inner_html . '</div>';
+			$inner_html     = apply_filters( 'rtwpvg_thumbnail_image_inner_html', $inner_html, $image, $template, $attachment_id, $options );
 		}
 
 		return '<div class="' . esc_attr( implode( ' ', array_unique( $classes ) ) ) . '">' . $inner_html . '</div>';
@@ -274,6 +281,77 @@ class Functions {
 	}
 
 	/**
+	 * Get a single variation's gallery image props (on-demand, cached).
+	 *
+	 * Builds the gallery image props for one variation only. This replaces the
+	 * previous behaviour of building props for every variation up front on each
+	 * page load. Results are cached in a transient so the expensive per-image
+	 * lookups are not repeated until the variation (or its parent) is updated.
+	 *
+	 * @param int $product_id   Parent product ID.
+	 * @param int $variation_id Variation ID.
+	 *
+	 * @return array
+	 */
+	public static function get_variation_gallery( $product_id, $variation_id ) {
+		$product_id   = absint( $product_id );
+		$variation_id = absint( $variation_id );
+
+		$transient_name = self::get_transient_name( $variation_id, 'variation' );
+
+		if ( $transient_name && false !== ( $images = get_transient( $transient_name ) ) ) {
+			return apply_filters( 'rtwpvg_variation_gallery', $images, $variation_id, $product_id );
+		}
+
+		$variation = $variation_id ? wc_get_product( $variation_id ) : false;
+
+		if ( ! $variation || ! $variation->is_type( 'variation' ) ) {
+			return apply_filters( 'rtwpvg_variation_gallery', array(), $variation_id, $product_id );
+		}
+
+		if ( ! $product_id ) {
+			$product_id = absint( $variation->get_parent_id() );
+		}
+
+		$variation_image_id = absint( $variation->get_image_id() );
+
+		if ( get_post_meta( $variation_id, 'rtwpvg_images', true ) ) {
+			$gallery_images = (array) get_post_meta( $variation_id, 'rtwpvg_images', true );
+		} else {
+			$gallery_images = $variation->get_gallery_image_ids();
+		}
+
+		$featured_thumbnail = rtwpvg()->get_option( 'remove_featured_thumbnail' ) ? false : true;
+		if ( apply_filters( 'rtwpvg_variation_gallery_images_enable_feature_image', $featured_thumbnail ) ) {
+			if ( $variation_image_id ) {
+				array_unshift( $gallery_images, $variation_image_id );
+			} else {
+				$parent_product = wc_get_product( $product_id );
+				if ( $parent_product ) {
+					$parent_product_image_id = $parent_product->get_image_id();
+					if ( ! empty( $parent_product_image_id ) ) {
+						array_unshift( $gallery_images, $parent_product_image_id );
+					}
+				}
+			}
+		}
+
+		$images         = array();
+		$gallery_images = array_values( array_unique( $gallery_images ) );
+		foreach ( $gallery_images as $i => $image_id ) {
+			if ( $image_id ) {
+				$images[ $i ] = self::get_gallery_image_props( $image_id );
+			}
+		}
+
+		if ( $transient_name ) {
+			set_transient( $transient_name, $images, 12 * HOUR_IN_SECONDS );
+		}
+
+		return apply_filters( 'rtwpvg_variation_gallery', $images, $variation_id, $product_id );
+	}
+
+	/**
 	 * @param $product_id
 	 *
 	 * @return mixed|void
@@ -436,9 +514,9 @@ class Functions {
 			// Large version.
 			$full_size           = apply_filters( 'woocommerce_gallery_full_size', apply_filters( 'woocommerce_product_thumbnails_large_size', 'full' ) );
 			$full_size_src       = wp_get_attachment_image_src( $attachment_id, $full_size );
-			$props['full_src']   = esc_url( $full_size_src[0] );
-			$props['full_src_w'] = esc_attr( $full_size_src[1] );
-			$props['full_src_h'] = esc_attr( $full_size_src[2] );
+			$props['full_src']   = esc_url( $full_size_src[0] ?? '' );
+			$props['full_src_w'] = esc_attr( $full_size_src[1] ?? '' );
+			$props['full_src_h'] = esc_attr( $full_size_src[2] ?? '' );
 
 			$full_size_class = $full_size;
 			if ( is_array( $full_size_class ) ) {
@@ -446,17 +524,14 @@ class Functions {
 			}
 
 			$props['full_class'] = "attachment-$full_size_class size-$full_size_class";
-			//$props[ 'full_srcset' ] = wp_get_attachment_image_srcset( $attachment_id, $full_size );
-			//$props[ 'full_sizes' ]  = wp_get_attachment_image_sizes( $attachment_id, $full_size );
-
 
 			// Gallery thumbnail.
-			$gallery_thumbnail                = wc_get_image_size( 'gallery_thumbnail' );
-			$gallery_thumbnail_size           = apply_filters( 'woocommerce_gallery_thumbnail_size', array( $gallery_thumbnail['width'], $gallery_thumbnail['height'] ) );
-			$gallery_thumbnail_src            = wp_get_attachment_image_src( $attachment_id, $gallery_thumbnail_size );
-			$props['gallery_thumbnail_src']   = esc_url( $gallery_thumbnail_src[0] );
-			$props['gallery_thumbnail_src_w'] = esc_attr( $gallery_thumbnail_src[1] );
-			$props['gallery_thumbnail_src_h'] = esc_attr( $gallery_thumbnail_src[2] );
+            $gallery_thumbnail_size = apply_filters( 'woocommerce_gallery_thumbnail_size', 'woocommerce_gallery_thumbnail' );
+            $gallery_thumbnail_src            = wp_get_attachment_image_src( $attachment_id, $gallery_thumbnail_size );
+
+            $props['gallery_thumbnail_src']   = esc_url( $gallery_thumbnail_src[0] ?? '' );
+            $props['gallery_thumbnail_src_w'] = esc_attr( $gallery_thumbnail_src[1] ?? '' );
+            $props['gallery_thumbnail_src_h'] = esc_attr( $gallery_thumbnail_src[2] ?? '' );
 
 			$gallery_thumbnail_class = $gallery_thumbnail_size;
 			if ( is_array( $gallery_thumbnail_class ) ) {
@@ -464,17 +539,14 @@ class Functions {
 			}
 
 			$props['gallery_thumbnail_class'] = "attachment-$gallery_thumbnail_class size-$gallery_thumbnail_class";
-//			$props[ 'gallery_thumbnail_srcset' ] = wp_get_attachment_image_srcset( $attachment_id, $gallery_thumbnail );
-//			$props[ 'gallery_thumbnail_sizes' ]  = wp_get_attachment_image_sizes( $attachment_id, $gallery_thumbnail_size );
             $archive_thumb = wp_get_attachment_image_src( $attachment_id, 'thumbnail', true );
             $props['archive_thumb_url']      = $archive_thumb[0] ?? '';
-
 			// Archive/Shop Page version.
 			$thumbnail_size         = apply_filters( 'woocommerce_thumbnail_size', 'woocommerce_thumbnail' );
 			$thumbnail_size_src     = wp_get_attachment_image_src( $attachment_id, $thumbnail_size );
-			$props['archive_src']   = esc_url( $thumbnail_size_src[0] );
-			$props['archive_src_w'] = esc_attr( $thumbnail_size_src[1] );
-			$props['archive_src_h'] = esc_attr( $thumbnail_size_src[2] );
+			$props['archive_src']   = esc_url( $thumbnail_size_src[0] ?? '' );
+			$props['archive_src_w'] = esc_attr( $thumbnail_size_src[1] ?? '' );
+			$props['archive_src_h'] = esc_attr( $thumbnail_size_src[2] ?? '' );
 
 			$archive_thumbnail_class = $thumbnail_size;
 			if ( is_array( $archive_thumbnail_class ) ) {
@@ -482,16 +554,12 @@ class Functions {
 			}
 
 			$props['archive_class'] = "attachment-$archive_thumbnail_class size-$archive_thumbnail_class";
-			//$props[ 'archive_srcset' ] = wp_get_attachment_image_srcset( $attachment_id, $thumbnail_size );
-			//$props[ 'archive_sizes' ]  = wp_get_attachment_image_sizes( $attachment_id, $thumbnail_size );
-
-
 			// Image source.
 			$image_size     = apply_filters( 'woocommerce_gallery_image_size', 'woocommerce_single' );
 			$src            = wp_get_attachment_image_src( $attachment_id, $image_size );
-			$props['src']   = esc_url( $src[0] );
-			$props['src_w'] = esc_attr( $src[1] );
-			$props['src_h'] = esc_attr( $src[2] );
+			$props['src']   = esc_url( $src[0] ?? '' );
+			$props['src_w'] = esc_attr( $src[1] ?? '' );
+			$props['src_h'] = esc_attr( $src[2] ?? '' );
 
 			$image_size_class = $image_size;
 			if ( is_array( $image_size_class ) ) {

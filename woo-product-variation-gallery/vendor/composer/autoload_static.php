@@ -7,14 +7,14 @@ namespace Composer\Autoload;
 class ComposerStaticInitb502db0f24f171c143e9c21fd5b166bb
 {
     public static $prefixLengthsPsr4 = array (
-        'R' => 
+        'R' =>
         array (
             'Rtwpvg\\' => 7,
         ),
     );
 
     public static $prefixDirsPsr4 = array (
-        'Rtwpvg\\' => 
+        'Rtwpvg\\' =>
         array (
             0 => __DIR__ . '/../..' . '/app',
         ),
@@ -34,6 +34,7 @@ class ComposerStaticInitb502db0f24f171c143e9c21fd5b166bb
         'Rtwpvg\\Controllers\\ThemeSupport' => __DIR__ . '/../..' . '/app/Controllers/ThemeSupport.php',
         'Rtwpvg\\Helpers\\Functions' => __DIR__ . '/../..' . '/app/Helpers/Functions.php',
         'Rtwpvg\\Helpers\\Options' => __DIR__ . '/../..' . '/app/Helpers/Options.php',
+        'Rtwpvg\\WooProductVariationGallery' => __DIR__ . '/../..' . '/app/WooProductVariationGallery.php',
     );
 
     public static function getInitializer(ClassLoader $loader)

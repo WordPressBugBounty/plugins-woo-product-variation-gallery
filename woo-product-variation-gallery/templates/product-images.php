@@ -15,14 +15,14 @@ use Rtwpvg\Helpers\Functions;
 
 defined( 'ABSPATH' ) || exit;
 
+global $product;
+
 $columns    = absint( apply_filters( 'rtwpvg_thumbnails_columns', rtwpvg()->get_option( 'thumbnails_columns' ) ) );
 $columns_sm = absint( apply_filters( 'rtwpvg_sm_thumbnails_columns', rtwpvg()->get_option( 'thumbnails_columns_sm' ) ) ) ?? 4;
 $columns_xs = absint( apply_filters( 'rtwpvg_xs_thumbnails_columns', rtwpvg()->get_option( 'thumbnails_columns_xs' ) ) ) ?? 3;
 
 $effect = rtwpvg()->get_option( 'gallery_change_effect' );
 $effect = 'fade' === ( $effect ?? 'slide' );
-
-global $product;
 
 $product_id           = $product->get_id();
 $default_attributes   = Functions::get_product_default_attributes( $product_id );
@@ -42,8 +42,9 @@ if ( 'variable' === $product_type && $default_variation_id > 0 ) {
 		$has_post_thumbnail = true;
 	}
 
-	if ( isset( $product_variation['variation_gallery_images'] ) ) {
-		$attachment_ids = wp_list_pluck( $product_variation['variation_gallery_images'], 'image_id' );
+	$variation_gallery_images = Functions::get_variation_gallery( $product_id, $default_variation_id );
+	if ( ! empty( $variation_gallery_images ) ) {
+		$attachment_ids = wp_list_pluck( $variation_gallery_images, 'image_id' );
 		array_shift( $attachment_ids );
 	}
 }

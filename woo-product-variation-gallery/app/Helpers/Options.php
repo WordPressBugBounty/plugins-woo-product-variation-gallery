@@ -15,36 +15,36 @@ class Options {
 					'rtwpvg_general_setting_fields',
 					[
 						[
-							'title'    => esc_html__( 'Thumbnails Items per row / slider view', 'woo-product-variation-gallery' ),
+							'title'    => esc_html__( 'Thumbnail Items', 'woo-product-variation-gallery' ),
 							'type'     => 'number',
 							'default'  => absint( apply_filters( 'rtwpvg_thumbnails_columns', 4 ) ),
-							'desc_tip' => esc_html__( 'Product Thumbnails Item Image', 'woo-product-variation-gallery' ),
+							'desc_tip' => esc_html__( 'Number of thumbnail items to display.', 'woo-product-variation-gallery' ),
 							/* translators: %s: Default value */
-							'desc'     => sprintf( esc_html__( 'Product Thumbnails Item Image. Default value is: %d. Limit: 2-8. The field required for slider.', 'woo-product-variation-gallery' ), absint( apply_filters( 'rtwpvg_thumbnails_columns', 4 ) ) ),
+							'desc'     => sprintf( esc_html__( 'Items per row (horizontal), per column (vertical), or per view when slider is active. Default: %d. Limit: 2-8.', 'woo-product-variation-gallery' ), absint( apply_filters( 'rtwpvg_thumbnails_columns', 4 ) ) ),
 							'id'       => 'thumbnails_columns',
 							'min'      => 2,
 							'max'      => 8,
 							'step'     => 1,
 						],
 						[
-							'title'    => esc_html__( 'Thumbnails Items per row / slider view (Medium Device)', 'woo-product-variation-gallery' ),
+							'title'    => esc_html__( 'Thumbnail Items (Tablet)', 'woo-product-variation-gallery' ),
 							'type'     => 'number',
 							'default'  => absint( apply_filters( 'rtwpvg_md_thumbnails_columns', 4 ) ),
-							'desc_tip' => esc_html__( 'Product Thumbnails Item Image For (Medium Device)', 'woo-product-variation-gallery' ),
+							'desc_tip' => esc_html__( 'Number of thumbnail items on tablet devices.', 'woo-product-variation-gallery' ),
 							/* translators: %s: Default value */
-							'desc'     => sprintf( esc_html__( 'Product Thumbnails Item Image. Default value is: %d. Limit: 2-8. The field required for slider.', 'woo-product-variation-gallery' ), absint( apply_filters( 'rtwpvg_thumbnails_columns', 4 ) ) ),
+							'desc'     => sprintf( esc_html__( 'Items per row, column, or view on tablet. Default: %d. Limit: 2-8.', 'woo-product-variation-gallery' ), absint( apply_filters( 'rtwpvg_md_thumbnails_columns', 4 ) ) ),
 							'id'       => 'thumbnails_columns_sm',
 							'min'      => 2,
 							'max'      => 8,
 							'step'     => 1,
 						],
 						[
-							'title'    => esc_html__( 'Thumbnails Items per row / slider view (Small Device)', 'woo-product-variation-gallery' ),
+							'title'    => esc_html__( 'Thumbnail Items (Mobile)', 'woo-product-variation-gallery' ),
 							'type'     => 'number',
 							'default'  => absint( apply_filters( 'rtwpvg_sm_thumbnails_columns', 3 ) ),
-							'desc_tip' => esc_html__( 'Product Thumbnails Item Image For (Small Device)', 'woo-product-variation-gallery' ),
+							'desc_tip' => esc_html__( 'Number of thumbnail items on mobile devices.', 'woo-product-variation-gallery' ),
 							/* translators: %s: Default value */
-							'desc'     => sprintf( esc_html__( 'Product Thumbnails Item Image. Default value is: %d. Limit: 2-8. The field required for slider.', 'woo-product-variation-gallery' ), absint( apply_filters( 'rtwpvg_thumbnails_columns', 4 ) ) ),
+							'desc'     => sprintf( esc_html__( 'Items per row, column, or view on mobile. Default: %d. Limit: 2-8.', 'woo-product-variation-gallery' ), absint( apply_filters( 'rtwpvg_sm_thumbnails_columns', 3 ) ) ),
 							'id'       => 'thumbnails_columns_xs',
 							'min'      => 2,
 							'max'      => 8,
@@ -177,7 +177,7 @@ class Options {
 						],
 						[
 							'title'   => esc_html__( 'Thumbnail Style', 'woo-product-variation-gallery' ),
-							'desc'    => esc_html__( 'Set the position of thumbnail images relative to the main gallery image. Pro version offers additional positions like left, right, and dot navigation.', 'woo-product-variation-gallery' ),
+							'desc'    => esc_html__( 'Set the position of thumbnail images relative to the main gallery image. Pro version offers additional positions like left, right, and dot navigation. Note: When the thumbnail position is set to Left or Right, the thumbnail slider is automatically enabled.', 'woo-product-variation-gallery' ),
 							'id'      => 'thumbnail_position',
 							'is_pro'  => true,
 							'type'    => 'select',
@@ -194,7 +194,7 @@ class Options {
 							'desc'    => esc_html__( 'Select the registered image size to use for gallery thumbnails. Choose from available WordPress image sizes configured in your site.', 'woo-product-variation-gallery' ),
 							'id'      => 'gallery_thumbnail_size',
 							'type'    => 'select',
-							'default' => 'bottom',
+							'default' => '',
 							'options' => Functions::only_registered_image_size(),
 						],
 						[
