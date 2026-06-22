@@ -4,7 +4,7 @@ Tags: product variation gallery, woocommerce variation image gallery, additional
 Requires at least: 4.8
 Tested up to: 7.0
 Requires PHP: 7.4
-Stable tag: 2.3.25
+Stable tag: 2.3.26
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -127,13 +127,10 @@ Yes, it is.
 
 == Changelog ==
 
-= 2.3.25 (Jun 16, 2026) =
-Fixed: Gallery flicker and main image getting stuck on the featured image when switching variations.
-Fixed: Bottom thumbnail layout showing fewer columns than set in Thumbnail Items.
-
-= 2.3.24 (Jun 10, 2026) =
-Added: Gallery Settings Override for Individual Products
-Improved: Variation galleries now load on demand via AJAX for only the selected variation (with server and browser caching) instead of building every variation's gallery on each page load, greatly improving performance on products with many variation images.
+= 2.3.26 (Jun 22, 2026) =
+Fixed: Gallery flicker on initial page load caused by the forced reload of product variations.
+Fixed: Gallery reset and loading overlay now stay suppressed until the shopper actually changes a variation.
+Fixed: Prevented double-initialisation of the same gallery instance.
 
 [See changelog for all versions.](https://raw.githubusercontent.com/radiustheme/changelog/refs/heads/main/woo-product-variation-gallery.txt)
 
