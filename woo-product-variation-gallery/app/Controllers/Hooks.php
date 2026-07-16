@@ -340,17 +340,33 @@ class Hooks {
 		$product_id = absint( $variation->get_parent_id() );
 
 		/**
-		 * Gallery image props are no longer built here for every variation on each
-		 * page load (a major performance cost on image-heavy products). They are now
-		 * fetched on demand, per selected variation, via the
-		 * `rtwpvg_get_variation_gallery` AJAX endpoint and cached.
+		 * Hybrid loading strategy.
 		 *
-		 * The `variation_id` that WooCommerce already includes in the variation data
-		 * is what the frontend uses to request the gallery, so nothing extra is added
-		 * to the inline/AJAX variation payload here.
+		 * For small products (few variations) the gallery props are embedded inline
+		 * so the frontend swaps instantly with no AJAX round-trip. For large,
+		 * image-heavy products they are omitted and fetched on demand per selected
+		 * variation via the `rtwpvg_get_variation_gallery` AJAX endpoint, keeping the
+		 * initial page payload lean.
+		 *
+		 * The threshold counts the parent product's variations (a cheap proxy that
+		 * avoids building any image props to decide) and is filterable.
 		 *
 		 * @see \Rtwpvg\Helpers\Functions::get_variation_gallery()
 		 */
+		$variation_count = count( $variationProductObject->get_children() );
+
+		/**
+		 * Maximum number of variations for which galleries are embedded inline.
+		 *
+		 * @param int $max         Variation-count threshold. Default 30.
+		 * @param int $product_id  Parent product ID.
+		 */
+		$inline_max = absint( apply_filters( 'rtwpvg_inline_gallery_max_variations', 30, $product_id ) );
+
+		if ( $variation_count > 0 && $variation_count <= $inline_max ) {
+			$available_variation['variation_gallery_images'] = Functions::get_variation_gallery( $product_id, absint( $variation->get_id() ) );
+		}
+
 		return apply_filters( 'rtwpvg_available_variation_gallery', $available_variation, $variation, $product_id );
 	}
 

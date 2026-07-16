@@ -1,15 +1,14 @@
 <?php
-
 /**
  * Plugin Name:         Variation Images Gallery for WooCommerce
  * Plugin URI:          https://radiustheme.com
  * Description:         Variation Images Gallery for WooCommerce plugin allows to add UNLIMITED additional images for each variation of product.
- * Version:             2.3.26
+ * Version:             2.4.0
  * Author:              RadiusTheme
  * Author URI:          https://radiustheme.com
- * Requires at least:   4.8
+ * Requires at least:   6.0
  * WC requires at least:3.2
- * WC tested up to:     8.6.1
+ * WC tested up to:     10.9
  * Domain Path:         /languages
  * Text Domain:         woo-product-variation-gallery
  * License:             GPLv3
@@ -21,15 +20,16 @@ use Rtwpvg\WooProductVariationGallery;
 
 defined( 'ABSPATH' ) or die( 'Keep Silent' );
 
-// Define RTWPVG_PLUGIN_FILE.
-if ( ! defined( 'RTWPVG_PLUGIN_FILE' ) ) {
-	define( 'RTWPVG_PLUGIN_FILE', __FILE__ );
-}
+define( 'RTWPVG_VERSION', '2.4.0' );
+define( 'RTWPVG_PLUGIN_FILE', __FILE__ );
 define( 'RTWPVG_PLUGIN_PATH', plugin_dir_path( __FILE__ ) );
+define( 'RTWPVG_PLUGIN_URI', plugin_dir_url( __FILE__ ) );
+define( 'RTWPVG_PLUGIN_BASENAME', plugin_basename( __FILE__ ) ); // plugin-slug/plugin-slug.php
+define( 'RTWPVG_PLUGIN_DIRNAME', dirname( plugin_basename( __FILE__ ) ) ); // plugin-slug
 
 // Define RTWPVG_VERSION.
 if ( ! defined( 'RTWPVG_VERSION' ) ) {
-	define( 'RTWPVG_VERSION', '2.3.26' );
+	define( 'RTWPVG_VERSION', '2.4.0' );
 }
 
 require_once RTWPVG_PLUGIN_PATH . 'vendor/autoload.php';

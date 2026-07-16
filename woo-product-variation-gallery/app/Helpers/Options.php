@@ -244,10 +244,11 @@ class Options {
 						[
 							'title'   => esc_html__( 'Gallery Change Effect', 'woo-product-variation-gallery' ),
 							'type'    => 'select',
-							'default' => 'blur',
-							'desc'    => esc_html__( 'Choose the visual effect applied to the gallery when switching between variations. Blur, Fade, or Gray effect will be shown during the image transition.', 'woo-product-variation-gallery' ),
+							'default' => 'none',
+							'desc'    => esc_html__( 'Choose the visual effect applied to the gallery when switching between variations. Select No effect to keep the gallery fully visible during the transition.', 'woo-product-variation-gallery' ),
 							'id'      => 'preload_style',
 							'options' => [
+								'none' => esc_html__( 'No effect', 'woo-product-variation-gallery' ),
 								'blur' => esc_html__( 'Blur', 'woo-product-variation-gallery' ),
 								'fade' => esc_html__( 'Fade', 'woo-product-variation-gallery' ),
 								'gray' => esc_html__( 'Gray', 'woo-product-variation-gallery' ),

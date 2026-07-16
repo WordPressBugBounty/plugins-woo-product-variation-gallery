@@ -30,15 +30,8 @@ if ( ! class_exists( 'WooProductVariationGallery' ) ) :
 		}
 
 		public function __construct() {
-			$this->define_constants();
 			$this->hooks();
 			do_action( 'rtwpvg_loaded', $this );
-		}
-
-		public function define_constants() {
-			$this->define( 'RTWPVG_PLUGIN_URI', plugin_dir_url( RTWPVG_PLUGIN_FILE ) );
-			$this->define( 'RTWPVG_PLUGIN_DIRNAME', dirname( plugin_basename( RTWPVG_PLUGIN_FILE ) ) ); // plugin-slug
-			$this->define( 'RTWPVG_PLUGIN_BASENAME', plugin_basename( RTWPVG_PLUGIN_FILE ) ); // plugin-slug/plugin-slug.php
 		}
 
 		public function hooks() {
@@ -96,28 +89,6 @@ if ( ! class_exists( 'WooProductVariationGallery' ) ) :
 		}
 
 		/**
-		 * @param      $name
-		 * @param      $value
-		 */
-		public function define( $name, $value ) {
-			if ( ! defined( $name ) ) {
-				define( $name, $value );
-			}
-		}
-
-		public function basename() {
-			return RTWPVG_PLUGIN_BASENAME;
-		}
-
-		public function dirname() {
-			return RTWPVG_PLUGIN_DIRNAME;
-		}
-
-		public function version() {
-			return RTWPVG_VERSION;
-		}
-
-		/**
 		 * @return bool
 		 */
 		public function is_valid_php_version() {
@@ -150,7 +121,7 @@ if ( ! class_exists( 'WooProductVariationGallery' ) ) :
 		// $locale = apply_filters( 'plugin_locale', $locale, 'woo-product-variation-gallery' );
 		// unload_textdomain( 'woo-product-variation-gallery' );
 		// load_textdomain( 'woo-product-variation-gallery', WP_LANG_DIR . '/woo-product-variation-gallery-pro/woo-product-variation-gallery-' . $locale . '.mo' );
-		// load_plugin_textdomain( 'woo-product-variation-gallery', false, trailingslashit( $this->dirname() ) . 'languages' );
+		// load_plugin_textdomain( 'woo-product-variation-gallery', false, trailingslashit( RTWPVG_PLUGIN_DIRNAME ) . 'languages' );
 		// }
 
 		public function get_assets_uri( $file ) {

@@ -13,7 +13,7 @@ class Install {
 
 		// Update version
 		delete_option( 'RTWPVG_VERSION' );
-		add_option( 'RTWPVG_VERSION', rtwpvg()->version() );
+		add_option( 'RTWPVG_VERSION', RTWPVG_VERSION );
 
 		if ( version_compare(RTWPVG_VERSION, '2.1.13', '<=') ) {
 			$old_value = get_option('rtwpvg'); 

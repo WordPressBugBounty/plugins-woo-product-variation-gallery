@@ -7,7 +7,7 @@ class ScriptLoader {
 	private $version;
 
 	public function __construct() {
-		$this->version = defined( 'WP_DEBUG' ) ? time() : rtwpvg()->version();
+		$this->version = ( defined( 'WP_DEBUG' ) && WP_DEBUG ) ? time() : RTWPVG_VERSION;
 
 		add_action( 'admin_footer', [ $this, 'admin_template_js' ] );
 		add_action( 'wp_footer', [ $this, 'slider_thumbnail_template_js' ] );

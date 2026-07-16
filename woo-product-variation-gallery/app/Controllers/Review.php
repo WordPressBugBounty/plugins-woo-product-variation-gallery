@@ -125,29 +125,29 @@ class Review {
 			$dont_disturb = add_query_arg( $args + [ 'rtwpvg_spare_me' => '1' ], self::rtwpvg_current_admin_url() );
 			$remind_me    = add_query_arg( $args + [ 'rtwpvg_remind_me' => '1' ], self::rtwpvg_current_admin_url() );
 			$rated        = add_query_arg( $args + [ 'rtwpvg_rated' => '1' ], self::rtwpvg_current_admin_url() );
-			$reviewurl    = 'https://wordpress.org/support/plugin/woo-product-variation-gallery/reviews/';
+			$reviewurl    = 'https://wordpress.org/support/plugin/woo-product-variation-gallery/reviews/#new-post';
 
 			?>
-			<div class="notice rtrs-review-notice rtrs-review-notice--extended"> 
-				<div class="rtrs-review-notice_content">
+			<div class="notice rtwpvg-review-notice rtwpvg-review-notice--extended"> 
+				<div class="rtwpvg-review-notice_content">
 					<h3>Enjoying Variation Images Gallery?</h3>
 					<p>Thank you for choosing Variation Images Gallery. If you have found our plugin useful and makes you smile, please consider giving us a 5-star rating on WordPress.org. It will help us to grow.</p>
-					<div class="rtrs-review-notice_actions">
-						<a href="<?php echo esc_url( $reviewurl ); ?>" class="rtrs-review-button rtrs-review-button--cta" target="_blank"><span>⭐ Yes, You Deserve It!</span></a>
-						<a href="<?php echo esc_url( $rated ); ?>" class="rtrs-review-button rtrs-review-button--cta rtrs-review-button--outline"><span>😀 Already Rated!</span></a>
-						<a href="<?php echo esc_url( $remind_me ); ?>" class="rtrs-review-button rtrs-review-button--cta rtrs-review-button--outline"><span>🔔 Remind Me Later</span></a>
-						<a href="<?php echo esc_url( $dont_disturb ); ?>" class="rtrs-review-button rtrs-review-button--cta rtrs-review-button--error rtrs-review-button--outline"><span>😐 No Thanks</span></a>
+					<div class="rtwpvg-review-notice_actions">
+						<a href="<?php echo esc_url( $reviewurl ); ?>" class="rtwpvg-review-button rtwpvg-review-button--cta" target="_blank"><span>⭐ Yes, You Deserve It!</span></a>
+						<a href="<?php echo esc_url( $rated ); ?>" class="rtwpvg-review-button rtwpvg-review-button--cta rtwpvg-review-button--outline"><span>😀 Already Rated!</span></a>
+						<a href="<?php echo esc_url( $remind_me ); ?>" class="rtwpvg-review-button rtwpvg-review-button--cta rtwpvg-review-button--outline"><span>🔔 Remind Me Later</span></a>
+						<a href="<?php echo esc_url( $dont_disturb ); ?>" class="rtwpvg-review-button rtwpvg-review-button--cta rtwpvg-review-button--error rtwpvg-review-button--outline"><span>😐 No Thanks</span></a>
 					</div>
 				</div> 
 			</div>
 			<style> 
-			.rtrs-review-button--cta {
+			.rtwpvg-review-button--cta {
 				--e-button-context-color: #5d3dfd;
 				--e-button-context-color-dark: #5d3dfd;
 				--e-button-context-tint: rgb(75 47 157/4%);
 				--e-focus-color: rgb(75 47 157/40%);
 			} 
-			.rtrs-review-notice {
+			.rtwpvg-review-notice {
 				position: relative;
 				margin: 5px 20px 5px 2px;
 				border: 1px solid #ccd0d4;
@@ -156,10 +156,10 @@ class Review {
 				font-family: Roboto, Arial, Helvetica, Verdana, sans-serif;
 				border-inline-start-width: 4px;
 			}
-			.rtrs-review-notice.notice {
+			.rtwpvg-review-notice.notice {
 				padding: 0;
 			}
-			.rtrs-review-notice:before {
+			.rtwpvg-review-notice:before {
 				position: absolute;
 				top: -1px;
 				bottom: -1px;
@@ -170,31 +170,31 @@ class Review {
 				background: linear-gradient(0deg, #5d3dfd 0%, #6939c6 100%);
 				content: "";
 			} 
-			.rtrs-review-notice_content {
+			.rtwpvg-review-notice_content {
 				padding: 20px;
 			} 
-			.rtrs-review-notice_actions > * + * {
+			.rtwpvg-review-notice_actions > * + * {
 				margin-inline-start: 8px;
 				-webkit-margin-start: 8px;
 				-moz-margin-start: 8px;
 			} 
-			.rtrs-review-notice p {
+			.rtwpvg-review-notice p {
 				margin: 0;
 				padding: 0;
 				line-height: 1.5;
 			}
-			p + .rtrs-review-notice_actions {
+			p + .rtwpvg-review-notice_actions {
 				margin-top: 1rem;
 			}
-			.rtrs-review-notice h3 {
+			.rtwpvg-review-notice h3 {
 				margin: 0;
 				font-size: 1.0625rem;
 				line-height: 1.2;
 			}
-			.rtrs-review-notice h3 + p {
+			.rtwpvg-review-notice h3 + p {
 				margin-top: 8px;
 			} 
-			.rtrs-review-button {
+			.rtwpvg-review-button {
 				display: inline-block;
 				padding: 0.4375rem 0.75rem;
 				border: 0;
@@ -206,43 +206,43 @@ class Review {
 				text-decoration: none;
 				white-space: nowrap; 
 			}
-			.rtrs-review-button:active {
+			.rtwpvg-review-button:active {
 				background: var(--e-button-context-color-dark);
 				color: #fff;
 				text-decoration: none;
 			}
-			.rtrs-review-button:focus {
+			.rtwpvg-review-button:focus {
 				outline: 0;
 				background: var(--e-button-context-color-dark);
 				box-shadow: 0 0 0 2px var(--e-focus-color);
 				color: #fff;
 				text-decoration: none;
 			}
-			.rtrs-review-button:hover {
+			.rtwpvg-review-button:hover {
 				background: var(--e-button-context-color-dark);
 				color: #fff;
 				text-decoration: none;
 			} 
-			.rtrs-review-button.focus {
+			.rtwpvg-review-button.focus {
 				outline: 0;
 				box-shadow: 0 0 0 2px var(--e-focus-color);
 			} 
-			.rtrs-review-button--error {
+			.rtwpvg-review-button--error {
 				--e-button-context-color: #d72b3f;
 				--e-button-context-color-dark: #ae2131;
 				--e-button-context-tint: rgba(215,43,63,0.04);
 				--e-focus-color: rgba(215,43,63,0.4);
 			}
-			.rtrs-review-button.rtrs-review-button--outline {
+			.rtwpvg-review-button.rtwpvg-review-button--outline {
 				border: 1px solid;
 				background: 0 0;
 				color: var(--e-button-context-color);
 			}
-			.rtrs-review-button.rtrs-review-button--outline:focus {
+			.rtwpvg-review-button.rtwpvg-review-button--outline:focus {
 				background: var(--e-button-context-tint);
 				color: var(--e-button-context-color-dark);
 			}
-			.rtrs-review-button.rtrs-review-button--outline:hover {
+			.rtwpvg-review-button.rtwpvg-review-button--outline:hover {
 				background: var(--e-button-context-tint);
 				color: var(--e-button-context-color-dark);
 			} 

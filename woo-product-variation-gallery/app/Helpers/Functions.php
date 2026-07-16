@@ -122,7 +122,7 @@ class Functions {
 	public static function locate_template($name) {
 		// Look within passed path within the theme - this is priority.
 		$template = apply_filters( 'rtwpvg_add_locate_template', array(
-			trailingslashit(rtwpvg()->dirname()) . "$name.php"
+			trailingslashit(RTWPVG_PLUGIN_DIRNAME) . "$name.php"
 		) );
 
 		if (!$template_file = locate_template($template)) {
@@ -317,8 +317,14 @@ class Functions {
 
 		if ( get_post_meta( $variation_id, 'rtwpvg_images', true ) ) {
 			$gallery_images = (array) get_post_meta( $variation_id, 'rtwpvg_images', true );
-		} else {
+		} elseif ( $variation->get_gallery_image_ids() ) {
 			$gallery_images = $variation->get_gallery_image_ids();
+		} else {
+			// No per-variation gallery configured: fall back to the parent product's
+			// gallery so the thumbnail strip is preserved instead of being stripped
+			// down to a single image (mirrors WooCommerce's default image-swap behaviour).
+			$parent_product = wc_get_product( $product_id );
+			$gallery_images = $parent_product ? $parent_product->get_gallery_image_ids() : array();
 		}
 
 		$featured_thumbnail = rtwpvg()->get_option( 'remove_featured_thumbnail' ) ? false : true;

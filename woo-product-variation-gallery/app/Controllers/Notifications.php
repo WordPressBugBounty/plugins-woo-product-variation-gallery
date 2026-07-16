@@ -57,7 +57,7 @@ class Notifications {
 	}
 
 	public function plugin_row_meta( $links, $file ) {
-		if ( $file == rtwpvg()->basename() ) {
+		if ( $file == RTWPVG_PLUGIN_BASENAME ) {
 
 			$report_url         = 'https://www.radiustheme.com/contact/';
 			$row_meta['issues'] = sprintf( '%2$s <a target="_blank" href="%1$s">%3$s</a>', esc_url( $report_url ), esc_html__( 'Facing issue?', 'woo-product-variation-gallery' ), '<span style="color: red">' . esc_html__( 'Please open a support ticket.', 'woo-product-variation-gallery' ) . '</span>' );

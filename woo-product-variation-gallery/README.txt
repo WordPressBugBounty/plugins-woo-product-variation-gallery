@@ -1,10 +1,10 @@
 === Variation Images Gallery for WooCommerce ===
 Contributors: techlabpro1, mamunnu
 Tags: product variation gallery, woocommerce variation image gallery, additional variation image gallery, product variation image gallery, product variation image
-Requires at least: 4.8
+Requires at least: 6.0
 Tested up to: 7.0
 Requires PHP: 7.4
-Stable tag: 2.3.26
+Stable tag: 2.4.0
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -126,6 +126,15 @@ Yes, it is.
 9. Tools Settings
 
 == Changelog ==
+
+= 2.4.0 (Jul 16, 2026) =
+Fixed: Gap beside fallback image for variations without a gallery.
+Changed: Moved plugin constants to the main file and removed redundant getter methods.
+Changed: Removed unused helper methods and dead code.
+Added: "No effect" option for Gallery Change Effect, now the default.
+Improved: Skip gallery re-render/re-init when a variation reuses the loaded gallery; just slide to its image.
+Fixed: Duplicate server-rendered image ids no longer force a rebuild when a variation reuses the same image set.
+Fixed: Thumbnail item gap now applied before the carousel initialises, preventing a shift on variation change.
 
 = 2.3.26 (Jun 22, 2026) =
 Fixed: Gallery flicker on initial page load caused by the forced reload of product variations.

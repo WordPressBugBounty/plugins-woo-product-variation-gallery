@@ -15,7 +15,7 @@ class SettingsAPI {
 		$this->sections = Options::get_settings_sections();
 		add_action( 'init', [ $this, 'set_defaults' ], 8 );
 		add_filter(
-			'plugin_action_links_' . rtwpvg()->basename(),
+			'plugin_action_links_' . RTWPVG_PLUGIN_BASENAME,
 			[
 				$this,
 				'plugin_action_links',
@@ -289,7 +289,7 @@ class SettingsAPI {
 					<div class="item-content">
 						<p>Thank you for choosing Variation Gallery for WooCommerce. If you have found our plugin useful and makes you smile, please consider giving us a 5-star rating on WordPress.org. It will help us to grow.</p>
 						<a target="_blank"
-						   href="https://wordpress.org/support/plugin/woo-product-variation-gallery/reviews/"
+						   href="https://wordpress.org/support/plugin/woo-product-variation-gallery/reviews/#new-post"
 						   class="rt-admin-btn">Yes, You Deserve It</a>
 					</div>
 				</div>
