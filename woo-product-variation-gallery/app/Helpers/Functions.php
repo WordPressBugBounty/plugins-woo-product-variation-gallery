@@ -378,6 +378,9 @@ class Functions {
 			$attachment_ids    = (array) apply_filters( 'rtwpvg_attachment_ids', $attachment_ids, $post_thumbnail_id, $product );
 
 			if ( ! empty( $post_thumbnail_id ) ) {
+				// Drop the featured image from the gallery list first so it is not
+				// rendered twice when it has also been added to the gallery.
+				$attachment_ids = array_values( array_diff( $attachment_ids, array( (int) $post_thumbnail_id ) ) );
 				array_unshift( $attachment_ids, $post_thumbnail_id );
 			}
 

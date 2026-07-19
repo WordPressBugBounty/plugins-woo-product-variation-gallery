@@ -136,6 +136,17 @@ if ( ! class_exists( 'WooProductVariationGallery' ) ) :
 			return trailingslashit( RTWPVG_PLUGIN_URI . 'assets/images' ) . $file;
 		}
 
+		/**
+		 * Get the plugin directory name (slug).
+		 *
+		 * Backward-compat shim for older Pro builds that call rtwpvg()->dirname().
+		 *
+		 * @return string Plugin dirname, e.g. "woo-product-variation-gallery".
+		 */
+		public function dirname() {
+			return RTWPVG_PLUGIN_DIRNAME;
+		}
+
 		public function get_template_file_path( $file, $path = null ) {
 			$file = ltrim( $file, '/' );
 			$path = $path ? $path : RTWPVG_PLUGIN_PATH;

@@ -6,7 +6,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-07-16 08:43+0000\n"
+"POT-Creation-Date: 2026-07-19 04:16+0000\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-KeywordsList: __;_e;_ex:1,2c;_n:1,2;_n_noop:1,2;_nx:1,2,4c;_nx_noop:1,2,3c;_x:1,2c;esc_attr__;esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c\n"
 "X-Poedit-SearchPath-0: .\n"
@@ -14,601 +14,601 @@ msgstr ""
 "X-Poedit-SourceCharset: UTF-8\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: ../app/Controllers/BlackFridayV2.php:126, ../dist/woo-product-variation-gallery/app/Controllers/BlackFridayV2.php:126
+#: ../app/Controllers/BlackFridayV2.php:126
 msgid "User permission error"
 msgstr ""
 
-#: ../app/Controllers/Hooks.php:290, ../dist/woo-product-variation-gallery/app/Controllers/Hooks.php:290
+#: ../app/Controllers/Hooks.php:290
 msgid "Variation Image/Video Gallery"
 msgstr ""
 
-#: ../app/Controllers/Hooks.php:324, ../dist/woo-product-variation-gallery/app/Controllers/Hooks.php:324
+#: ../app/Controllers/Hooks.php:324
 msgid "Add Gallery Images"
 msgstr ""
 
-#: ../app/Controllers/Notifications.php:18, ../dist/woo-product-variation-gallery/app/Controllers/Notifications.php:18
+#: ../app/Controllers/Notifications.php:18
 msgid "Please check PHP version requirement."
 msgstr ""
 
-#: ../app/Controllers/Notifications.php:20, ../dist/woo-product-variation-gallery/app/Controllers/Notifications.php:20
+#: ../app/Controllers/Notifications.php:20
 msgid "It's required to use latest version of PHP to use <strong>Variation Images Gallery for WooCommerce</strong>."
 msgstr ""
 
-#: ../app/Controllers/Notifications.php:31, ../dist/woo-product-variation-gallery/app/Controllers/Notifications.php:31
+#: ../app/Controllers/Notifications.php:31
 msgid "WooCommerce"
 msgstr ""
 
-#: ../app/Controllers/Notifications.php:44, ../dist/woo-product-variation-gallery/app/Controllers/Notifications.php:44
+#: ../app/Controllers/Notifications.php:44
 msgid "<strong>Variation Images Gallery for WooCommerce</strong> is an add-on of "
 msgstr ""
 
 #. translators: %s: Plugin name
-#: ../app/Controllers/Notifications.php:54, ../dist/woo-product-variation-gallery/app/Controllers/Notifications.php:54
+#: ../app/Controllers/Notifications.php:54
 msgid "Currently, you are using older version of WooCommerce. It's recommended to use latest version of WooCommerce to work with %s."
 msgstr ""
 
-#: ../app/Controllers/Notifications.php:54, ../dist/woo-product-variation-gallery/app/Controllers/Notifications.php:54
+#: ../app/Controllers/Notifications.php:54
 msgid "WooCommerce Product Variation Gallery"
 msgstr ""
 
-#: ../app/Controllers/Notifications.php:63, ../dist/woo-product-variation-gallery/app/Controllers/Notifications.php:63
+#: ../app/Controllers/Notifications.php:63
 msgid "Facing issue?"
 msgstr ""
 
-#: ../app/Controllers/Notifications.php:63, ../dist/woo-product-variation-gallery/app/Controllers/Notifications.php:63
+#: ../app/Controllers/Notifications.php:63
 msgid "Please open a support ticket."
 msgstr ""
 
-#: ../app/Controllers/Offer.php:77, ../dist/woo-product-variation-gallery/app/Controllers/Offer.php:77
+#: ../app/Controllers/Offer.php:77
 msgid "Don't miss out on our biggest sale of the year! Get your."
 msgstr ""
 
-#: ../app/Controllers/ProductMeta.php:35, ../dist/woo-product-variation-gallery/app/Controllers/ProductMeta.php:35
+#: ../app/Controllers/ProductMeta.php:35
 msgid "Variation gallery"
 msgstr ""
 
-#: ../app/Controllers/ProductMeta.php:54, ../dist/woo-product-variation-gallery/app/Controllers/ProductMeta.php:54
+#: ../app/Controllers/ProductMeta.php:54
 msgid "Disable Variation Gallery"
 msgstr ""
 
-#: ../app/Controllers/ProductMeta.php:56, ../dist/woo-product-variation-gallery/app/Controllers/ProductMeta.php:56
+#: ../app/Controllers/ProductMeta.php:56
 msgid "Disable variation gallery for this product"
 msgstr ""
 
-#: ../app/Controllers/ProductMeta.php:93, ../app/Controllers/SettingsAPI.php:74, ../dist/woo-product-variation-gallery/app/Controllers/ProductMeta.php:93, ../dist/woo-product-variation-gallery/app/Controllers/SettingsAPI.php:74
+#: ../app/Controllers/ProductMeta.php:93, ../app/Controllers/SettingsAPI.php:74
 msgid "Variation Gallery"
 msgstr ""
 
-#: ../app/Controllers/ProductMeta.php:139, ../app/Helpers/Options.php:18, ../dist/woo-product-variation-gallery/app/Controllers/ProductMeta.php:139, ../dist/woo-product-variation-gallery/app/Helpers/Options.php:18
+#: ../app/Controllers/ProductMeta.php:139, ../app/Helpers/Options.php:18
 msgid "Thumbnail Items"
 msgstr ""
 
-#: ../app/Controllers/ProductMeta.php:143, ../app/Helpers/Options.php:179, ../dist/woo-product-variation-gallery/app/Controllers/ProductMeta.php:143, ../dist/woo-product-variation-gallery/app/Helpers/Options.php:179
+#: ../app/Controllers/ProductMeta.php:143, ../app/Helpers/Options.php:179
 msgid "Thumbnail Style"
 msgstr ""
 
-#: ../app/Controllers/ProductMeta.php:145, ../app/Controllers/ProductMeta.php:151, ../app/Controllers/ProductMeta.php:157, ../app/Controllers/ProductMeta.php:163, ../dist/woo-product-variation-gallery/app/Controllers/ProductMeta.php:145, ../dist/woo-product-variation-gallery/app/Controllers/ProductMeta.php:151, ../dist/woo-product-variation-gallery/app/Controllers/ProductMeta.php:157, ../dist/woo-product-variation-gallery/app/Controllers/ProductMeta.php:163
+#: ../app/Controllers/ProductMeta.php:145, ../app/Controllers/ProductMeta.php:151, ../app/Controllers/ProductMeta.php:157, ../app/Controllers/ProductMeta.php:163
 msgid "— Global Setting —"
 msgstr ""
 
-#: ../app/Controllers/ProductMeta.php:149, ../dist/woo-product-variation-gallery/app/Controllers/ProductMeta.php:149
+#: ../app/Controllers/ProductMeta.php:149
 msgid "Transition Effect"
 msgstr ""
 
-#: ../app/Controllers/ProductMeta.php:155, ../dist/woo-product-variation-gallery/app/Controllers/ProductMeta.php:155
+#: ../app/Controllers/ProductMeta.php:155
 msgid "Image Zoom"
 msgstr ""
 
-#: ../app/Controllers/ProductMeta.php:161, ../dist/woo-product-variation-gallery/app/Controllers/ProductMeta.php:161
+#: ../app/Controllers/ProductMeta.php:161
 msgid "Lightbox"
 msgstr ""
 
-#: ../app/Controllers/ProductMeta.php:172, ../dist/woo-product-variation-gallery/app/Controllers/ProductMeta.php:172
+#: ../app/Controllers/ProductMeta.php:172
 msgid "Pro Feature"
 msgstr ""
 
-#: ../app/Controllers/ProductMeta.php:173, ../dist/woo-product-variation-gallery/app/Controllers/ProductMeta.php:173
+#: ../app/Controllers/ProductMeta.php:173
 msgid "Per-Product Gallery Settings"
 msgstr ""
 
-#: ../app/Controllers/ProductMeta.php:175, ../dist/woo-product-variation-gallery/app/Controllers/ProductMeta.php:175
+#: ../app/Controllers/ProductMeta.php:175
 msgid "Override global gallery settings per product — thumbnail style, grid presets, transition effects, zoom, lightbox, and thumbnail items."
 msgstr ""
 
-#: ../app/Controllers/ProductMeta.php:179, ../dist/woo-product-variation-gallery/app/Controllers/ProductMeta.php:179
+#: ../app/Controllers/ProductMeta.php:179
 msgid "Upgrade to Pro"
 msgstr ""
 
-#: ../app/Controllers/ScriptLoader.php:115, ../dist/woo-product-variation-gallery/app/Controllers/ScriptLoader.php:115
+#: ../app/Controllers/ScriptLoader.php:115
 msgid "Clear"
 msgstr ""
 
-#: ../app/Controllers/ScriptLoader.php:116, ../dist/woo-product-variation-gallery/app/Controllers/ScriptLoader.php:116
+#: ../app/Controllers/ScriptLoader.php:116
 msgid "Default"
 msgstr ""
 
-#: ../app/Controllers/ScriptLoader.php:117, ../dist/woo-product-variation-gallery/app/Controllers/ScriptLoader.php:117
+#: ../app/Controllers/ScriptLoader.php:117
 msgid "Select Color"
 msgstr ""
 
-#: ../app/Controllers/ScriptLoader.php:118, ../dist/woo-product-variation-gallery/app/Controllers/ScriptLoader.php:118
+#: ../app/Controllers/ScriptLoader.php:118
 msgid "Clear color"
 msgstr ""
 
-#: ../app/Controllers/ScriptLoader.php:119, ../dist/woo-product-variation-gallery/app/Controllers/ScriptLoader.php:119
+#: ../app/Controllers/ScriptLoader.php:119
 msgid "Select default color"
 msgstr ""
 
-#: ../app/Controllers/ScriptLoader.php:120, ../dist/woo-product-variation-gallery/app/Controllers/ScriptLoader.php:120
+#: ../app/Controllers/ScriptLoader.php:120
 msgid "Color value"
 msgstr ""
 
-#: ../app/Controllers/ScriptLoader.php:146, ../dist/woo-product-variation-gallery/app/Controllers/ScriptLoader.php:146
+#: ../app/Controllers/ScriptLoader.php:146
 msgid "Choose Image"
 msgstr ""
 
-#: ../app/Controllers/ScriptLoader.php:147, ../dist/woo-product-variation-gallery/app/Controllers/ScriptLoader.php:147
+#: ../app/Controllers/ScriptLoader.php:147
 msgid "Choose Video"
 msgstr ""
 
-#: ../app/Controllers/ScriptLoader.php:148, ../dist/woo-product-variation-gallery/app/Controllers/ScriptLoader.php:148
+#: ../app/Controllers/ScriptLoader.php:148
 msgid "Add Images"
 msgstr ""
 
-#: ../app/Controllers/ScriptLoader.php:149, ../dist/woo-product-variation-gallery/app/Controllers/ScriptLoader.php:149
+#: ../app/Controllers/ScriptLoader.php:149
 msgid "Add Video"
 msgstr ""
 
-#: ../app/Controllers/ScriptLoader.php:150, ../dist/woo-product-variation-gallery/app/Controllers/ScriptLoader.php:150
+#: ../app/Controllers/ScriptLoader.php:150
 msgid "Are you sure to delete?"
 msgstr ""
 
-#: ../app/Controllers/SettingsAPI.php:61, ../dist/woo-product-variation-gallery/app/Controllers/SettingsAPI.php:61
+#: ../app/Controllers/SettingsAPI.php:61
 msgid "Settings"
 msgstr ""
 
-#: ../app/Controllers/SettingsAPI.php:62, ../dist/woo-product-variation-gallery/app/Controllers/SettingsAPI.php:62
+#: ../app/Controllers/SettingsAPI.php:62
 msgid "Demo"
 msgstr ""
 
-#: ../app/Controllers/SettingsAPI.php:63, ../dist/woo-product-variation-gallery/app/Controllers/SettingsAPI.php:63
+#: ../app/Controllers/SettingsAPI.php:63
 msgid "Documentation"
 msgstr ""
 
-#: ../app/Controllers/SettingsAPI.php:67, ../dist/woo-product-variation-gallery/app/Controllers/SettingsAPI.php:67
+#: ../app/Controllers/SettingsAPI.php:67
 msgid "Get Pro"
 msgstr ""
 
 #. translators: %s: Expiry date
-#: ../app/Controllers/SettingsAPI.php:138, ../dist/woo-product-variation-gallery/app/Controllers/SettingsAPI.php:138
+#: ../app/Controllers/SettingsAPI.php:138
 msgid "Your license key expired on %s."
 msgstr ""
 
-#: ../app/Controllers/SettingsAPI.php:146, ../dist/woo-product-variation-gallery/app/Controllers/SettingsAPI.php:146
+#: ../app/Controllers/SettingsAPI.php:146
 msgid "Your license key has been disabled."
 msgstr ""
 
-#: ../app/Controllers/SettingsAPI.php:149, ../dist/woo-product-variation-gallery/app/Controllers/SettingsAPI.php:149
+#: ../app/Controllers/SettingsAPI.php:149
 msgid "Invalid license."
 msgstr ""
 
-#: ../app/Controllers/SettingsAPI.php:153, ../dist/woo-product-variation-gallery/app/Controllers/SettingsAPI.php:153
+#: ../app/Controllers/SettingsAPI.php:153
 msgid "Your license is not active for this URL."
 msgstr ""
 
-#: ../app/Controllers/SettingsAPI.php:156, ../dist/woo-product-variation-gallery/app/Controllers/SettingsAPI.php:156
+#: ../app/Controllers/SettingsAPI.php:156
 msgid "This appears to be an invalid license key for Classified Listing Pro."
 msgstr ""
 
-#: ../app/Controllers/SettingsAPI.php:159, ../dist/woo-product-variation-gallery/app/Controllers/SettingsAPI.php:159
+#: ../app/Controllers/SettingsAPI.php:159
 msgid "Your license key has reached its activation limit."
 msgstr ""
 
-#: ../app/Controllers/SettingsAPI.php:162, ../app/Controllers/SettingsAPI.php:129, ../dist/woo-product-variation-gallery/app/Controllers/SettingsAPI.php:162, ../dist/woo-product-variation-gallery/app/Controllers/SettingsAPI.php:129
+#: ../app/Controllers/SettingsAPI.php:162, ../app/Controllers/SettingsAPI.php:129
 msgid "An error occurred, please try again."
 msgstr ""
 
-#: ../app/Controllers/SettingsAPI.php:322, ../dist/woo-product-variation-gallery/app/Controllers/SettingsAPI.php:322
+#: ../app/Controllers/SettingsAPI.php:322
 msgid "[Pro]"
 msgstr ""
 
-#: ../app/Controllers/SettingsAPI.php:322, ../dist/woo-product-variation-gallery/app/Controllers/SettingsAPI.php:322
+#: ../app/Controllers/SettingsAPI.php:322
 msgid "This is premium field"
 msgstr ""
 
-#: ../app/Controllers/SettingsAPI.php:498, ../dist/woo-product-variation-gallery/app/Controllers/SettingsAPI.php:498
+#: ../app/Controllers/SettingsAPI.php:498
 msgid "Deactivate License"
 msgstr ""
 
-#: ../app/Controllers/SettingsAPI.php:498, ../dist/woo-product-variation-gallery/app/Controllers/SettingsAPI.php:498
+#: ../app/Controllers/SettingsAPI.php:498
 msgid "Activate License"
 msgstr ""
 
-#: ../app/Controllers/SettingsAPI.php:614, ../dist/woo-product-variation-gallery/app/Controllers/SettingsAPI.php:614
+#: ../app/Controllers/SettingsAPI.php:614
 msgid "Upload Image"
 msgstr ""
 
-#: ../app/Controllers/SettingsAPI.php:734, ../dist/woo-product-variation-gallery/app/Controllers/SettingsAPI.php:734
+#: ../app/Controllers/SettingsAPI.php:734
 msgid "Pro field alert!"
 msgstr ""
 
-#: ../app/Controllers/SettingsAPI.php:735, ../dist/woo-product-variation-gallery/app/Controllers/SettingsAPI.php:735
+#: ../app/Controllers/SettingsAPI.php:735
 msgid "Sorry! this is a pro field. To use this field, you need to use pro plugin."
 msgstr ""
 
-#: ../app/Controllers/SettingsAPI.php:736, ../dist/woo-product-variation-gallery/app/Controllers/SettingsAPI.php:736
+#: ../app/Controllers/SettingsAPI.php:736
 msgid "Upgrade to pro"
 msgstr ""
 
 #. translators: %s template
-#: ../app/Helpers/Functions.php:147, ../dist/woo-product-variation-gallery/app/Helpers/Functions.php:147
+#: ../app/Helpers/Functions.php:147
 msgid "%s does not exist."
 msgstr ""
 
-#: ../app/Helpers/Options.php:12, ../dist/woo-product-variation-gallery/app/Helpers/Options.php:12
+#: ../app/Helpers/Options.php:12
 msgid "General"
 msgstr ""
 
-#: ../app/Helpers/Options.php:13, ../dist/woo-product-variation-gallery/app/Helpers/Options.php:13
+#: ../app/Helpers/Options.php:13
 msgid "Configure gallery layout, thumbnail display, and responsive width settings."
 msgstr ""
 
-#: ../app/Helpers/Options.php:21, ../dist/woo-product-variation-gallery/app/Helpers/Options.php:21
+#: ../app/Helpers/Options.php:21
 msgid "Number of thumbnail items to display."
 msgstr ""
 
 #. translators: %s: Default value
-#: ../app/Helpers/Options.php:23, ../dist/woo-product-variation-gallery/app/Helpers/Options.php:23
+#: ../app/Helpers/Options.php:23
 msgid "Items per row (horizontal), per column (vertical), or per view when slider is active. Default: %d. Limit: 2-8."
 msgstr ""
 
-#: ../app/Helpers/Options.php:30, ../dist/woo-product-variation-gallery/app/Helpers/Options.php:30
+#: ../app/Helpers/Options.php:30
 msgid "Thumbnail Items (Tablet)"
 msgstr ""
 
-#: ../app/Helpers/Options.php:33, ../dist/woo-product-variation-gallery/app/Helpers/Options.php:33
+#: ../app/Helpers/Options.php:33
 msgid "Number of thumbnail items on tablet devices."
 msgstr ""
 
 #. translators: %s: Default value
-#: ../app/Helpers/Options.php:35, ../dist/woo-product-variation-gallery/app/Helpers/Options.php:35
+#: ../app/Helpers/Options.php:35
 msgid "Items per row, column, or view on tablet. Default: %d. Limit: 2-8."
 msgstr ""
 
-#: ../app/Helpers/Options.php:42, ../dist/woo-product-variation-gallery/app/Helpers/Options.php:42
+#: ../app/Helpers/Options.php:42
 msgid "Thumbnail Items (Mobile)"
 msgstr ""
 
-#: ../app/Helpers/Options.php:45, ../dist/woo-product-variation-gallery/app/Helpers/Options.php:45
+#: ../app/Helpers/Options.php:45
 msgid "Number of thumbnail items on mobile devices."
 msgstr ""
 
 #. translators: %s: Default value
-#: ../app/Helpers/Options.php:47, ../dist/woo-product-variation-gallery/app/Helpers/Options.php:47
+#: ../app/Helpers/Options.php:47
 msgid "Items per row, column, or view on mobile. Default: %d. Limit: 2-8."
 msgstr ""
 
-#: ../app/Helpers/Options.php:54, ../dist/woo-product-variation-gallery/app/Helpers/Options.php:54
+#: ../app/Helpers/Options.php:54
 msgid "Thumbnails Gap"
 msgstr ""
 
-#: ../app/Helpers/Options.php:57, ../dist/woo-product-variation-gallery/app/Helpers/Options.php:57
+#: ../app/Helpers/Options.php:57
 msgid "Product Thumbnails Gap In Pixel"
 msgstr ""
 
 #. translators: %s: Default value
-#: ../app/Helpers/Options.php:59, ../dist/woo-product-variation-gallery/app/Helpers/Options.php:59
+#: ../app/Helpers/Options.php:59
 msgid "Product Thumbnails Gap In Pixel. Default value is: %d. Limit: 0-20."
 msgstr ""
 
-#: ../app/Helpers/Options.php:67, ../dist/woo-product-variation-gallery/app/Helpers/Options.php:67
+#: ../app/Helpers/Options.php:67
 msgid "Gallery Width (Large Device)"
 msgstr ""
 
-#: ../app/Helpers/Options.php:70, ../dist/woo-product-variation-gallery/app/Helpers/Options.php:70
+#: ../app/Helpers/Options.php:70
 msgid "Slider gallery width in % for large devices."
 msgstr ""
 
 #. translators: %s: Default value
-#: ../app/Helpers/Options.php:72, ../dist/woo-product-variation-gallery/app/Helpers/Options.php:72
+#: ../app/Helpers/Options.php:72
 msgid "Slider Gallery Width in percentage. Default value is: %d. Limit: 10-100."
 msgstr ""
 
-#: ../app/Helpers/Options.php:80, ../dist/woo-product-variation-gallery/app/Helpers/Options.php:80
+#: ../app/Helpers/Options.php:80
 msgid "Gallery Width (Medium Device)"
 msgstr ""
 
-#: ../app/Helpers/Options.php:83, ../dist/woo-product-variation-gallery/app/Helpers/Options.php:83
+#: ../app/Helpers/Options.php:83
 msgid "Slider gallery width in % for medium devices, small desktop"
 msgstr ""
 
 #. translators: %s: width
-#: ../app/Helpers/Options.php:85, ../dist/woo-product-variation-gallery/app/Helpers/Options.php:85
+#: ../app/Helpers/Options.php:85
 msgid "Slider gallery width in % for medium devices, small desktop. Default value is: 0. Limit: 0-100. Media query (max-width : 992px)"
 msgstr ""
 
-#: ../app/Helpers/Options.php:93, ../dist/woo-product-variation-gallery/app/Helpers/Options.php:93
+#: ../app/Helpers/Options.php:93
 msgid "Gallery Width (Small Device)"
 msgstr ""
 
-#: ../app/Helpers/Options.php:96, ../dist/woo-product-variation-gallery/app/Helpers/Options.php:96
+#: ../app/Helpers/Options.php:96
 msgid "Slider gallery width in % for small devices, tablets"
 msgstr ""
 
 #. translators: %s: width
-#: ../app/Helpers/Options.php:98, ../dist/woo-product-variation-gallery/app/Helpers/Options.php:98
+#: ../app/Helpers/Options.php:98
 msgid "Slider gallery width in % for medium devices, small desktop. Default value is: 100. Limit: 0-100. Media query (max-width : 768px)"
 msgstr ""
 
-#: ../app/Helpers/Options.php:106, ../dist/woo-product-variation-gallery/app/Helpers/Options.php:106
+#: ../app/Helpers/Options.php:106
 msgid "Gallery Width (Extra Small Device)"
 msgstr ""
 
-#: ../app/Helpers/Options.php:109, ../dist/woo-product-variation-gallery/app/Helpers/Options.php:109
+#: ../app/Helpers/Options.php:109
 msgid "Slider gallery width in % for extra small devices, phones"
 msgstr ""
 
-#: ../app/Helpers/Options.php:110, ../dist/woo-product-variation-gallery/app/Helpers/Options.php:110
+#: ../app/Helpers/Options.php:110
 msgid "Slider gallery width in % for extra small devices, phones. Default value is: 100. Limit: 0-100. Media query (max-width : 480px)"
 msgstr ""
 
-#: ../app/Helpers/Options.php:118, ../dist/woo-product-variation-gallery/app/Helpers/Options.php:118
+#: ../app/Helpers/Options.php:118
 msgid "Gallery Bottom Gap"
 msgstr ""
 
-#: ../app/Helpers/Options.php:121, ../dist/woo-product-variation-gallery/app/Helpers/Options.php:121
+#: ../app/Helpers/Options.php:121
 msgid "Slider gallery bottom margin in pixel"
 msgstr ""
 
 #. translators: %s: margin
-#: ../app/Helpers/Options.php:123, ../dist/woo-product-variation-gallery/app/Helpers/Options.php:123
+#: ../app/Helpers/Options.php:123
 msgid "Slider gallery bottom margin in pixel. Default value is: %d. Limit: 10-100."
 msgstr ""
 
-#: ../app/Helpers/Options.php:131, ../dist/woo-product-variation-gallery/app/Helpers/Options.php:131
+#: ../app/Helpers/Options.php:131
 msgid "Reset Variation Gallery"
 msgstr ""
 
-#: ../app/Helpers/Options.php:134, ../dist/woo-product-variation-gallery/app/Helpers/Options.php:134
+#: ../app/Helpers/Options.php:134
 msgid "Always Reset Gallery After Variation Select. It serves as the default selection for variation options. The control effect will not be visible when using the variation swatches plugin."
 msgstr ""
 
-#: ../app/Helpers/Options.php:142, ../dist/woo-product-variation-gallery/app/Helpers/Options.php:142
+#: ../app/Helpers/Options.php:142
 msgid "Advanced"
 msgstr ""
 
-#: ../app/Helpers/Options.php:143, ../dist/woo-product-variation-gallery/app/Helpers/Options.php:143
+#: ../app/Helpers/Options.php:143
 msgid "Configure zoom, lightbox, slider behavior, preloader, and transition effects."
 msgstr ""
 
-#: ../app/Helpers/Options.php:148, ../dist/woo-product-variation-gallery/app/Helpers/Options.php:148
+#: ../app/Helpers/Options.php:148
 msgid "Zoom Gallery image"
 msgstr ""
 
-#: ../app/Helpers/Options.php:151, ../dist/woo-product-variation-gallery/app/Helpers/Options.php:151
+#: ../app/Helpers/Options.php:151
 msgid "Enable mouse hover zoom effect on the main gallery image. Hovering over the product image will show a magnified view."
 msgstr ""
 
-#: ../app/Helpers/Options.php:155, ../dist/woo-product-variation-gallery/app/Helpers/Options.php:155
+#: ../app/Helpers/Options.php:155
 msgid "LightBox"
 msgstr ""
 
-#: ../app/Helpers/Options.php:158, ../dist/woo-product-variation-gallery/app/Helpers/Options.php:158
+#: ../app/Helpers/Options.php:158
 msgid "Enable the lightbox icon on the gallery image. Users can click the icon to open a full-screen lightbox view."
 msgstr ""
 
-#: ../app/Helpers/Options.php:162, ../dist/woo-product-variation-gallery/app/Helpers/Options.php:162
+#: ../app/Helpers/Options.php:162
 msgid "LightBox on image click"
 msgstr ""
 
-#: ../app/Helpers/Options.php:164, ../dist/woo-product-variation-gallery/app/Helpers/Options.php:164
+#: ../app/Helpers/Options.php:164
 msgid "Open the lightbox when clicking directly on the main gallery image, instead of requiring the lightbox icon click."
 msgstr ""
 
-#: ../app/Helpers/Options.php:168, ../dist/woo-product-variation-gallery/app/Helpers/Options.php:168
+#: ../app/Helpers/Options.php:168
 msgid "Main Image Transition Effect"
 msgstr ""
 
-#: ../app/Helpers/Options.php:169, ../dist/woo-product-variation-gallery/app/Helpers/Options.php:169
+#: ../app/Helpers/Options.php:169
 msgid "Choose the transition effect for the main image slider."
 msgstr ""
 
-#: ../app/Helpers/Options.php:174, ../dist/woo-product-variation-gallery/app/Helpers/Options.php:174
+#: ../app/Helpers/Options.php:174
 msgid "Slide"
 msgstr ""
 
-#: ../app/Helpers/Options.php:175, ../app/Helpers/Options.php:253, ../dist/woo-product-variation-gallery/app/Helpers/Options.php:175, ../dist/woo-product-variation-gallery/app/Helpers/Options.php:253
+#: ../app/Helpers/Options.php:175, ../app/Helpers/Options.php:253
 msgid "Fade"
 msgstr ""
 
-#: ../app/Helpers/Options.php:180, ../dist/woo-product-variation-gallery/app/Helpers/Options.php:180
+#: ../app/Helpers/Options.php:180
 msgid "Set the position of thumbnail images relative to the main gallery image. Pro version offers additional positions like left, right, and dot navigation. Note: When the thumbnail position is set to Left or Right, the thumbnail slider is automatically enabled."
 msgstr ""
 
-#: ../app/Helpers/Options.php:188, ../dist/woo-product-variation-gallery/app/Helpers/Options.php:188
+#: ../app/Helpers/Options.php:188
 msgid "Position Bottom"
 msgstr ""
 
-#: ../app/Helpers/Options.php:193, ../dist/woo-product-variation-gallery/app/Helpers/Options.php:193
+#: ../app/Helpers/Options.php:193
 msgid "Gallery Thumbnail Size"
 msgstr ""
 
-#: ../app/Helpers/Options.php:194, ../dist/woo-product-variation-gallery/app/Helpers/Options.php:194
+#: ../app/Helpers/Options.php:194
 msgid "Select the registered image size to use for gallery thumbnails. Choose from available WordPress image sizes configured in your site."
 msgstr ""
 
-#: ../app/Helpers/Options.php:201, ../dist/woo-product-variation-gallery/app/Helpers/Options.php:201
+#: ../app/Helpers/Options.php:201
 msgid "Slider Navigation (Arrow)"
 msgstr ""
 
-#: ../app/Helpers/Options.php:204, ../dist/woo-product-variation-gallery/app/Helpers/Options.php:204
+#: ../app/Helpers/Options.php:204
 msgid "Show previous/next navigation arrows on the main gallery slider. Requires the pro version."
 msgstr ""
 
-#: ../app/Helpers/Options.php:209, ../dist/woo-product-variation-gallery/app/Helpers/Options.php:209
+#: ../app/Helpers/Options.php:209
 msgid "Slider Adaptive Height"
 msgstr ""
 
-#: ../app/Helpers/Options.php:212, ../dist/woo-product-variation-gallery/app/Helpers/Options.php:212
+#: ../app/Helpers/Options.php:212
 msgid "Automatically adjust the slider height based on the current slide image dimensions. Disable to use a fixed height."
 msgstr ""
 
-#: ../app/Helpers/Options.php:216, ../dist/woo-product-variation-gallery/app/Helpers/Options.php:216
+#: ../app/Helpers/Options.php:216
 msgid "Remove Featured/Thumbnail Image"
 msgstr ""
 
-#: ../app/Helpers/Options.php:219, ../dist/woo-product-variation-gallery/app/Helpers/Options.php:219
+#: ../app/Helpers/Options.php:219
 msgid "Enable this option to remove the Featured/Thumbnail image from the slider when a variation is selected."
 msgstr ""
 
-#: ../app/Helpers/Options.php:224, ../dist/woo-product-variation-gallery/app/Helpers/Options.php:224
+#: ../app/Helpers/Options.php:224
 msgid "Thumbnail Slider"
 msgstr ""
 
-#: ../app/Helpers/Options.php:227, ../dist/woo-product-variation-gallery/app/Helpers/Options.php:227
+#: ../app/Helpers/Options.php:227
 msgid "Enable sliding/scrolling behavior for thumbnail images when there are more thumbnails than visible slots. Requires the pro version."
 msgstr ""
 
-#: ../app/Helpers/Options.php:232, ../dist/woo-product-variation-gallery/app/Helpers/Options.php:232
+#: ../app/Helpers/Options.php:232
 msgid "Preloader"
 msgstr ""
 
-#: ../app/Helpers/Options.php:235, ../dist/woo-product-variation-gallery/app/Helpers/Options.php:235
+#: ../app/Helpers/Options.php:235
 msgid "Show a loading animation while the gallery images are being loaded. Improves perceived performance on slower connections."
 msgstr ""
 
-#: ../app/Helpers/Options.php:241, ../dist/woo-product-variation-gallery/app/Helpers/Options.php:241
+#: ../app/Helpers/Options.php:241
 msgid "Preloader Image"
 msgstr ""
 
-#: ../app/Helpers/Options.php:242, ../dist/woo-product-variation-gallery/app/Helpers/Options.php:242
+#: ../app/Helpers/Options.php:242
 msgid "Upload a custom preloader image to replace the default loading animation. Recommended size: 60x60 pixels."
 msgstr ""
 
-#: ../app/Helpers/Options.php:245, ../dist/woo-product-variation-gallery/app/Helpers/Options.php:245
+#: ../app/Helpers/Options.php:245
 msgid "Gallery Change Effect"
 msgstr ""
 
-#: ../app/Helpers/Options.php:248, ../dist/woo-product-variation-gallery/app/Helpers/Options.php:248
+#: ../app/Helpers/Options.php:248
 msgid "Choose the visual effect applied to the gallery when switching between variations. Select No effect to keep the gallery fully visible during the transition."
 msgstr ""
 
-#: ../app/Helpers/Options.php:251, ../dist/woo-product-variation-gallery/app/Helpers/Options.php:251
+#: ../app/Helpers/Options.php:251
 msgid "No effect"
 msgstr ""
 
-#: ../app/Helpers/Options.php:252, ../dist/woo-product-variation-gallery/app/Helpers/Options.php:252
+#: ../app/Helpers/Options.php:252
 msgid "Blur"
 msgstr ""
 
-#: ../app/Helpers/Options.php:254, ../dist/woo-product-variation-gallery/app/Helpers/Options.php:254
+#: ../app/Helpers/Options.php:254
 msgid "Gray"
 msgstr ""
 
-#: ../app/Helpers/Options.php:258, ../dist/woo-product-variation-gallery/app/Helpers/Options.php:258
+#: ../app/Helpers/Options.php:258
 msgid "Zoom Button Position"
 msgstr ""
 
-#: ../app/Helpers/Options.php:261, ../dist/woo-product-variation-gallery/app/Helpers/Options.php:261
+#: ../app/Helpers/Options.php:261
 msgid "Set the position of the lightbox/zoom icon on the main gallery image."
 msgstr ""
 
-#: ../app/Helpers/Options.php:264, ../dist/woo-product-variation-gallery/app/Helpers/Options.php:264
+#: ../app/Helpers/Options.php:264
 msgid "Top right"
 msgstr ""
 
-#: ../app/Helpers/Options.php:265, ../dist/woo-product-variation-gallery/app/Helpers/Options.php:265
+#: ../app/Helpers/Options.php:265
 msgid "Top left"
 msgstr ""
 
-#: ../app/Helpers/Options.php:266, ../dist/woo-product-variation-gallery/app/Helpers/Options.php:266
+#: ../app/Helpers/Options.php:266
 msgid "Bottom right"
 msgstr ""
 
-#: ../app/Helpers/Options.php:267, ../dist/woo-product-variation-gallery/app/Helpers/Options.php:267
+#: ../app/Helpers/Options.php:267
 msgid "Bottom left"
 msgstr ""
 
-#: ../app/Helpers/Options.php:275, ../dist/woo-product-variation-gallery/app/Helpers/Options.php:275
+#: ../app/Helpers/Options.php:275
 msgid "Style"
 msgstr ""
 
-#: ../app/Helpers/Options.php:276, ../dist/woo-product-variation-gallery/app/Helpers/Options.php:276
+#: ../app/Helpers/Options.php:276
 msgid "Customize the colors of slider navigation arrows. Requires the pro version."
 msgstr ""
 
-#: ../app/Helpers/Options.php:285, ../dist/woo-product-variation-gallery/app/Helpers/Options.php:285
+#: ../app/Helpers/Options.php:285
 msgid "Arrow background"
 msgstr ""
 
-#: ../app/Helpers/Options.php:286, ../dist/woo-product-variation-gallery/app/Helpers/Options.php:286
+#: ../app/Helpers/Options.php:286
 msgid "Set the background color of the slider navigation arrows. Supports alpha transparency."
 msgstr ""
 
-#: ../app/Helpers/Options.php:294, ../dist/woo-product-variation-gallery/app/Helpers/Options.php:294
+#: ../app/Helpers/Options.php:294
 msgid "Arrow background hover"
 msgstr ""
 
-#: ../app/Helpers/Options.php:295, ../dist/woo-product-variation-gallery/app/Helpers/Options.php:295
+#: ../app/Helpers/Options.php:295
 msgid "Set the background color of the slider navigation arrows on mouse hover."
 msgstr ""
 
-#: ../app/Helpers/Options.php:303, ../dist/woo-product-variation-gallery/app/Helpers/Options.php:303
+#: ../app/Helpers/Options.php:303
 msgid "Arrow text color"
 msgstr ""
 
-#: ../app/Helpers/Options.php:304, ../dist/woo-product-variation-gallery/app/Helpers/Options.php:304
+#: ../app/Helpers/Options.php:304
 msgid "Set the color of the arrow icon inside the slider navigation buttons."
 msgstr ""
 
-#: ../app/Helpers/Options.php:310, ../dist/woo-product-variation-gallery/app/Helpers/Options.php:310
+#: ../app/Helpers/Options.php:310
 msgid "Arrow text hover color"
 msgstr ""
 
-#: ../app/Helpers/Options.php:311, ../dist/woo-product-variation-gallery/app/Helpers/Options.php:311
+#: ../app/Helpers/Options.php:311
 msgid "Set the color of the arrow icon inside the slider navigation buttons on mouse hover."
 msgstr ""
 
-#: ../app/Helpers/Options.php:319, ../dist/woo-product-variation-gallery/app/Helpers/Options.php:319
+#: ../app/Helpers/Options.php:319
 msgid "Tools"
 msgstr ""
 
-#: ../app/Helpers/Options.php:320, ../dist/woo-product-variation-gallery/app/Helpers/Options.php:320
+#: ../app/Helpers/Options.php:320
 msgid "Manage plugin data, script loading, and slider library settings."
 msgstr ""
 
-#: ../app/Helpers/Options.php:328, ../dist/woo-product-variation-gallery/app/Helpers/Options.php:328
+#: ../app/Helpers/Options.php:328
 msgid "Enable to delete all data"
 msgstr ""
 
-#: ../app/Helpers/Options.php:329, ../dist/woo-product-variation-gallery/app/Helpers/Options.php:329
+#: ../app/Helpers/Options.php:329
 msgid "When enabled, all plugin data will be permanently removed from the database upon plugin deletion. Keep disabled to preserve settings if you plan to reinstall."
 msgstr ""
 
-#: ../app/Helpers/Options.php:334, ../dist/woo-product-variation-gallery/app/Helpers/Options.php:334
+#: ../app/Helpers/Options.php:334
 msgid "Upgrade Slider Scripts "
 msgstr ""
 
-#: ../app/Helpers/Options.php:335, ../dist/woo-product-variation-gallery/app/Helpers/Options.php:335
+#: ../app/Helpers/Options.php:335
 msgid "Upgrade slider script from Slick Carousel to Swiper Slider. Uncheck if you don't want to upgrade slider library. Note: Slick will be phased out in the future."
 msgstr ""
 
-#: ../app/Helpers/Options.php:341, ../dist/woo-product-variation-gallery/app/Helpers/Options.php:341
+#: ../app/Helpers/Options.php:341
 msgid "Load Scripts"
 msgstr ""
 
-#: ../app/Helpers/Options.php:342, ../dist/woo-product-variation-gallery/app/Helpers/Options.php:342
+#: ../app/Helpers/Options.php:342
 msgid "By default, gallery scripts load only on product and shop pages. Enable this to load scripts site-wide, useful if you display products via shortcodes or custom templates on other pages."
 msgstr ""
 
-#: ../app/Helpers/Options.php:350, ../dist/woo-product-variation-gallery/app/Helpers/Options.php:350
+#: ../app/Helpers/Options.php:350
 msgid "Related Plugins"
 msgstr ""
 
-#: ../app/Helpers/Options.php:351, ../dist/woo-product-variation-gallery/app/Helpers/Options.php:351
+#: ../app/Helpers/Options.php:351
 msgid "You can try our premium plugins"
 msgstr ""
 
-#: ../dist/woo-product-variation-gallery/templates/product-images.php:180, ../dist/woo-product-variation-gallery/templates/swiper-product-images.php:190, ../templates/product-images.php:180, ../templates/swiper-product-images.php:190
+#: ../templates/product-images.php:187, ../templates/swiper-product-images.php:197
 msgid "Awaiting product image"
 msgstr ""

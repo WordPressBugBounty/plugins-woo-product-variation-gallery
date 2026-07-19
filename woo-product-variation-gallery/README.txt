@@ -4,7 +4,7 @@ Tags: product variation gallery, woocommerce variation image gallery, additional
 Requires at least: 6.0
 Tested up to: 7.0
 Requires PHP: 7.4
-Stable tag: 2.4.0
+Stable tag: 2.4.1
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -127,7 +127,14 @@ Yes, it is.
 
 == Changelog ==
 
+= 2.4.1 (Jul 19, 2026) =
+Fixed: Restored `dirname()` method so older addons no longer trigger a fatal error.
+Fixed: Featured/main image no longer renders twice when it is also added to the product/variation gallery.
+
 = 2.4.0 (Jul 16, 2026) =
+Improved: Major UI upgrade — variation switching is now smooth and seamless, with an eased gallery transition, no thumbnail gap jump, and a transparent preloader that also shows with the "No effect" style (when the preloader is enabled).
+Fixed: Featured/main image no longer renders twice in the gallery when it is also added to the product gallery.
+Improved: Clicking "Clear" now resets the gallery to the default images and selects the main product image.
 Fixed: Gap beside fallback image for variations without a gallery.
 Changed: Moved plugin constants to the main file and removed redundant getter methods.
 Changed: Removed unused helper methods and dead code.

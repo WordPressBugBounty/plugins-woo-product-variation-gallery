@@ -48,6 +48,13 @@ if ( 'variable' === $product_type && $default_variation_id > 0 ) {
 		array_shift( $attachment_ids );
 	}
 }
+
+// Prevent the featured/main image from rendering twice when it is also added to
+// the product/variation gallery: it is output separately as the main image.
+if ( $post_thumbnail_id ) {
+	$attachment_ids = array_values( array_diff( $attachment_ids, array( (int) $post_thumbnail_id ) ) );
+}
+
 $has_gallery_thumbnail = ( $has_post_thumbnail && ( count( $attachment_ids ) > 0 ) );
 
 $only_has_post_thumbnail = ( $has_post_thumbnail && ( count( $attachment_ids ) === 0 ) );
