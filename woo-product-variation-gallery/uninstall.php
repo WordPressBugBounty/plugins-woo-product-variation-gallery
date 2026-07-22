@@ -6,10 +6,8 @@
 // If uninstall not called from WordPress, then exit
 defined( 'WP_UNINSTALL_PLUGIN' ) or die( 'Keep Silent' );
 
-$options = get_option( 'rtwpvg', array() );
-if ( ! empty( $options ) && isset( $options['remove_all_data'] ) && $options['remove_all_data'] ) {
-	global $wpdb;
-
+$rtwpvg_options = get_option( 'rtwpvg', array() );
+if ( ! empty( $rtwpvg_options ) && isset( $rtwpvg_options['remove_all_data'] ) && $rtwpvg_options['remove_all_data'] ) {
 	delete_option( 'rtwpvg' );
 	// Remove Option
 	delete_option( 'rtwpvg_pro_activate' );

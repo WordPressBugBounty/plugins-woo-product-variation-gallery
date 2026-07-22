@@ -28,7 +28,7 @@ class Offer {
 				if ( ! $installed_pro && $start <= $current && $current <= $end ) {
 					if ( get_option( 'woobundle_black_friday_offer_2024' ) != '1' ) {
 						if ( ! isset( $GLOBALS['woobundle_notice'] ) ) {
-							$GLOBALS['woobundle_notice'] = 'woobundle_notice';
+							$GLOBALS['woobundle_notice'] = 'woobundle_notice'; // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound -- Shared cross-plugin flag; ensures only one RadiusTheme notice shows at a time.
 							self::black_friday_notice();
 						}
 					}

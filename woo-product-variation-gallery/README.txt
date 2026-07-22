@@ -4,7 +4,7 @@ Tags: product variation gallery, woocommerce variation image gallery, additional
 Requires at least: 6.0
 Tested up to: 7.0
 Requires PHP: 7.4
-Stable tag: 2.4.1
+Stable tag: 2.4.2
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -126,6 +126,13 @@ Yes, it is.
 9. Tools Settings
 
 == Changelog ==
+
+
+= 2.4.2 (Jul 22, 2026) =
+Changed: Renamed filter `disable_woo_variation_gallery` to `rtwpvg_disable_variation_gallery`; old name deprecated but still works.
+Changed: Renamed filter `rtvg_pro_label` to `rtwpvg_pro_label`; old name deprecated but still works.
+Changed: Renamed filter `gallery_margin` to `rtwpvg_gallery_margin`; old name deprecated but still works.
+Fixed: Gallery AJAX endpoints no longer expose images of unpublished (draft/pending/private) products to unauthorized users. Thanks to Que Thanh Tuan for the responsible disclosure.
 
 = 2.4.1 (Jul 19, 2026) =
 Fixed: Restored `dirname()` method so older addons no longer trigger a fatal error.

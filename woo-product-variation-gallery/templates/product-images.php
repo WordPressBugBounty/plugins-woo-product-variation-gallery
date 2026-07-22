@@ -15,6 +15,8 @@ use Rtwpvg\Helpers\Functions;
 
 defined( 'ABSPATH' ) || exit;
 
+// phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound -- Template-scope variables; included within Functions::get_template(), not truly global.
+
 global $product;
 
 $columns    = absint( apply_filters( 'rtwpvg_thumbnails_columns', rtwpvg()->get_option( 'thumbnails_columns' ) ) );

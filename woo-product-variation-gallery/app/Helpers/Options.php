@@ -119,8 +119,8 @@ class Options {
 							'type'     => 'number',
 							'default'  => absint( apply_filters( 'rtwpvg_gallery_margin', 30 ) ),
 							'desc_tip' => esc_html__( 'Slider gallery bottom margin in pixel', 'woo-product-variation-gallery' ),
-							/* translators: %s: margin */
-							'desc'     => sprintf( esc_html__( 'Slider gallery bottom margin in pixel. Default value is: %d. Limit: 10-100.', 'woo-product-variation-gallery' ), apply_filters( 'gallery_margin', 30 ) ),
+							/* translators: %d: margin in pixels */
+							'desc'     => sprintf( esc_html__( 'Slider gallery bottom margin in pixel. Default value is: %d. Limit: 10-100.', 'woo-product-variation-gallery' ), apply_filters_deprecated( 'gallery_margin', array( apply_filters( 'rtwpvg_gallery_margin', 30 ) ), '2.4.3', 'rtwpvg_gallery_margin' ) ), // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound -- Deprecated legacy hook, retained for backward compatibility.
 							'id'       => 'gallery_margin',
 							'min'      => 10,
 							'max'      => 100,

@@ -93,7 +93,7 @@ class SettingsAPI {
 	 */
 	private function clear_all_gallery_transients() {
 		global $wpdb;
-		$wpdb->query( "DELETE FROM {$wpdb->options} WHERE option_name LIKE '_transient_rtwpvg_%' OR option_name LIKE '_transient_timeout_rtwpvg_%'" );
+		$wpdb->query( "DELETE FROM {$wpdb->options} WHERE option_name LIKE '_transient_rtwpvg_%' OR option_name LIKE '_transient_timeout_rtwpvg_%'" ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Bulk transient purge; no cache to invalidate on DELETE.
 	}
 
 	private function update_licencing_status() {
@@ -320,7 +320,9 @@ class SettingsAPI {
 			} else {
 
 				$pro_label = ( isset( $field['is_pro'] ) && $field['is_pro'] ) && ! function_exists( 'rtwpvgp' ) ? '<span class="rtvg-pro rtvg-tooltip">' . esc_html__( '[Pro]', 'woo-product-variation-gallery' ) . '<span class="rtvg-tooltiptext">' . esc_html__( 'This is premium field', 'woo-product-variation-gallery' ) . '</span></span>' : '';
-				$pro_label = apply_filters( 'rtvg_pro_label', $pro_label );
+				$pro_label = apply_filters( 'rtwpvg_pro_label', $pro_label );
+				// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound -- Deprecated legacy hook, retained for backward compatibility.
+				$pro_label = apply_filters_deprecated( 'rtvg_pro_label', array( $pro_label ), '2.4.3', 'rtwpvg_pro_label' );
 
 				$html .= sprintf(
 					'<div class="rtwpvg-field-label">%s %s</div>',

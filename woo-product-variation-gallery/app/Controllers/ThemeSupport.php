@@ -41,6 +41,7 @@ class ThemeSupport {
 	 */
 	public function rtwpvg_product_badge( $product ) {
 		// BeRocket - Advanced Product Labels for WooCommerce.
+		// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound -- Third-party hook owned by BeRocket, intentionally invoked for compatibility.
 		do_action( 'berocket_apl_set_label', true, $product );
 	}
 
@@ -99,7 +100,10 @@ class ThemeSupport {
 
 		// Disable gallery on specific product
 
-		if ( apply_filters( 'disable_woo_variation_gallery', false ) ) {
+		$disable_gallery = apply_filters( 'rtwpvg_disable_variation_gallery', false );
+		// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals -- Deprecated legacy hook, retained for backward compatibility.
+		$disable_gallery = apply_filters_deprecated( 'disable_woo_variation_gallery', array( $disable_gallery ), '2.3.24', 'rtwpvg_disable_variation_gallery' );
+		if ( $disable_gallery ) {
 			return $old_template;
 		}
 

@@ -242,7 +242,10 @@ class Hooks {
 
 		// Disable gallery on specific product
 
-		if ( apply_filters( 'disable_woo_variation_gallery', false ) ) {
+		$disable_gallery = apply_filters( 'rtwpvg_disable_variation_gallery', false );
+		// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals -- Deprecated legacy hook, retained for backward compatibility.
+		$disable_gallery = apply_filters_deprecated( 'disable_woo_variation_gallery', array( $disable_gallery ), '2.3.24', 'rtwpvg_disable_variation_gallery' );
+		if ( $disable_gallery ) {
 			return $old_template;
 		}
 
@@ -373,8 +376,38 @@ class Hooks {
 	public function get_default_gallery_images() {
         // phpcs:ignore WordPress.Security.NonceVerification.Missing
 		$product_id = isset( $_POST['product_id'] ) ? absint( $_POST['product_id'] ) : 0;
-		$images     = Functions::get_gallery_images( $product_id );
+
+		if ( ! $this->is_product_readable( $product_id ) ) {
+			wp_send_json_error( [], 404 );
+		}
+
+		$images = Functions::get_gallery_images( $product_id );
 		wp_send_json_success( apply_filters( 'rtwpvg_get_default_gallery_images', $images, $product_id ) );
+	}
+
+	/**
+	 * Verify a product may be exposed to the current (possibly unauthenticated) caller.
+	 *
+	 * Prevents information disclosure on the public, nonce-less gallery AJAX endpoints:
+	 * only published products are served to guests, while draft/pending/private products
+	 * require the caller to hold read capability for that specific post.
+	 *
+	 * @param int $product_id Product ID to authorise.
+	 *
+	 * @return bool True when the product exists and may be read by the caller.
+	 */
+	protected function is_product_readable( $product_id ) {
+		if ( ! $product_id ) {
+			return false;
+		}
+
+		$product = wc_get_product( $product_id );
+
+		if ( ! $product ) {
+			return false;
+		}
+
+		return 'publish' === $product->get_status() || current_user_can( 'read_post', $product_id );
 	}
 
 	/**
@@ -395,6 +428,10 @@ class Hooks {
 
 		if ( ! $variation_id ) {
 			wp_send_json_error( [], 400 );
+		}
+
+		if ( ! $this->is_product_readable( $product_id ) ) {
+			wp_send_json_error( [], 404 );
 		}
 
 		$images = Functions::get_variation_gallery( $product_id, $variation_id );

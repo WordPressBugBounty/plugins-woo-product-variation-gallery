@@ -51,7 +51,7 @@ class BlackFridayV2 {
 			return;
 		}
 
-		$GLOBALS['woobundle_notice'] = 'woobundle_notice';
+		$GLOBALS['woobundle_notice'] = 'woobundle_notice'; // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound -- Shared cross-plugin flag; ensures only one RadiusTheme notice shows at a time.
 		self::display_notice();
 	}
 
