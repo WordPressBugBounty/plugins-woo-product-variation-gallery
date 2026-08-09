@@ -4,7 +4,7 @@ Tags: product variation gallery, woocommerce variation image gallery, additional
 Requires at least: 6.0
 Tested up to: 7.0
 Requires PHP: 7.4
-Stable tag: 2.4.2
+Stable tag: 2.4.3
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -127,6 +127,8 @@ Yes, it is.
 
 == Changelog ==
 
+= 2.4.3 (Aug 09, 2026) =
+Fixed: Fix auth bypass in variation gallery AJAX endpoint
 
 = 2.4.2 (Jul 22, 2026) =
 Changed: Renamed filter `disable_woo_variation_gallery` to `rtwpvg_disable_variation_gallery`; old name deprecated but still works.

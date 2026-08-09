@@ -27,8 +27,8 @@ class Hooks {
 		add_action( 'wp_ajax_rtwpvg_get_default_gallery_images', [ $this, 'get_default_gallery_images' ] );
 		add_action( 'wp_ajax_nopriv_rtwpvg_get_default_gallery_images', [ $this, 'get_default_gallery_images' ] );
 
-		add_action( 'wp_ajax_rtwpvg_get_variation_gallery', [ $this, 'get_variation_gallery' ] );
-		add_action( 'wp_ajax_nopriv_rtwpvg_get_variation_gallery', [ $this, 'get_variation_gallery' ] );
+		add_action( 'wp_ajax_rtwpvg_get_variation_gallery', [ $this, 'ajax_get_variation_gallery' ] );
+		add_action( 'wp_ajax_nopriv_rtwpvg_get_variation_gallery', [ $this, 'ajax_get_variation_gallery' ] );
 
 		add_filter( 'rtwpvg_inline_style', [ $this, 'rtwpvg_add_inline_style' ], 9 );
 		add_action( 'woocommerce_update_product', [ $this, 'delete_cache_data' ], 10, 1 );
@@ -420,22 +420,30 @@ class Hooks {
 	 *
 	 * @return void
 	 */
-	public function get_variation_gallery() {
+	public function ajax_get_variation_gallery() {
 		// phpcs:ignore WordPress.Security.NonceVerification.Missing -- Public, read-only endpoint (mirrors WooCommerce core's nonce-less variation AJAX) for full-page-cache compatibility.
 		$variation_id = isset( $_POST['variation_id'] ) ? absint( $_POST['variation_id'] ) : 0;
-		// phpcs:ignore WordPress.Security.NonceVerification.Missing
-		$product_id = isset( $_POST['product_id'] ) ? absint( $_POST['product_id'] ) : 0;
 
 		if ( ! $variation_id ) {
 			wp_send_json_error( [], 400 );
 		}
 
-		if ( ! $this->is_product_readable( $product_id ) ) {
+		$variation = wc_get_product( $variation_id );
+
+		if ( ! $variation || ! $variation->is_type( 'variation' ) ) {
 			wp_send_json_error( [], 404 );
 		}
 
-		$images = Functions::get_variation_gallery( $product_id, $variation_id );
+		// Authorise the variation's ACTUAL parent, never the caller-supplied
+		// product_id, which an attacker can spoof with any published product.
+		$parent_id = absint( $variation->get_parent_id() );
 
-		wp_send_json_success( apply_filters( 'rtwpvg_get_variation_gallery', $images, $variation_id, $product_id ) );
+		if ( ! $this->is_product_readable( $parent_id ) ) {
+			wp_send_json_error( [], 404 );
+		}
+
+		$images = Functions::get_variation_gallery( $parent_id, $variation_id );
+
+		wp_send_json_success( apply_filters( 'rtwpvg_get_variation_gallery', $images, $variation_id, $parent_id ) );
 	}
 }
