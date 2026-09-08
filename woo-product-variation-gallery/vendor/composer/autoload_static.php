@@ -32,6 +32,7 @@ class ComposerStaticInitb502db0f24f171c143e9c21fd5b166bb
         'Rtwpvg\\Controllers\\ScriptLoader' => __DIR__ . '/../..' . '/app/Controllers/ScriptLoader.php',
         'Rtwpvg\\Controllers\\SettingsAPI' => __DIR__ . '/../..' . '/app/Controllers/SettingsAPI.php',
         'Rtwpvg\\Controllers\\ThemeSupport' => __DIR__ . '/../..' . '/app/Controllers/ThemeSupport.php',
+        'Rtwpvg\\Controllers\\VariationGalleryMigration' => __DIR__ . '/../..' . '/app/Controllers/VariationGalleryMigration.php',
         'Rtwpvg\\Helpers\\Functions' => __DIR__ . '/../..' . '/app/Helpers/Functions.php',
         'Rtwpvg\\Helpers\\Options' => __DIR__ . '/../..' . '/app/Helpers/Options.php',
         'Rtwpvg\\WooProductVariationGallery' => __DIR__ . '/../..' . '/app/WooProductVariationGallery.php',

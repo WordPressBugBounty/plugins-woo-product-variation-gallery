@@ -7,6 +7,11 @@ use Rtwpvgp\Controllers\Licensing;
 
 class SettingsAPI {
 
+	/**
+	 * Slug of the dedicated settings page under the WooCommerce menu.
+	 */
+	const PAGE_SLUG = 'rtwpvg-settings';
+
 	private $setting_id = 'rtwpvg';
 	private $defaults   = [];
 	private $sections   = [];
@@ -25,10 +30,82 @@ class SettingsAPI {
 		add_action( 'woocommerce_settings_tabs_' . $this->setting_id, [ $this, 'settings_tab' ] );
 		add_action( 'woocommerce_update_options_' . $this->setting_id, [ $this, 'update_settings' ] );
 		add_action( 'woocommerce_admin_field_' . $this->setting_id, [ $this, 'global_settings' ] );
+		add_action( 'wp_ajax_rtwpvg_save_settings', [ $this, 'ajax_save_settings' ] );
+		add_action( 'admin_menu', [ $this, 'register_submenu' ], 60 );
+		add_action( 'admin_init', [ $this, 'maybe_redirect_legacy_tab' ] );
+		add_action( 'in_admin_header', [ $this, 'suppress_admin_notices' ], PHP_INT_MAX );
+	}
 
-		if ( ( isset( $_GET['page'] ) && $_GET['page'] == 'wc-settings' ) && ( isset( $_GET['tab'] ) && $_GET['tab'] == 'rtwpvg' ) ) { // phpcs:ignore
-			add_action( 'admin_footer', [ $this, 'pro_alert_html' ] );
+	/**
+	 * Register the "Variation Gallery" submenu under the WooCommerce menu.
+	 *
+	 * @return void
+	 */
+	public function register_submenu() {
+		add_submenu_page(
+			'woocommerce',
+			esc_html__( 'Variation Gallery', 'woo-product-variation-gallery' ),
+			esc_html__( 'Variation Gallery', 'woo-product-variation-gallery' ),
+			'manage_woocommerce',
+			self::PAGE_SLUG,
+			[ $this, 'render_settings_page' ]
+		);
+	}
+
+	/**
+	 * Redirect the legacy WooCommerce settings tab (wc-settings&tab=rtwpvg) to
+	 * the dedicated submenu page so both entry points land in the same place.
+	 *
+	 * @return void
+	 */
+	public function maybe_redirect_legacy_tab() {
+		if ( ! is_admin() || wp_doing_ajax() ) {
+			return;
 		}
+
+		$page = isset( $_GET['page'] ) ? sanitize_key( wp_unslash( $_GET['page'] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Read-only screen routing.
+		$tab  = isset( $_GET['tab'] ) ? sanitize_key( wp_unslash( $_GET['tab'] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Read-only screen routing.
+
+		if ( 'wc-settings' === $page && $this->setting_id === $tab ) {
+			// Carry a deep link (…&section=license) over to the hash router.
+			$section  = isset( $_GET['section'] ) ? sanitize_key( wp_unslash( $_GET['section'] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Read-only screen routing.
+			$redirect = admin_url( 'admin.php?page=' . self::PAGE_SLUG );
+			if ( $section ) {
+				$redirect .= '#/' . $section;
+			}
+
+			wp_safe_redirect( $redirect );
+			exit;
+		}
+	}
+
+	/**
+	 * Keep the dedicated settings screen clean by removing third-party admin
+	 * notices (theme license, TGM "required plugin" prompts, etc.) that
+	 * WordPress otherwise injects above the settings app.
+	 *
+	 * @return void
+	 */
+	public function suppress_admin_notices() {
+		$screen = get_current_screen();
+		if ( ! $screen || 'woocommerce_page_' . self::PAGE_SLUG !== $screen->id ) {
+			return;
+		}
+
+		remove_all_actions( 'admin_notices' );
+		remove_all_actions( 'all_admin_notices' );
+		remove_all_actions( 'user_admin_notices' );
+	}
+
+	/**
+	 * Render the dedicated submenu settings page.
+	 *
+	 * @return void
+	 */
+	public function render_settings_page() {
+		echo '<div class="rtwpvg-settings-page">';
+		$this->render_settings_app();
+		echo '</div>';
 	}
 
 	public function set_defaults() {
@@ -58,7 +135,7 @@ class SettingsAPI {
 
 	public function plugin_action_links( $links ) {
 		$new_links = [
-			'<a href="' . admin_url( '/admin.php?page=wc-settings&tab=' . $this->setting_id ) . '">' . __( 'Settings', 'woo-product-variation-gallery' ) . '</a>',
+			'<a href="' . admin_url( 'admin.php?page=' . self::PAGE_SLUG ) . '">' . __( 'Settings', 'woo-product-variation-gallery' ) . '</a>',
 			'<a target="_blank" href="' . esc_url( 'https://radiustheme.com/demo/wordpress/woopluginspro/product/woocommerce-variation-images-gallery/' ) . '">' . esc_html__( 'Demo', 'woo-product-variation-gallery' ) . '</a>',
 			'<a target="_blank" href="' . esc_url( 'https://www.radiustheme.com/docs/variation-gallery/' ) . '">' . esc_html__( 'Documentation', 'woo-product-variation-gallery' ) . '</a>',
 		];
@@ -219,135 +296,330 @@ class SettingsAPI {
 		<?php
 	}
 
-	function global_settings() {
+	/**
+	 * WooCommerce settings-tab field callback (kept as a fallback in case the
+	 * redirect is short-circuited). Hides the WooCommerce save button and
+	 * renders the same React app.
+	 *
+	 * @return void
+	 */
+	public function global_settings() {
+		$GLOBALS['hide_save_button'] = true;
+		$this->render_settings_app();
+	}
+
+	/**
+	 * Print the React mount point, its data and the module bundle.
+	 *
+	 * The bundle is printed directly (not enqueued) so optimization/security
+	 * plugins can't strip it, and loaded as a module because it relies on
+	 * `import.meta`. JSON_HEX_TAG keeps any HTML in the data from breaking out
+	 * of the inline <script>.
+	 *
+	 * @return void
+	 */
+	private function render_settings_app() {
+		$data    = $this->get_react_data();
+		$version = ( defined( 'WP_DEBUG' ) && WP_DEBUG ) ? time() : RTWPVG_VERSION;
+		$suffix  = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
+		$src     = rtwpvg()->get_assets_uri( "js/settings{$suffix}.js" ) . '?ver=' . rawurlencode( (string) $version );
 		?>
-		<div id="rtwpvg-settings-container">
-			<div id="rtwpvg-settings-wrapper">
-				<?php $this->options_tabs(); ?>
-				<div id="rtwpvg-settings-tabs">
-					<?php
-					foreach ( $this->sections as $section ) :
-						if ( ! isset( $section['active'] ) ) {
-							$section['active'] = false;
-						}
-
-						$last_active_tab = $this->get_last_active_tab();
-
-						if ( $last_active_tab == 'license' && ! function_exists( 'rtwpvgp' ) && $section['id'] == 'general' ) { // phpcs:ignore
-							$last_active_tab = 'general';
-						}
-
-						$is_active = ( $last_active_tab == $section['id'] );
-
-						?>
-						<div id="<?php echo esc_attr( $section['id'] ); ?>"
-							 class="settings-tab rtwpvg-setting-tab"
-							 style="<?php echo ! $is_active ? 'display: none' : ''; ?>">
-							<div class="section-heading">
-								<h2><?php echo esc_html( $section['title'] ); ?></h2>
-								<?php echo $this->get_field_description( $section ); // phpcs:ignore ?>
-							</div>
-							<div class="rtwpvg-setting-fields-wrapper"><?php $this->do_settings_fields( $section['fields'] ); ?></div>
-						</div>
-					<?php endforeach; ?>
-				</div>
-				<?php $this->last_tab_input(); ?>
-			</div>
-			<div class="rtwpvg-doc-wrapper rt-doc-wrapper">
-				<div class="rt-doc-box">
-					<div class="item-header">
-						<div class="item-icon"><span class="dashicons dashicons-media-document"></span></div>
-						<h3 class="item-title">Documentation</h3>
-					</div>
-					<div class="item-content">
-						<p>Get started by spending some time with the documentation.</p>
-						<a target="_blank"
-						   href="https://www.radiustheme.com/docs/variation-gallery/"
-						   class="rt-admin-btn">Documentation</a>
-					</div>
-				</div>
-
-				<div class="rt-doc-box">
-					<div class="item-header">
-						<div class="item-icon"><span class="dashicons dashicons-sos"></span></div>
-						<h3 class="item-title">Need Help?</h3>
-					</div>
-					<div class="item-content">
-						<p>Stuck with something? Please create a
-							<a target="_blank" href="https://www.radiustheme.com/contact/">ticket here</a>.
-							For emergency case join our <a target="_blank" href="https://www.radiustheme.com/">live
-								chat</a>.</p>
-						<a target="_blank" href="https://www.radiustheme.com/contact/" class="rt-admin-btn">Get Support</a>
-					</div>
-				</div>
-
-				<div class="rt-doc-box">
-					<div class="item-header">
-						<div class="item-icon"><span class="dashicons dashicons-smiley"></span></div>
-						<h3 class="item-title">Happy Our Work?</h3>
-					</div>
-					<div class="item-content">
-						<p>Thank you for choosing Variation Gallery for WooCommerce. If you have found our plugin useful and makes you smile, please consider giving us a 5-star rating on WordPress.org. It will help us to grow.</p>
-						<a target="_blank"
-						   href="https://wordpress.org/support/plugin/woo-product-variation-gallery/reviews/#new-post"
-						   class="rt-admin-btn">Yes, You Deserve It</a>
-					</div>
-				</div>
-			</div>
+		<div class="rtwpvg-settings">
+			<div id="rtwpvg-settings-root"></div>
 		</div>
+		<script type="text/javascript">
+			window.rtwpvgSettings = <?php echo wp_json_encode( $data, JSON_HEX_TAG | JSON_HEX_AMP ); ?>;
+		</script>
+		<script type="module" id="rtwpvg-settings-js" src="<?php echo esc_url( $src ); ?>"></script>
 		<?php
 	}
 
-	private function do_settings_fields( $fields ) {
-		foreach ( (array) $fields as $field ) {
-			$custom_attributes = $this->array2html_attr( isset( $field['attributes'] ) ? $field['attributes'] : [] );
-			$wrapper_id        = ! empty( $field['id'] ) ? esc_attr( $field['id'] ) . '-wrapper' : '';
-			$dependency        = ! empty( $field['require'] ) ? '' : '';
-			$html              = '';
-			if ( $field['type'] == 'title' ) {
-				$html .= sprintf(
-					'<div class="rtwpvg-item-title">%s%s</div>',
-					isset( $field['title'] ) && $field['title'] ? "<h3>{$field['title']}</h3>" : '',
-					$this->get_field_description( $field )
-				);
-			} elseif ( $field['type'] == 'feature' ) {
-				$html .= sprintf(
-					'<div class="rtwpvg-item-feature">%s%s%s</div>',
-					isset( $field['title'] ) && $field['title'] ? "<h3>{$field['title']}</h3>" : '',
-					$this->get_field_description( $field ),
-					$this->field_callback( $field )
-				);
-			} else {
+	/**
+	 * Build the data object consumed by the React settings app.
+	 *
+	 * @return array
+	 */
+	public function get_react_data() {
+		$is_pro = function_exists( 'rtwpvgp' );
 
-				$pro_label = ( isset( $field['is_pro'] ) && $field['is_pro'] ) && ! function_exists( 'rtwpvgp' ) ? '<span class="rtvg-pro rtvg-tooltip">' . esc_html__( '[Pro]', 'woo-product-variation-gallery' ) . '<span class="rtvg-tooltiptext">' . esc_html__( 'This is premium field', 'woo-product-variation-gallery' ) . '</span></span>' : '';
-				$pro_label = apply_filters( 'rtwpvg_pro_label', $pro_label );
-				// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound -- Deprecated legacy hook, retained for backward compatibility.
-				$pro_label = apply_filters_deprecated( 'rtvg_pro_label', array( $pro_label ), '2.4.3', 'rtwpvg_pro_label' );
+		$values     = [];
+		$image_urls = [];
+		foreach ( $this->get_saveable_fields() as $field ) {
+			$value                  = $this->get_option( $field['id'] );
+			$values[ $field['id'] ] = $value;
 
-				$html .= sprintf(
-					'<div class="rtwpvg-field-label">%s %s</div>',
-					isset( $field['label_for'] ) && ! empty( $field['label_for'] ) ?
-						sprintf( '<label for="%s">%s</label>', esc_attr( $field['label_for'] ), $field['title'] ) :
-						$field['title'],
-					wp_kses(
-						$pro_label,
-						[
-							'div'  => [ 'class' => [] ],
-							'span' => [ 'class' => [] ],
-						]
-					)
-				);
-
-				$pro_class       = ( isset( $field['is_pro'] ) && $field['is_pro'] ) && ! function_exists( 'rtwpvgp' ) ? 'pro-field' : '';
-				$pro_overlay_div = ( isset( $field['is_pro'] ) && $field['is_pro'] ) && ! function_exists( 'rtwpvgp' ) ? '<div class="pro-field-overlay"></div>' : '';
-				$html           .= sprintf( '<div class="rtwpvg-field %s">%s %s</div>', $pro_class, $pro_overlay_div, $this->field_callback( $field ) );
+			if ( 'image' === $field['type'] && $value ) {
+				$url = wp_get_attachment_image_url( absint( $value ), 'medium' );
+				if ( $url ) {
+					$image_urls[ $field['id'] ] = $url;
+				}
 			}
-			echo sprintf( '<div id="%s" class="rtwpvg-setting-field" %s %s>%s</div>', $wrapper_id, $custom_attributes, $dependency, $html ); // phpcs:ignore
+		}
+
+		return [
+			'sections'      => array_values( $this->sections ),
+			'values'        => $values,
+			'imageUrls'     => $image_urls,
+			'isPro'         => $is_pro,
+			'ajaxUrl'       => admin_url( 'admin-ajax.php' ),
+			'nonce'         => wp_create_nonce( 'rtwpvg_nonce' ),
+			'saveAction'    => 'rtwpvg_save_settings',
+			'licenseStatus' => (string) $this->get_option( 'license_status' ),
+			'licenseNonce'  => wp_create_nonce( 'rtwpvg_manage_licensing' ),
+			'licenseAction' => 'rtwpvg_manage_licensing',
+			'logoUrl'       => rtwpvg()->get_images_uri( 'icon-128x128.gif' ),
+			'proUrl'        => 'https://www.radiustheme.com/downloads/woocommerce-variation-images-gallery/?utm_source=WordPress&utm_medium=gallery&utm_campaign=pro_click',
+			'docUrl'        => 'https://www.radiustheme.com/docs/variation-gallery/',
+			'supportUrl'    => 'https://www.radiustheme.com/contact/',
+			'reviewUrl'     => 'https://wordpress.org/support/plugin/woo-product-variation-gallery/reviews/#new-post',
+			'version'       => RTWPVG_VERSION,
+			'strings'       => [
+				'pageTitle'       => esc_html__( 'Variation Gallery', 'woo-product-variation-gallery' ),
+				'save'            => esc_html__( 'Save Changes', 'woo-product-variation-gallery' ),
+				'saving'          => esc_html__( 'Saving…', 'woo-product-variation-gallery' ),
+				'saved'           => esc_html__( 'Changes Saved', 'woo-product-variation-gallery' ),
+				/* translators: %s: field label. */
+				'requiredField'   => esc_html__( '%s is required.', 'woo-product-variation-gallery' ),
+				'requiredError'   => esc_html__( 'Please fill the required fields before saving.', 'woo-product-variation-gallery' ),
+				'upgrade'         => esc_html__( 'Upgrade to Pro', 'woo-product-variation-gallery' ),
+				'licenseActive'   => esc_html__( 'License Active', 'woo-product-variation-gallery' ),
+				'licenseInvalid'  => esc_html__( 'Invalid Licence', 'woo-product-variation-gallery' ),
+				'pro'             => esc_html__( 'Pro', 'woo-product-variation-gallery' ),
+				'proField'        => esc_html__( 'This is a premium field. Upgrade to Pro to use it.', 'woo-product-variation-gallery' ),
+				'cancel'          => esc_html__( 'Cancel', 'woo-product-variation-gallery' ),
+				'proAlertTitle'   => esc_html__( 'Pro field alert!', 'woo-product-variation-gallery' ),
+				'proAlertMessage' => esc_html__( 'Sorry! this is a pro field. To use this field, you need to use pro plugin.', 'woo-product-variation-gallery' ),
+				'selectImage'     => esc_html__( 'Select Image', 'woo-product-variation-gallery' ),
+				'changeImage'     => esc_html__( 'Change Image', 'woo-product-variation-gallery' ),
+				'removeImage'     => esc_html__( 'Remove', 'woo-product-variation-gallery' ),
+			],
+		];
+	}
+
+	/**
+	 * Flat list of persistable fields (excludes layout-only field types).
+	 *
+	 * @return array
+	 */
+	private function get_saveable_fields() {
+		$skip   = [ 'title', 'feature', 'card' ];
+		$fields = [];
+		foreach ( $this->sections as $section ) {
+			foreach ( $section['fields'] as $field ) {
+				if ( empty( $field['id'] ) || in_array( $field['type'], $skip, true ) ) {
+					continue;
+				}
+				$fields[ $field['id'] ] = $field;
+			}
+		}
+
+		return $fields;
+	}
+
+	/**
+	 * AJAX handler: persist settings sent by the React app to the `rtwpvg`
+	 * option. Unknown keys are ignored and existing keys not present in the
+	 * payload are preserved (no data migration).
+	 *
+	 * @return void
+	 */
+	public function ajax_save_settings() {
+		if ( ! current_user_can( 'manage_woocommerce' ) ) {
+			wp_send_json_error( [ 'message' => esc_html__( 'Permission denied.', 'woo-product-variation-gallery' ) ], 403 );
+		}
+
+		$nonce = isset( $_POST['nonce'] ) ? sanitize_text_field( wp_unslash( $_POST['nonce'] ) ) : '';
+		if ( ! wp_verify_nonce( $nonce, 'rtwpvg_nonce' ) ) {
+			wp_send_json_error( [ 'message' => esc_html__( 'Invalid or expired request. Please reload the page.', 'woo-product-variation-gallery' ) ], 403 );
+		}
+
+		$payload = isset( $_POST['payload'] ) ? json_decode( wp_unslash( $_POST['payload'] ), true ) : null; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Each value is sanitized per field type below.
+		if ( ! is_array( $payload ) ) {
+			wp_send_json_error( [ 'message' => esc_html__( 'Invalid payload.', 'woo-product-variation-gallery' ) ], 400 );
+		}
+
+		$is_pro    = function_exists( 'rtwpvgp' );
+		$allowed   = $this->get_saveable_fields();
+		$sanitized = [];
+		foreach ( $payload as $key => $value ) {
+			if ( ! isset( $allowed[ $key ] ) ) {
+				continue;
+			}
+			// Never let a free user overwrite Pro-only values.
+			if ( ! empty( $allowed[ $key ]['is_pro'] ) && ! $is_pro ) {
+				continue;
+			}
+			$sanitized[ $key ] = $this->sanitize_field_value( $allowed[ $key ], $value );
+		}
+
+		$existing = get_option( $this->setting_id );
+		$existing = is_array( $existing ) ? $existing : [];
+		$merged   = array_merge( $existing, $sanitized );
+
+		// Reject the save when a visible required field is left empty.
+		$errors = $this->get_required_errors( $merged, $allowed );
+		if ( ! empty( $errors ) ) {
+			wp_send_json_error(
+				[
+					'message' => implode( ' ', $errors ),
+					'errors'  => $errors,
+				],
+				422
+			);
+		}
+
+		update_option( $this->setting_id, apply_filters( 'rtwpvg_update_option', $merged ) );
+
+		// Gallery markup is cached per product, so any settings change has to
+		// invalidate it (previously done by the WooCommerce save handler).
+		$this->clear_all_gallery_transients();
+
+		do_action( 'rtwpvg_settings_saved', $merged, $sanitized );
+
+		wp_send_json_success( [ 'message' => esc_html__( 'Settings saved.', 'woo-product-variation-gallery' ) ] );
+	}
+
+	/**
+	 * Sanitize one incoming value according to its field definition.
+	 *
+	 * @param array $field Field definition.
+	 * @param mixed $value Raw value from the React app.
+	 *
+	 * @return mixed
+	 */
+	private function sanitize_field_value( $field, $value ) {
+		$type = isset( $field['type'] ) ? $field['type'] : 'text';
+
+		switch ( $type ) {
+			case 'checkbox':
+			case 'switch':
+				return $this->to_bool( $value ) ? 1 : 0;
+
+			case 'image':
+				return absint( $value );
+
+			case 'number':
+				$number = is_numeric( $value ) ? (float) $value : 0;
+				if ( isset( $field['min'] ) && $number < (float) $field['min'] ) {
+					$number = (float) $field['min'];
+				}
+				if ( isset( $field['max'] ) && $number > (float) $field['max'] ) {
+					$number = (float) $field['max'];
+				}
+
+				return ( $number == (int) $number ) ? (int) $number : $number; // phpcs:ignore Universal.Operators.StrictComparisons.LooseEqual -- Intentional numeric comparison.
+
+			case 'select':
+			case 'radio':
+				$value   = sanitize_text_field( (string) $value );
+				$options = isset( $field['options'] ) && is_array( $field['options'] ) ? $field['options'] : [];
+				// Fall back to the default when the value is not a known option.
+				if ( $options && ! array_key_exists( $value, $options ) ) {
+					return isset( $field['default'] ) ? $field['default'] : '';
+				}
+
+				return $value;
+
+			default:
+				return $this->sanitize_setting_value( $value );
 		}
 	}
 
-	private function last_tab_input() {
-		printf( '<input type="hidden" id="_last_active_tab" name="%s[_last_active_tab]" value="%s">', esc_attr( $this->setting_id ), esc_attr( $this->get_last_active_tab() ) );
+	/**
+	 * Recursively sanitize a setting value coming from the React app.
+	 *
+	 * @param mixed $value Raw value.
+	 *
+	 * @return mixed
+	 */
+	private function sanitize_setting_value( $value ) {
+		if ( is_array( $value ) ) {
+			return array_map( [ $this, 'sanitize_setting_value' ], $value );
+		}
+
+		return sanitize_text_field( wp_unslash( (string) $value ) );
+	}
+
+	/**
+	 * Normalize the loose truthy values the UI can send ("0"/"false"/"").
+	 *
+	 * @param mixed $value Raw value.
+	 *
+	 * @return bool
+	 */
+	private function to_bool( $value ) {
+		if ( is_string( $value ) ) {
+			return ! in_array( strtolower( trim( $value ) ), [ '', '0', 'false', 'no' ], true );
+		}
+
+		return (bool) $value;
+	}
+
+	/**
+	 * Evaluate a field `condition` against the given settings.
+	 *
+	 * Mirrors the client-side check in utils/conditions.ts: boolean expectations
+	 * are compared loosely (so "0"/"false" read as false) and `compare => '!='`
+	 * inverts the result.
+	 *
+	 * @param array $condition Condition definition (field, value, compare).
+	 * @param array $values    Settings to evaluate against.
+	 *
+	 * @return bool
+	 */
+	private function condition_matches( $condition, $values ) {
+		$dep      = isset( $condition['field'] ) ? $condition['field'] : '';
+		$expected = isset( $condition['value'] ) ? $condition['value'] : '';
+		$actual   = isset( $values[ $dep ] ) ? $values[ $dep ] : '';
+
+		if ( is_bool( $expected ) ) {
+			$matches = ( $this->to_bool( $actual ) === $expected );
+		} else {
+			$matches = ( (string) $actual === (string) $expected );
+		}
+
+		if ( isset( $condition['compare'] ) && '!=' === $condition['compare'] ) {
+			return ! $matches;
+		}
+
+		return $matches;
+	}
+
+	/**
+	 * Collect "required" validation errors for the given (merged) settings.
+	 *
+	 * A field is only enforced when it is currently visible — i.e. it has no
+	 * `condition`, or its `condition` field/value matches the merged data.
+	 *
+	 * @param array $values  Merged settings that would be persisted.
+	 * @param array $allowed Flat map of saveable field definitions.
+	 *
+	 * @return array Map of field id => error message.
+	 */
+	private function get_required_errors( $values, $allowed ) {
+		$errors = [];
+
+		foreach ( $allowed as $id => $field ) {
+			if ( empty( $field['required'] ) ) {
+				continue;
+			}
+
+			// Respect conditional visibility: skip hidden required fields.
+			if ( ! empty( $field['condition'] ) && ! $this->condition_matches( $field['condition'], $values ) ) {
+				continue;
+			}
+
+			$value = isset( $values[ $id ] ) ? trim( (string) $values[ $id ] ) : '';
+			if ( '' === $value ) {
+				$errors[ $id ] = sprintf(
+					/* translators: %s: field label. */
+					esc_html__( '%s is required.', 'woo-product-variation-gallery' ),
+					isset( $field['title'] ) ? wp_strip_all_tags( $field['title'] ) : $id
+				);
+			}
+		}
+
+		return $errors;
 	}
 
 	public function field_callback( $field ) {
@@ -632,7 +904,11 @@ class SettingsAPI {
 		$default = $this->get_default( $option );
 		$options = get_option( $this->setting_id );
 		$is_new  = ( ! is_array( $options ) && is_bool( $options ) );
-		if ( $is_new ) {
+		// A saved option array that predates a newly added field must still fall
+		// back to that field's default. Checkboxes are excluded: an unchecked box
+		// is simply absent, so falling back would make it impossible to turn off.
+		$missing = ( is_array( $options ) && ! isset( $options[ $option ] ) && isset( $default['type'] ) && ! in_array( $default['type'], [ 'checkbox', 'switch' ], true ) );
+		if ( $is_new || $missing ) {
 			$value = isset( $default['value'] ) ? $default['value'] : $givenDefault;
 		} else {
 			$value = isset( $options[ $option ] ) ? $options[ $option ] : '';

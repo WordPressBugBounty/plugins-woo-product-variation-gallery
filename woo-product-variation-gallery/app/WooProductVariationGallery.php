@@ -10,6 +10,7 @@ use Rtwpvg\Controllers\SettingsAPI;
 use Rtwpvg\Controllers\ScriptLoader;
 use Rtwpvg\Controllers\ThemeSupport;
 use Rtwpvg\Controllers\Notifications;
+use Rtwpvg\Controllers\VariationGalleryMigration;
 
 defined( 'ABSPATH' ) or die( 'Keep Quit' );
 
@@ -46,6 +47,7 @@ if ( ! class_exists( 'WooProductVariationGallery' ) ) :
 				new ProductMeta();
 				new Hooks();
 				new ThemeSupport();
+				new VariationGalleryMigration();
 			}
 		}
 

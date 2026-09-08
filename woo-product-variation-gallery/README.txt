@@ -2,9 +2,9 @@
 Contributors: techlabpro1, mamunnu
 Tags: product variation gallery, woocommerce variation image gallery, additional variation image gallery, product variation image gallery, product variation image
 Requires at least: 6.0
-Tested up to: 7.0
+Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 2.4.3
+Stable tag: 2.4.4
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -127,35 +127,16 @@ Yes, it is.
 
 == Changelog ==
 
-= 2.4.3 (Aug 09, 2026) =
-Fixed: Fix auth bypass in variation gallery AJAX endpoint
+= 2.4.4 (Sep 08, 2026) =
 
-= 2.4.2 (Jul 22, 2026) =
-Changed: Renamed filter `disable_woo_variation_gallery` to `rtwpvg_disable_variation_gallery`; old name deprecated but still works.
-Changed: Renamed filter `rtvg_pro_label` to `rtwpvg_pro_label`; old name deprecated but still works.
-Changed: Renamed filter `gallery_margin` to `rtwpvg_gallery_margin`; old name deprecated but still works.
-Fixed: Gallery AJAX endpoints no longer expose images of unpublished (draft/pending/private) products to unauthorized users. Thanks to Que Thanh Tuan for the responsible disclosure.
-
-= 2.4.1 (Jul 19, 2026) =
-Fixed: Restored `dirname()` method so older addons no longer trigger a fatal error.
-Fixed: Featured/main image no longer renders twice when it is also added to the product/variation gallery.
-
-= 2.4.0 (Jul 16, 2026) =
-Improved: Major UI upgrade — variation switching is now smooth and seamless, with an eased gallery transition, no thumbnail gap jump, and a transparent preloader that also shows with the "No effect" style (when the preloader is enabled).
-Fixed: Featured/main image no longer renders twice in the gallery when it is also added to the product gallery.
-Improved: Clicking "Clear" now resets the gallery to the default images and selects the main product image.
-Fixed: Gap beside fallback image for variations without a gallery.
-Changed: Moved plugin constants to the main file and removed redundant getter methods.
-Changed: Removed unused helper methods and dead code.
-Added: "No effect" option for Gallery Change Effect, now the default.
-Improved: Skip gallery re-render/re-init when a variation reuses the loaded gallery; just slide to its image.
-Fixed: Duplicate server-rendered image ids no longer force a rebuild when a variation reuses the same image set.
-Fixed: Thumbnail item gap now applied before the carousel initialises, preventing a shift on variation change.
-
-= 2.3.26 (Jun 22, 2026) =
-Fixed: Gallery flicker on initial page load caused by the forced reload of product variations.
-Fixed: Gallery reset and loading overlay now stay suppressed until the shopper actually changes a variation.
-Fixed: Prevented double-initialisation of the same gallery instance.
+Added: Latest WooCommerce compatibility.
+Added: Support for the WooCommerce 11.1 native variation gallery; existing galleries are migrated automatically.
+Added: New Variation Gallery settings page under the WooCommerce menu with sidebar navigation and search.
+Changed: Updated the Swiper slider library to 14.2.0.
+Changed: Removed Slick Carousel; all galleries now use Swiper.
+Changed: Settings now save automatically; the old settings tab redirects to the new page.
+Fixed: Gallery no longer renders an empty slide/thumbnail for images deleted from the media library.
+Fixed: Thumbnail slider now initializes in Elementor single-product templates that omit the Add to Cart widget.
 
 [See changelog for all versions.](https://raw.githubusercontent.com/radiustheme/changelog/refs/heads/main/woo-product-variation-gallery.txt)
 

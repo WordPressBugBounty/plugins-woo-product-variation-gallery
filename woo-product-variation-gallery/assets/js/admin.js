@@ -1,1 +1,512 @@
-!function(e){"use strict";function t(){e(document.body).trigger("init_tooltips")}function i(){e(document).off("click",".rtwpvg-add-image"),e(document).off("click",".rtwpvg-gallery-edit"),e(document).off("click",".rtwpvg-media-video-popup"),e(document).on("click",".rtwpvg-add-image",a),e(document).on("click",".rtwpvg-remove-image",r),e(document).on("click",".rtwpvg-gallery-edit",o),e(document).on("click",".rtwpvg-media-video-popup",n),e(".woocommerce_variation").each((function(){var t=e(this).find(".options");e(this).find(".rtwpvg-gallery-wrapper").insertBefore(t)}))}function a(t){t.preventDefault(),t.stopPropagation();var i=this,a=0,n=e(this).data("product_variation_id"),o=e(this).data("product_variation_loop"),r=e(this).parents(".rtwpvg-gallery-wrapper").find("input").map((function(){return Number(e(this).val())})).get();if(console.log(r),"undefined"!=typeof wp&&wp.media&&wp.media.editor){if(a)return void a.open();(a=wp.media.frames.select_image=wp.media({title:rtwpvg_admin.choose_image,button:{text:rtwpvg_admin.add_image},library:{type:["image"]},multiple:!0})).on("select",(function(){var t=a.state().get("selection").toJSON().map((function(e){if("image"===e.type){if(console.log(e),-1===r.indexOf(e.id)){var t=e.id,i=e.rtwpvg_video_link,a=e.sizes,l=(a=void 0===a?{}:a).thumbnail,d=a.full,s=l?l.url:d.url;return wp.template("rtwpvg-image")({id:t,url:s,product_variation_id:n,loop:o,rtwpvg_video_link:i})}alert("Cannot add duplicate items.")}})).join("");e(i).parent().prev().find(".rtwpvg-images").append(t),d(),l(i)})),a.open()}}function n(t){var i;t.preventDefault(),t.stopPropagation();var a=e(t.currentTarget).parents("li.image"),n=a.find("input").val();if(n){var o=wp.media.attachment(n),r=(null===(i=rtwpvg_admin)||void 0===i?void 0:i.pro_version)||null,l="2.3.12",d=r&&function(e,t){for(var i=e.split(".").map(Number),a=t.split(".").map(Number),n=0;n<Math.max(i.length,a.length);n++){var o=i[n]||0,r=a[n]||0;if(o>r)return!0;if(o<r)return!1}return!0}(r,l);o.fetch().done((function(){var t=o.toJSON(),i=(null==t?void 0:t.rtwpvg_video_link)||"",r=(null==t?void 0:t.rtwpvg_video_width)||"",s=(null==t?void 0:t.rtwpvg_video_height)||"",p='\n            <div class="custom-edit-modal" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 999999; display: flex; align-items: center; justify-content: center;">\n                <div class="modal-inner-wrapper" style="background: white; padding: 30px; border-radius: 8px; max-width: 400px; width: 90%;">\n                    <div class="modal-form-section" >\n                        <h2 style="margin-top:0">Poster Image</h2>\n                        <hr/>\n                        <div class="image-wrap" style="display: flex;justify-content: center;"><img src="'.concat(t.url,'" style="max-width: 250px; height: auto; margin-bottom: 20px;"></div>\n                        ').concat(d?"":'\n                        <div style="background: #fef7e0; border: 1px solid #e0c97d; color: #7a6000; padding: 10px 15px; border-radius: 6px; margin-bottom: 15px;">\n                            Video options are available in the <a href="https://www.radiustheme.com/downloads/woocommerce-variation-images-gallery/" style="color: red;font-size: 16px" target="_blank"><strong>Pro version</strong></a> <br/> (minimum version '.concat(l,")\n                        </div>\n                        "),'\n                        <label style="display: block; margin-bottom: 15px;">\n                            <strong>Video Url: </strong>\n                            <input ').concat(d?"":"disabled",' type="text" id="rtwpvg_video_link" value="').concat(i,'" placeholder="https://www.youtube.com/watch?v=zQKKUx2ECa8" style="width: 100%; padding: 8px; margin-top: 5px;">\n                            <p class="help">You can add a YouTube, Vimeo, TikTok, or uploaded video. <b>Example: https://www.youtube.com/watch?v=zQKKUx2ECa8</b> <br/> <a href="').concat(rtwpvg_admin.admin_url,'upload.php?mode=grid&attachment-filter=post_mime_type%3Avideo" target="_blank">Upload your video <span class="dashicons dashicons-video-alt3"></span></a></p>\n                        </label>\n                        <label style="display: block; margin-bottom: 15px;">\n                            <strong>Video Width: </strong>\n                            <input ').concat(d?"":"disabled",' type="text" id="rtwpvg_video_width" value="').concat(r,'" style="width: 100%; padding: 8px; margin-top: 5px;">\n                            <p class="help">Video Width. px or %. Empty for default. <b>Example: 575px</b> </p>\n                        </label>\n                        <label style="display: block; margin-bottom: 15px;">\n                            <strong>Video Height: </strong>\n                            <input ').concat(d?"":"disabled",' type="text" id="rtwpvg_video_height" value="').concat(s,'" style="width: 100%; padding: 8px; margin-top: 5px;">\n                            <p class="help">Video Height. px or %. Empty for default. <b>Example: 550px</b></p>\n                        </label>\n                    </div>\n                     <hr/>\n                    <div style="text-align: right;margin-top:15px">\n                        <button class="button" id="cancel-edit" style="margin-right: 10px;">Cancel</button>\n                        <button class="button button-primary" id="save-edit">Update</button>\n                    </div>\n                </div>\n            </div>');e("body").append(p),e("#cancel-edit").on("click",(function(){e(".custom-edit-modal").remove()})),e("#save-edit").on("click",(function(){var t,i=e("body").find("#rtwpvg_video_link"),o=e("body").find("#rtwpvg_video_width"),r=e("body").find("#rtwpvg_video_height");i.length&&o.length&&r.length?null!==(t=rtwpvg_admin)&&void 0!==t&&t.pro_version?e.ajax({url:ajaxurl,type:"POST",data:{action:"rtwpvg_update_attachment_video_meta",attachment_id:n,video_link:i.val(),video_width:o.val(),video_height:r.val(),_wpnonce:rtwpvg_admin.nonce||""},success:function(t){var i,n,o;null!=t&&null!==(i=t.data)&&void 0!==i&&i.hasVideo?a.addClass("video"):a.removeClass("video"),e("body").find(".modal-inner-wrapper").html(null==t||null===(n=t.data)||void 0===n?void 0:n.message),null!=t&&t.success&&setTimeout((function(){e("body").find(".custom-edit-modal").remove()}),800),console.log(null==t||null===(o=t.data)||void 0===o?void 0:o.message)}}):alert("It's Pro Feature"):alert("Required video fields are missing. Please reload the page.")}))})).fail((function(){console.error("Failed to load attachment")}))}}function o(t){t.preventDefault(),t.stopPropagation();var i=e(t.currentTarget).parents("li.image"),a=i.find("input"),n=a.val(),o=wp.media({title:"Edit Image",button:{text:"Update Image"},library:{type:"image"},multiple:!1});o.on("open",(function(){if(n){var e=o.state().get("selection"),t=wp.media.attachment(n);t.fetch(),e.add(t)}})),o.on("select",(function(){var e,t=o.state().get("selection").first().toJSON(),n=(null===(e=t.sizes)||void 0===e||null===(e=e.thumbnail)||void 0===e?void 0:e.url)||t.url,r=i.find("img");null!=t&&t.rtwpvg_video_link?i.addClass("video"):i.removeClass("video"),r.length&&r.attr("src",n),a.val(t.id)})),o.open(),l(this)}function r(t){t.preventDefault(),t.stopPropagation();var i=this;l(this),setTimeout((function(){e(i).parents("li.image").remove()}),1)}function l(t){e(t).closest(".woocommerce_variation").addClass("variation-needs-update"),e("button.cancel-variation-changes, button.save-variation-changes").removeAttr("disabled"),e("#variable_product_options").trigger("woocommerce_variations_input_changed")}function d(){e(".rtwpvg-images").sortable({items:"li.image",cursor:"move",scrollSensitivity:40,forcePlaceholderSize:!0,forceHelperSize:!1,helper:"clone",opacity:.65,placeholder:"rtwpvg-sortable-placeholder",start:function(e,t){t.item.css("background-color","#f6f6f6")},stop:function(e,t){t.item.removeAttr("style")},update:function(){l(this)}})}function s(){var t=e("#thumbnail_position-field").val();"grid"==t?(e("#thumbnail_slide-wrapper").hide(),e("#slider_arrow-wrapper").hide(),e("#slider_adaptive_height-wrapper").hide()):"left"==t||"right"==t?(e("#thumbnail_slide-wrapper").hide(),e("#slider_arrow-wrapper").show(),e("#slider_adaptive_height-wrapper").show()):(e("#thumbnail_slide-wrapper").show(),e("#slider_arrow-wrapper").show(),e("#slider_adaptive_height-wrapper").show())}e.fn.wpColorPicker&&e("input.rtwpvg-color-picker").wpColorPicker(),e("#rtwpvg-settings-wrapper").on("click",".nav-tab",(function(t){t.preventDefault();var i=e(this),a=i.data("target");if(i.addClass("nav-tab-active").siblings().removeClass("nav-tab-active"),e("#"+a).show().siblings().hide(),e("#_last_active_tab").val(a),history.pushState){var n=function(e,t){var i=window.location.href,a=location.hash;if((i=i.replace(a,"")).indexOf("?")>=0){var n=i.substring(i.indexOf("?")+1).split("&"),o=!1;n.forEach((function(i,a){i.split("=")[0]==e&&(n[a]=e+"="+t,o=!0)})),o||n.push(e+"="+t),i=i.substring(0,i.indexOf("?")+1)+n.join("&")}else i+="?"+e+"="+t;return i+a}("section",a);window.history.pushState({path:n},"",n)}})),e(".rtwpvg-setting-tab #license_key-wrapper").on("keyup","#license_key-field",(function(t){t.preventDefault(),e(".license-status").html("When add license key first click on Save changes")})),e(".rtwpvg-setting-tab #license_key-wrapper").on("click",".rt-licensing-btn",(function(t){t.preventDefault(),console.log("clicked");var i=e(this),a=i.hasClass("license_activate")?"license_activate":"license_deactivate";e.ajax({type:"POST",url:rtwpvg_admin.ajaxurl,data:{action:"rtwpvg_manage_licensing",type:a},beforeSend:function(){i.addClass("loading"),i.parents(".description").find(".rt-licence-msg").remove(),e('<span class="rt-icon-spinner animate-spin"></span>').insertAfter(i)},success:function(t){i.next(".rt-icon-spinner").remove(),i.removeClass("loading"),t.error||(i.text(t.value),i.removeClass(a),i.addClass(t.type),"license_deactivate"==t.type?(i.removeClass("button-primary"),i.addClass("danger")):"license_activate"==t.type&&(i.removeClass("danger"),i.addClass("button-primary"))),t.msg&&e("<span class='rt-licence-msg'>"+t.msg+"</span>").insertAfter(i),i.blur()},error:function(e,t){i.removeClass("loading"),i.next(".rt-icon-spinner").remove()}})})),e("#woocommerce-product-data").on("woocommerce_variations_loaded",(function(){i(),d()})),e("#variable_product_options").on("woocommerce_variations_added",(function(){i(),d()})),e("#woocommerce-product-images .add_product_images").on("click","a",(function(e){})),e((function(){function i(){e("#preloader-field").is(":checked")?e("#preloader_image-wrapper").show():e("#preloader_image-wrapper").hide()}e("#rtwpvg-settings-wrapper").on("click",".pro-field",(function(t){t.preventDefault(),e(".rtvg-pro-alert").show()})),e(".rtvg-pro-alert-close").on("click",(function(t){t.preventDefault(),e(".rtvg-pro-alert").hide()})),i(),e(document).on("change","#preloader-field",(function(){i()})),e(document).on("click",".rtwpvg-upload-box",(function(t){t.preventDefault();var i,a,n=e(this).attr("data-name"),o=e(this).attr("data-field"),r=e(this);void 0===i?((i=wp.media.frames.file_frame=wp.media({frame:"post",state:"insert",multiple:"image"!=o})).on("insert",(function(){if(a=i.state().get("selection").first().toJSON(),!(0>e.trim(a.url.length))){var t=i.state().get("selection").toJSON(),l="",d="image"==o?"":"[]";t.forEach((function(e){l+="<div class='rtwpvg-preview-img'><img src='"+e.url+"' /><input type='hidden' name='"+n+d+"' value='"+e.id+"'><button class='rtwpvg-file-remove' data-id='"+e.id+"'>x</button></div>"})),r.prev().html(l)}})),i.open()):i.open()})),e(document).on("click",".rtwpvg-file-remove",(function(t){t.preventDefault(),confirm(rtwpvg_admin.sure_txt)&&(e(this).parent().parent().children(".rtwpvg-preview-img").length<=1?(e(this).parent().children("img").remove(),e(this).parent().children("input").val(0),e(this).remove()):e(this).parent().remove(),e("button.woocommerce-save-button").removeAttr("disabled"))})),s(),e("#thumbnail_position-field").on("change",(function(e){e.preventDefault(),s()})),e("#woocommerce-product-data").on("woocommerce_variations_loaded woocommerce_variations_added",(function(){t()})),t()}))}(jQuery);
+(() => {//#region src/js/admin.js
+(function($) {
+	"use strict";
+	function rtwpvg_refresh_tooltips() {
+		$(document.body).trigger("init_tooltips");
+	}
+	function isVersionCompatible(current, minimum) {
+		const cur = current.split(".").map(Number);
+		const min = minimum.split(".").map(Number);
+		for (let i = 0; i < Math.max(cur.length, min.length); i++) {
+			const c = cur[i] || 0;
+			const m = min[i] || 0;
+			if (c > m) return true;
+			if (c < m) return false;
+		}
+		return true;
+	}
+	function imageUploader() {
+		$(document).off("click", ".rtwpvg-add-image");
+		$(document).off("click", ".rtwpvg-gallery-edit");
+		$(document).off("click", ".rtwpvg-media-video-popup");
+		$(document).on("click", ".rtwpvg-add-image", addImage);
+		$(document).on("click", ".rtwpvg-remove-image", removeImage);
+		$(document).on("click", ".rtwpvg-gallery-edit", galleryEdit);
+		$(document).on("click", ".rtwpvg-media-video-popup", addMediaVideo);
+		$(".woocommerce_variation").each(function() {
+			let optionsWrapper = $(this).find(".options");
+			$(this).find(".rtwpvg-gallery-wrapper").insertBefore(optionsWrapper);
+		});
+		injectVariationImageActions();
+	}
+	function addImage(event) {
+		event.preventDefault();
+		event.stopPropagation();
+		const that = this;
+		let file_frame = 0;
+		let product_variation_id = $(this).data("product_variation_id");
+		let loop = $(this).data("product_variation_loop");
+		let _prev_image = $(this).parents(".rtwpvg-gallery-wrapper").find("input").map(function() {
+			return Number($(this).val());
+		}).get();
+		console.log(_prev_image);
+		if (typeof wp !== "undefined" && wp.media && wp.media.editor) {
+			if (file_frame) {
+				file_frame.open();
+				return;
+			}
+			file_frame = wp.media.frames.select_image = wp.media({
+				title: rtwpvg_admin.choose_image,
+				button: { text: rtwpvg_admin.add_image },
+				library: { type: ["image"] },
+				multiple: true
+			});
+			file_frame.on("select", function() {
+				let html = file_frame.state().get("selection").toJSON().map(function(image) {
+					if (image.type === "image") {
+						console.log(image);
+						if (_prev_image.indexOf(image.id) === -1) {
+							let id = image.id, rtwpvg_video_link = image.rtwpvg_video_link, image_sizes = image.sizes;
+							image_sizes = image_sizes === void 0 ? {} : image_sizes;
+							let thumbnail = image_sizes.thumbnail, full = image_sizes.full;
+							let url = thumbnail ? thumbnail.url : full.url;
+							return wp.template("rtwpvg-image")({
+								id,
+								url,
+								product_variation_id,
+								loop,
+								rtwpvg_video_link
+							});
+						} else alert("Cannot add duplicate items.");
+					}
+				}).join("");
+				$(that).parent().prev().find(".rtwpvg-images").append(html);
+				sortable();
+				variationChanged(that);
+			});
+			file_frame.open();
+		}
+	}
+	function addMediaVideo(e) {
+		e.preventDefault();
+		e.stopPropagation();
+		const imgList = $(e.currentTarget).parents("li.image");
+		const imageId = imgList.find("input").val();
+		if (!imageId) return;
+		openVideoModal(imageId, imgList);
+	}
+	/**
+	* Open the "add video" modal for an attachment.
+	*
+	* Video meta is stored on the attachment itself (rtwpvg_video_link / _width /
+	* _height), not on the gallery slot, so the same modal serves both the gallery
+	* thumbnails and the variation's main image.
+	*
+	* @param {Number|String} imageId    Attachment ID the video is attached to.
+	* @param {jQuery|null}   $indicator Element carrying the `video` state class,
+	*                                   or null when the caller shows no indicator.
+	*/
+	function openVideoModal(imageId, $indicator) {
+		var attachment = wp.media.attachment(imageId);
+		const proVersion = rtwpvg_admin?.pro_version || null;
+		const minProVersion = "2.3.12";
+		const hasProAndCompatible = proVersion && isVersionCompatible(proVersion, minProVersion);
+		attachment.fetch().done(function() {
+			var data = attachment.toJSON();
+			const videoLink = data?.rtwpvg_video_link || "";
+			const videoWidth = data?.rtwpvg_video_width || "";
+			const videoHeight = data?.rtwpvg_video_height || "";
+			var modalHtml = `
+            <div class="custom-edit-modal" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 999999; display: flex; align-items: center; justify-content: center;">
+                <div class="modal-inner-wrapper" style="background: white; padding: 30px; border-radius: 8px; max-width: 400px; width: 90%;">
+                    <div class="modal-form-section" >
+                        <h2 style="margin-top:0">Poster Image</h2>
+                        <hr/>
+                        <div class="image-wrap" style="display: flex;justify-content: center;"><img src="${data.url}" style="max-width: 250px; height: auto; margin-bottom: 20px;"></div>
+                        ${!hasProAndCompatible ? `
+                        <div style="background: #fef7e0; border: 1px solid #e0c97d; color: #7a6000; padding: 10px 15px; border-radius: 6px; margin-bottom: 15px;">
+                            Video options are available in the <a href="https://www.radiustheme.com/downloads/woocommerce-variation-images-gallery/" style="color: red;font-size: 16px" target="_blank"><strong>Pro version</strong></a> <br/> (minimum version ${minProVersion})
+                        </div>
+                        ` : ""}
+                        <label style="display: block; margin-bottom: 15px;">
+                            <strong>Video Url: </strong>
+                            <input ${hasProAndCompatible ? "" : "disabled"} type="text" id="rtwpvg_video_link" value="${videoLink}" placeholder="https://www.youtube.com/watch?v=zQKKUx2ECa8" style="width: 100%; padding: 8px; margin-top: 5px;">
+                            <p class="help">You can add a YouTube, Vimeo, TikTok, or uploaded video. <b>Example: https://www.youtube.com/watch?v=zQKKUx2ECa8</b> <br/> <a href="${rtwpvg_admin.admin_url}upload.php?mode=grid&attachment-filter=post_mime_type%3Avideo" target="_blank">Upload your video <span class="dashicons dashicons-video-alt3"></span></a></p>
+                        </label>
+                        <label style="display: block; margin-bottom: 15px;">
+                            <strong>Video Width: </strong>
+                            <input ${hasProAndCompatible ? "" : "disabled"} type="text" id="rtwpvg_video_width" value="${videoWidth}" style="width: 100%; padding: 8px; margin-top: 5px;">
+                            <p class="help">Video Width. px or %. Empty for default. <b>Example: 575px</b> </p>
+                        </label>
+                        <label style="display: block; margin-bottom: 15px;">
+                            <strong>Video Height: </strong>
+                            <input ${hasProAndCompatible ? "" : "disabled"} type="text" id="rtwpvg_video_height" value="${videoHeight}" style="width: 100%; padding: 8px; margin-top: 5px;">
+                            <p class="help">Video Height. px or %. Empty for default. <b>Example: 550px</b></p>
+                        </label>
+                    </div>
+                     <hr/>
+                    <div style="text-align: right;margin-top:15px">
+                        <button class="button" id="cancel-edit" style="margin-right: 10px;">Cancel</button>
+                        <button class="button button-primary" id="save-edit">Update</button>
+                    </div>
+                </div>
+            </div>`;
+			$("body").append(modalHtml);
+			$("#cancel-edit").on("click", function() {
+				$(".custom-edit-modal").remove();
+			});
+			$("#save-edit").on("click", function() {
+				const videoLinkField = $("body").find("#rtwpvg_video_link");
+				const videoWidthField = $("body").find("#rtwpvg_video_width");
+				const videoHeightField = $("body").find("#rtwpvg_video_height");
+				if (!videoLinkField.length || !videoWidthField.length || !videoHeightField.length) {
+					alert("Required video fields are missing. Please reload the page.");
+					return;
+				}
+				if (rtwpvg_admin?.pro_version) $.ajax({
+					url: ajaxurl,
+					type: "POST",
+					data: {
+						action: "rtwpvg_update_attachment_video_meta",
+						attachment_id: imageId,
+						video_link: videoLinkField.val(),
+						video_width: videoWidthField.val(),
+						video_height: videoHeightField.val(),
+						_wpnonce: rtwpvg_admin.nonce || ""
+					},
+					success: function(response) {
+						if ($indicator && $indicator.length) $indicator.toggleClass("video", !!response?.data?.hasVideo);
+						$("body").find(".modal-inner-wrapper").html(response?.data?.message);
+						if (response?.success) setTimeout(function() {
+							$("body").find(".custom-edit-modal").remove();
+						}, 800);
+						console.log(response?.data?.message);
+					}
+				});
+				else alert("It's Pro Feature");
+			});
+		}).fail(function() {
+			console.error("Failed to load attachment");
+		});
+	}
+	function galleryEdit(event) {
+		event.preventDefault();
+		event.stopPropagation();
+		const imgList = $(event.currentTarget).parents("li.image");
+		const imageIdField = imgList.find("input");
+		const imageId = imageIdField.val();
+		const frame = wp.media({
+			title: "Edit Image",
+			button: { text: "Update Image" },
+			library: { type: "image" },
+			multiple: false
+		});
+		frame.on("open", function() {
+			if (imageId) {
+				const selection = frame.state().get("selection");
+				const attachment = wp.media.attachment(imageId);
+				attachment.fetch();
+				selection.add(attachment);
+			}
+		});
+		frame.on("select", function() {
+			const attachment = frame.state().get("selection").first().toJSON();
+			const thumbUrl = attachment.sizes?.thumbnail?.url || attachment.url;
+			const img = imgList.find("img");
+			if (attachment?.rtwpvg_video_link) imgList.addClass("video");
+			else imgList.removeClass("video");
+			if (img.length) img.attr("src", thumbUrl);
+			imageIdField.val(attachment.id);
+		});
+		frame.open();
+		variationChanged(this);
+	}
+	function removeImage(event) {
+		event.preventDefault();
+		event.stopPropagation();
+		let that = this;
+		variationChanged(this);
+		setTimeout(function() {
+			$(that).parents("li.image").remove();
+		}, 1);
+	}
+	/**
+	* Inject the hover action overlay into each variation's main image slot.
+	*
+	* The slot itself is WooCommerce core markup (`.form-row.upload_image`), so the
+	* overlay is added from JS rather than through
+	* `woocommerce_variation_after_upload_image` — that hook only exists from
+	* WooCommerce 10.8, while this plugin supports 3.2+.
+	*/
+	function injectVariationImageActions() {
+		$("#variable_product_options").find(".form-row.upload_image").each(function() {
+			const $button = $(this).find(".upload_image_button").first();
+			if (!$button.length || $button.find(".rtwpvg-variation-image-actions").length) return;
+			const $actions = $("<div class=\"rtwpvg-media-actions rtwpvg-variation-image-actions\"><span class=\"rtwpvg-variation-image-video woocommerce-help-tip dashicons dashicons-video-alt3\" data-tip=\"Add Video\"></span><span class=\"rtwpvg-variation-image-edit woocommerce-help-tip dashicons dashicons-edit\" data-tip=\"Edit Image\"></span><a href=\"#\" class=\"rtwpvg-variation-image-remove woocommerce-help-tip\" data-tip=\"Remove\"><span class=\"dashicons dashicons-no\"></span></a></div>");
+			$actions.find(".rtwpvg-variation-image-video").on("click", variationImageVideo);
+			$actions.find(".rtwpvg-variation-image-edit").on("click", variationImageEdit);
+			$actions.find(".rtwpvg-variation-image-remove").on("click", variationImageRemove);
+			$button.on("click", variationImageAnchorClick);
+			$button.attr("data-tip", "Edit Image");
+			$button.closest(".form-flex-box").addClass("rtwpvg-variation-image-layout");
+			const heroSrc = $button.closest(".woocommerce_variation").find(".rtwpvg-gallery-wrapper").data("hero-src");
+			if (heroSrc) $button.find("img").eq(0).attr("src", heroSrc).removeAttr("srcset sizes");
+			$button.append($actions);
+		});
+		syncVariationImageActions();
+	}
+	/**
+	* Gate clicks on the variation image itself.
+	*
+	* @param {Object} event
+	*/
+	function variationImageAnchorClick(event) {
+		const $button = $(event.currentTarget);
+		if ($button.data("rtwpvgAllow")) {
+			$button.removeData("rtwpvgAllow");
+			return;
+		}
+		event.preventDefault();
+		event.stopPropagation();
+		openVariationImageFrame($button);
+	}
+	/**
+	* Align the overlay and WooCommerce's own button state with the stored image ID.
+	*
+	* Core decides between "open the picker" and "clear the image" purely from the
+	* `remove` class, so it has to match the hidden input after every action —
+	* including a media frame the user cancelled.
+	*/
+	function syncVariationImageActions() {
+		$("#variable_product_options").find(".form-row.upload_image").each(function() {
+			const $row = $(this);
+			const $actions = $row.find(".rtwpvg-variation-image-actions");
+			if (!$actions.length) return;
+			const hasImage = !!$row.find(".upload_image_id").val();
+			$actions.toggleClass("is-empty", !hasImage);
+			$row.find(".upload_image_button").toggleClass("remove", hasImage);
+		});
+	}
+	function variationImageVideo(event) {
+		event.preventDefault();
+		event.stopPropagation();
+		const imageId = $(event.currentTarget).closest(".upload_image").find(".upload_image_id").val();
+		if (!imageId) return;
+		openVideoModal(imageId, null);
+	}
+	function variationImageEdit(event) {
+		event.preventDefault();
+		event.stopPropagation();
+		const $button = $(event.currentTarget).closest(".upload_image").find(".upload_image_button").first();
+		if (!$button.length) return;
+		openVariationImageFrame($button);
+	}
+	/**
+	* Open the media library to pick a replacement for the variation image.
+	*
+	* Deliberately our own frame rather than a synthetic click on core's handler:
+	* core keys "open picker" off the ABSENCE of the `remove` class, but that same
+	* class is what makes the image visible (`.upload_image_button.remove img`), so
+	* toggling it would blank the thumbnail for as long as the modal is open.
+	*
+	* @param {jQuery} $button The `.upload_image_button` anchor.
+	*/
+	function openVariationImageFrame($button) {
+		const $input = $button.closest(".upload_image").find(".upload_image_id");
+		const imageId = $input.val();
+		const frame = wp.media({
+			title: rtwpvg_admin.choose_image,
+			button: { text: rtwpvg_admin.add_image },
+			library: { type: "image" },
+			multiple: false
+		});
+		frame.on("open", function() {
+			if (imageId) {
+				const selection = frame.state().get("selection");
+				const attachment = wp.media.attachment(imageId);
+				attachment.fetch();
+				selection.add(attachment);
+			}
+		});
+		frame.on("select", function() {
+			const attachment = frame.state().get("selection").first().toJSON();
+			const thumbUrl = attachment.sizes?.woocommerce_single?.url || attachment.sizes?.thumbnail?.url || attachment.url;
+			$input.val(attachment.id).trigger("change");
+			$button.find("img").eq(0).attr("src", thumbUrl);
+			syncVariationImageActions();
+		});
+		frame.open();
+	}
+	function variationImageRemove(event) {
+		event.preventDefault();
+		event.stopPropagation();
+		const $button = $(event.currentTarget).closest(".upload_image").find(".upload_image_button").first();
+		if (!$button.length) return;
+		$button.data("rtwpvgAllow", true).trigger("click");
+		syncVariationImageActions();
+	}
+	/**
+	* Build the shared "Add Video / Edit Image" overlay.
+	*
+	* @return {jQuery}
+	*/
+	function buildMediaActions() {
+		return $("<div class=\"rtwpvg-media-actions\"><span class=\"rtwpvg-media-video woocommerce-help-tip dashicons dashicons-video-alt3\" data-tip=\"Add Video\"></span><span class=\"rtwpvg-media-edit woocommerce-help-tip dashicons dashicons-edit\" data-tip=\"Edit Image\"></span></div>");
+	}
+	/**
+	* Add the overlay to the product's featured image box.
+	*
+	* That box is WordPress core's `#postimagediv`; WooCommerce only relabels its
+	* strings. Removal already exists there as "Remove product image", so only the
+	* video and edit actions are added.
+	*/
+	function injectFeaturedImageActions() {
+		const $wrap = $("#postimagediv").find("#set-post-thumbnail");
+		if (!$wrap.length || !$wrap.find("img").length || $wrap.find(".rtwpvg-media-actions").length) return;
+		const $actions = buildMediaActions();
+		$actions.find(".rtwpvg-media-video").on("click", function(event) {
+			event.preventDefault();
+			event.stopPropagation();
+			const imageId = $("#_thumbnail_id").val();
+			if (!imageId || imageId === "-1") return;
+			openVideoModal(imageId, null);
+		});
+		$actions.find(".rtwpvg-media-edit").on("click", function(event) {
+			event.preventDefault();
+			event.stopPropagation();
+			$wrap.trigger("click");
+		});
+		$wrap.append($actions);
+	}
+	/**
+	* Add the overlay to each item in the product gallery metabox.
+	*
+	* Items carry their attachment ID on `data-attachment_id`, and already ship a
+	* Delete action of their own, so only video and edit are added.
+	*/
+	function injectProductGalleryActions() {
+		if ($("#product_media_gallery").length) return;
+		$("#product_images_container").find("ul.product_images > li.image").each(function() {
+			const $item = $(this);
+			if ($item.find(".rtwpvg-media-actions").length) return;
+			const $actions = buildMediaActions();
+			$actions.find(".rtwpvg-media-video").on("click", function(event) {
+				event.preventDefault();
+				event.stopPropagation();
+				const imageId = $item.attr("data-attachment_id");
+				if (!imageId) return;
+				openVideoModal(imageId, null);
+			});
+			$actions.find(".rtwpvg-media-edit").on("click", function(event) {
+				event.preventDefault();
+				event.stopPropagation();
+				openProductGalleryFrame($item);
+			});
+			$item.append($actions);
+		});
+	}
+	/**
+	* Replace a single product gallery image.
+	*
+	* @param {jQuery} $item The `li.image` being edited.
+	*/
+	function openProductGalleryFrame($item) {
+		const imageId = $item.attr("data-attachment_id");
+		const frame = wp.media({
+			title: rtwpvg_admin.choose_image,
+			button: { text: rtwpvg_admin.add_image },
+			library: { type: "image" },
+			multiple: false
+		});
+		frame.on("open", function() {
+			if (imageId) {
+				const selection = frame.state().get("selection");
+				const attachment = wp.media.attachment(imageId);
+				attachment.fetch();
+				selection.add(attachment);
+			}
+		});
+		frame.on("select", function() {
+			const attachment = frame.state().get("selection").first().toJSON();
+			const thumbUrl = attachment.sizes?.thumbnail?.url || attachment.url;
+			$item.attr("data-attachment_id", attachment.id);
+			$item.find("img").eq(0).attr("src", thumbUrl).removeAttr("srcset sizes");
+			syncProductGalleryField();
+		});
+		frame.open();
+	}
+	/**
+	* Rebuild the hidden field that actually persists the gallery.
+	*
+	* WooCommerce does this in `updateProductGalleryFields()`, but that lives in a
+	* closure and is bound as a sortable option, so it cannot be invoked from here.
+	* This mirrors the image-only branch of that function.
+	*/
+	function syncProductGalleryField() {
+		const ids = $("#product_images_container").find("ul.product_images > li.image").map(function() {
+			return $(this).attr("data-attachment_id");
+		}).get().filter(Boolean);
+		$("#product_image_gallery").val(ids.join(","));
+	}
+	/**
+	* Re-inject after WooCommerce or WordPress rebuilds either area.
+	*
+	* Gallery items are appended by core's media frame and the featured image box is
+	* replaced wholesale over AJAX; neither exposes an event to hook, so the DOM is
+	* observed instead.
+	*/
+	function watchMediaAreas() {
+		if (typeof MutationObserver === "undefined") return;
+		const targets = [document.getElementById("product_images_container"), document.getElementById("postimagediv")].filter(Boolean);
+		if (!targets.length) return;
+		const observer = new MutationObserver(function() {
+			injectFeaturedImageActions();
+			injectProductGalleryActions();
+		});
+		targets.forEach(function(target) {
+			observer.observe(target, {
+				childList: true,
+				subtree: true
+			});
+		});
+	}
+	function variationChanged(element) {
+		$(element).closest(".woocommerce_variation").addClass("variation-needs-update");
+		$("button.cancel-variation-changes, button.save-variation-changes").removeAttr("disabled");
+		$("#variable_product_options").trigger("woocommerce_variations_input_changed");
+	}
+	function sortable() {
+		$(".rtwpvg-images").sortable({
+			items: "li.image",
+			cursor: "move",
+			scrollSensitivity: 40,
+			forcePlaceholderSize: true,
+			forceHelperSize: false,
+			helper: "clone",
+			opacity: .65,
+			placeholder: "rtwpvg-sortable-placeholder",
+			start: function start(event, ui) {
+				ui.item.css("background-color", "#f6f6f6");
+			},
+			stop: function stop(event, ui) {
+				ui.item.removeAttr("style");
+			},
+			update: function update() {
+				variationChanged(this);
+			}
+		});
+	}
+	$(document).on("change", "#variable_product_options .upload_image_id", function() {
+		syncVariationImageActions();
+	});
+	$("#woocommerce-product-data").on("woocommerce_variations_loaded", function() {
+		imageUploader();
+		sortable();
+	});
+	$("#variable_product_options").on("woocommerce_variations_added", function() {
+		imageUploader();
+		sortable();
+	});
+	$("#woocommerce-product-images .add_product_images").on("click", "a", function(event) {});
+	$(function() {
+		injectFeaturedImageActions();
+		injectProductGalleryActions();
+		watchMediaAreas();
+		$("#woocommerce-product-data").on("woocommerce_variations_loaded woocommerce_variations_added", function() {
+			rtwpvg_refresh_tooltips();
+		});
+		rtwpvg_refresh_tooltips();
+	});
+})(jQuery);
+//#endregion
+})();

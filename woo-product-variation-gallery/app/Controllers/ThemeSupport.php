@@ -80,9 +80,7 @@ class ThemeSupport {
 	}
 
 	public function woocommerce_show_product_images() {
-		$using_swiper    = rtwpvg()->get_option( 'upgrade_slider_scripts' );
-		$template_prefix = $using_swiper ? 'swiper-' : null;
-		Functions::get_template( $template_prefix . 'product-images' );
+		Functions::get_template( 'swiper-product-images' );
 	}
 
 
@@ -94,9 +92,7 @@ class ThemeSupport {
 	}
 
 	function rtwpvg_gallery_template_part_override( $template, $template_name ) {
-		$using_swiper    = rtwpvg()->get_option( 'upgrade_slider_scripts' );
-		$template_prefix = $using_swiper ? 'swiper-' : null;
-		$old_template    = $template;
+		$old_template = $template;
 
 		// Disable gallery on specific product
 
@@ -108,7 +104,7 @@ class ThemeSupport {
 		}
 
 		if ( $template_name == 'single-product/product-image' ) {
-			$template = rtwpvg()->locate_template( $template_prefix . 'product-images' );
+			$template = rtwpvg()->locate_template( 'swiper-product-images' );
 		}
 
 		if ( $template_name == 'single-product/product-thumbnails' ) {

@@ -14,6 +14,136 @@ class Functions {
 	 */
 	public static $slug = 'rtwpvg';
 
+	/**
+	 * Cached gallery transient version.
+	 *
+	 * Bumped whenever the cached image-props shape or the ID-list building logic
+	 * changes so previously stored transients (which may still hold stale/deleted
+	 * attachment IDs) are invalidated immediately instead of lingering for their
+	 * full TTL.
+	 *
+	 * @var string
+	 */
+	const TRANSIENT_VERSION = 'v3';
+
+	/**
+	 * First WooCommerce version shipping the native variation gallery.
+	 *
+	 * From this version WooCommerce stores per-variation gallery images itself,
+	 * so it becomes the source of truth instead of this plugin's own meta.
+	 *
+	 * @var string
+	 */
+	const NATIVE_GALLERY_WC_VERSION = '11.1.0';
+
+	/**
+	 * Legacy post meta key holding this plugin's own variation gallery.
+	 *
+	 * @var string
+	 */
+	const LEGACY_GALLERY_META_KEY = 'rtwpvg_images';
+
+	/**
+	 * Sentinel meta marking a variation whose gallery is owned by the native store.
+	 *
+	 * Set by the migration and by the admin save path so the legacy meta is never
+	 * used to resurrect images the merchant has since removed.
+	 *
+	 * @var string
+	 */
+	const NATIVE_GALLERY_SENTINEL_META_KEY = '_rtwpvg_gallery_migrated';
+
+	/**
+	 * Whether the running WooCommerce provides the native variation gallery.
+	 *
+	 * @return bool
+	 */
+	public static function has_native_variation_gallery() {
+		static $supported = null;
+
+		if ( null === $supported ) {
+			$supported = defined( 'WC_VERSION' ) && version_compare( WC_VERSION, self::NATIVE_GALLERY_WC_VERSION, '>=' );
+		}
+
+		return (bool) apply_filters( 'rtwpvg_has_native_variation_gallery', $supported );
+	}
+
+	/**
+	 * Read the native variation gallery IDs straight from storage.
+	 *
+	 * Uses the `edit` context on purpose: the `view` context runs
+	 * `woocommerce_product_variation_get_gallery_image_ids`, which this plugin
+	 * filters on the frontend to stop WooCommerce rendering its own duplicate
+	 * gallery markup. Reading raw keeps that suppression from feeding back here.
+	 *
+	 * @param \WC_Product_Variation $variation Variation object.
+	 *
+	 * @return array Attachment IDs.
+	 */
+	public static function get_native_variation_gallery_ids( $variation ) {
+		if ( ! is_object( $variation ) || ! method_exists( $variation, 'get_gallery_image_ids' ) ) {
+			return array();
+		}
+
+		return array_values( array_filter( array_map( 'absint', (array) $variation->get_gallery_image_ids( 'edit' ) ) ) );
+	}
+
+	/**
+	 * Whether a variation's gallery is already owned by the native store.
+	 *
+	 * @param int $variation_id Variation ID.
+	 *
+	 * @return bool
+	 */
+	public static function is_native_gallery_owned( $variation_id ) {
+		return metadata_exists( 'post', absint( $variation_id ), self::NATIVE_GALLERY_SENTINEL_META_KEY );
+	}
+
+	/**
+	 * Resolve the ordered gallery attachment IDs for a variation.
+	 *
+	 * On WooCommerce 11.1+ the native variation gallery is authoritative and the
+	 * plugin's legacy `rtwpvg_images` meta is only a fallback for variations the
+	 * migration has not processed yet. On older WooCommerce the legacy meta stays
+	 * authoritative. In both cases the parent product gallery is the last resort so
+	 * the thumbnail strip is preserved instead of collapsing to a single image.
+	 *
+	 * The variation's featured image is not part of this list; it is prepended by
+	 * the caller, matching WooCommerce's own featured/gallery split.
+	 *
+	 * @param \WC_Product_Variation $variation  Variation object.
+	 * @param int                   $product_id Parent product ID.
+	 *
+	 * @return array Attachment IDs.
+	 */
+	protected static function resolve_variation_gallery_image_ids( $variation, $product_id ) {
+		$variation_id = absint( $variation->get_id() );
+		$legacy_ids   = array_filter( (array) get_post_meta( $variation_id, self::LEGACY_GALLERY_META_KEY, true ) );
+
+		if ( self::has_native_variation_gallery() ) {
+			$native_ids = self::get_native_variation_gallery_ids( $variation );
+
+			if ( ! empty( $native_ids ) ) {
+				return $native_ids;
+			}
+
+			// Pre-migration variation: keep serving the legacy meta until the batch
+			// runner has copied it across. Once the sentinel is set an empty native
+			// gallery is an explicit "no images" choice and must be respected.
+			if ( ! empty( $legacy_ids ) && ! self::is_native_gallery_owned( $variation_id ) ) {
+				return $legacy_ids;
+			}
+		} elseif ( ! empty( $legacy_ids ) ) {
+			return $legacy_ids;
+		} elseif ( $variation->get_gallery_image_ids() ) {
+			return (array) $variation->get_gallery_image_ids();
+		}
+
+		$parent_product = wc_get_product( $product_id );
+
+		return $parent_product ? (array) $parent_product->get_gallery_image_ids() : array();
+	}
+
 	static function get_simple_embed_url( $media_link ) {
 		// YouTube.
 		$re    = '#https?://(www\.)?youtube\.com/watch\?v=([^&]+)#';
@@ -59,7 +189,6 @@ class Functions {
 			'is_main_thumbnail'  => false,
 			'has_only_thumbnail' => false,
 		];
-		$using_swiper    = rtwpvg()->get_option( 'upgrade_slider_scripts' );
 		$thumbnail_style = apply_filters( 'rtwpvg_thumbnail_position', 'bottom' );
 		$options         = wp_parse_args( $options, $defaults );
 
@@ -78,7 +207,7 @@ class Functions {
 			$image
 		);
 
-		if ( $using_swiper && 'grid' !== $thumbnail_style ) {
+		if ( 'grid' !== $thumbnail_style ) {
 			$classes[] = 'swiper-slide';
 		}
 
@@ -103,9 +232,7 @@ class Functions {
 				$image
 			);
 
-			if ( $using_swiper ) {
-				$classes[] = 'swiper-slide';
-			}
+			$classes[] = 'swiper-slide';
 
 			$has_video      = self::gallery_has_video( $attachment_id );
 			$inner_class    = $has_video ? 'rtwpvg-thumbnail-video-overlay' : 'rtwpvg-thumbnail-image-inner';
@@ -315,17 +442,7 @@ class Functions {
 
 		$variation_image_id = absint( $variation->get_image_id() );
 
-		if ( get_post_meta( $variation_id, 'rtwpvg_images', true ) ) {
-			$gallery_images = (array) get_post_meta( $variation_id, 'rtwpvg_images', true );
-		} elseif ( $variation->get_gallery_image_ids() ) {
-			$gallery_images = $variation->get_gallery_image_ids();
-		} else {
-			// No per-variation gallery configured: fall back to the parent product's
-			// gallery so the thumbnail strip is preserved instead of being stripped
-			// down to a single image (mirrors WooCommerce's default image-swap behaviour).
-			$parent_product = wc_get_product( $product_id );
-			$gallery_images = $parent_product ? $parent_product->get_gallery_image_ids() : array();
-		}
+		$gallery_images = self::resolve_variation_gallery_image_ids( $variation, $product_id );
 
 		$featured_thumbnail = rtwpvg()->get_option( 'remove_featured_thumbnail' ) ? false : true;
 		if ( apply_filters( 'rtwpvg_variation_gallery_images_enable_feature_image', $featured_thumbnail ) ) {
@@ -343,7 +460,9 @@ class Functions {
 		}
 
 		$images         = array();
-		$gallery_images = array_values( array_unique( $gallery_images ) );
+		// Strip attachment IDs whose media-library file has been deleted so the
+		// gallery does not render empty slides/thumbnails for them.
+		$gallery_images = self::filter_valid_attachment_ids( $gallery_images );
 		foreach ( $gallery_images as $i => $image_id ) {
 			if ( $image_id ) {
 				$images[ $i ] = self::get_gallery_image_props( $image_id );
@@ -384,6 +503,10 @@ class Functions {
 				array_unshift( $attachment_ids, $post_thumbnail_id );
 			}
 
+			// Strip attachment IDs whose media-library file has been deleted so the
+			// gallery does not render empty slides/thumbnails for them.
+			$attachment_ids = Functions::filter_valid_attachment_ids( $attachment_ids );
+
 			if ( is_array( $attachment_ids ) && ! empty( $attachment_ids ) ) {
 				foreach ( $attachment_ids as $i => $image_id ) {
                     if ( $image_id ){
@@ -396,6 +519,29 @@ class Functions {
 		}
 
 		return apply_filters( 'rtwpvg_get_gallery_images', $images, $product_id );
+	}
+
+	/**
+	 * Helper: Filter a list of attachment IDs down to images that still exist.
+	 *
+	 * WooCommerce (and this plugin) keep gallery / per-variation attachment IDs in
+	 * product meta even after the underlying file has been deleted from the media
+	 * library. Rendering those stale IDs produces empty slider/thumbnail boxes, so
+	 * callers must strip them at the ID-list source — this keeps the main-image and
+	 * thumbnail loops in sync and any count()-based navigation/visibility correct.
+	 *
+	 * @param array $ids Raw attachment IDs (may contain deleted or non-image IDs).
+	 *
+	 * @return array Re-indexed list containing only existing image attachments.
+	 */
+	public static function filter_valid_attachment_ids( $ids ) {
+		if ( empty( $ids ) || ! is_array( $ids ) ) {
+			return array();
+		}
+
+		$ids = array_filter( array_unique( array_filter( array_map( 'absint', $ids ) ) ), 'wp_attachment_is_image' );
+
+		return array_values( $ids );
 	}
 
 	/**
@@ -428,11 +574,11 @@ class Functions {
 	public static function get_transient_name( $id, $type ) {
 		if ( $type === "default-images" ) {
 			$id             = self::wpml_get_original_variation_id( $id );
-			$transient_name = sprintf( "%s_default_images_%d", self::$slug, $id );
+			$transient_name = sprintf( "%s_default_images_%s_%d", self::$slug, self::TRANSIENT_VERSION, $id );
 		} elseif ( $type === "sizes" ) {
 			$transient_name = sprintf( "%s_variation_image_sizes_%d", self::$slug, $id );
 		} elseif ( $type === "variation" ) {
-			$transient_name = sprintf( "%s_variation_%d", self::$slug, $id );
+			$transient_name = sprintf( "%s_variation_%s_%d", self::$slug, self::TRANSIENT_VERSION, $id );
 		} else {
 			$transient_name = false;
 		}

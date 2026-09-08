@@ -17,6 +17,7 @@ return array(
     'Rtwpvg\\Controllers\\ScriptLoader' => $baseDir . '/app/Controllers/ScriptLoader.php',
     'Rtwpvg\\Controllers\\SettingsAPI' => $baseDir . '/app/Controllers/SettingsAPI.php',
     'Rtwpvg\\Controllers\\ThemeSupport' => $baseDir . '/app/Controllers/ThemeSupport.php',
+    'Rtwpvg\\Controllers\\VariationGalleryMigration' => $baseDir . '/app/Controllers/VariationGalleryMigration.php',
     'Rtwpvg\\Helpers\\Functions' => $baseDir . '/app/Helpers/Functions.php',
     'Rtwpvg\\Helpers\\Options' => $baseDir . '/app/Helpers/Options.php',
     'Rtwpvg\\WooProductVariationGallery' => $baseDir . '/app/WooProductVariationGallery.php',

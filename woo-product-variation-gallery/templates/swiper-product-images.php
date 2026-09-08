@@ -32,7 +32,7 @@ $default_variation_id = Functions::get_product_default_variation_id( $product, $
 $product_type         = $product->get_type();
 $post_thumbnail_id    = $product->get_image_id();
 
-$attachment_ids     = $product->get_gallery_image_ids();
+$attachment_ids     = Functions::filter_valid_attachment_ids( $product->get_gallery_image_ids() );
 $has_post_thumbnail = $product->get_image_id() ?? false; // has_post_thumbnail(); ShopBuilder support.
 
 if ( 'variable' === $product_type && $default_variation_id > 0 ) {

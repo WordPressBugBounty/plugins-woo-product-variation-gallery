@@ -11,10 +11,8 @@ defined('ABSPATH') || exit;
 <script type="text/html" id="tmpl-rtwpvg-thumbnail-template">
     <# hasVideo = (  data.rtwpvg_video_link ) ? 'rtwpvg-thumbnail-video' : '' #>
     <# if( data.gallery_thumbnail_src ) { #>
-    <# swiperClass = ( rtwpvg.using_swiper ) ? 'swiper-slide' : '' #>
-
     <# innerClass = ( data.rtwpvg_video_link ) ? 'rtwpvg-thumbnail-video-overlay' : 'rtwpvg-thumbnail-image-inner' #>
-    <div class="rtwpvg-thumbnail-image {{swiperClass}} {{hasVideo}}  rtwpvg-thumbnail-image-{{data.image_id}}">
+    <div class="rtwpvg-thumbnail-image swiper-slide {{hasVideo}}  rtwpvg-thumbnail-image-{{data.image_id}}">
         <div class="{{innerClass}}">
             <img width="{{data.gallery_thumbnail_src_w}}" height="{{data.gallery_thumbnail_src_h}}" src="{{data.gallery_thumbnail_src}}" alt="{{data.alt}}" title="{{data.title}}"/>
         </div>

@@ -15,6 +15,12 @@ class Options {
 					'rtwpvg_general_setting_fields',
 					[
 						[
+							'id'    => 'card_thumbnails',
+							'type'  => 'card',
+							'title' => esc_html__( 'Thumbnails', 'woo-product-variation-gallery' ),
+							'desc'  => esc_html__( 'How many thumbnail items are shown on each device, and the space between them.', 'woo-product-variation-gallery' ),
+						],
+						[
 							'title'    => esc_html__( 'Thumbnail Items', 'woo-product-variation-gallery' ),
 							'type'     => 'number',
 							'default'  => absint( apply_filters( 'rtwpvg_thumbnails_columns', 4 ) ),
@@ -62,6 +68,12 @@ class Options {
 							'max'      => 50,
 							'step'     => 1,
 							'suffix'   => 'px',
+						],
+						[
+							'id'    => 'card_gallery_size',
+							'type'  => 'card',
+							'title' => esc_html__( 'Gallery Size', 'woo-product-variation-gallery' ),
+							'desc'  => esc_html__( 'Width of the gallery column per breakpoint, plus the space below it.', 'woo-product-variation-gallery' ),
 						],
 						[
 							'title'    => esc_html__( 'Gallery Width (Large Device)', 'woo-product-variation-gallery' ),
@@ -128,6 +140,12 @@ class Options {
 							'suffix'   => 'px',
 						],
 						[
+							'id'    => 'card_gallery_behaviour',
+							'type'  => 'card',
+							'title' => esc_html__( 'Behaviour', 'woo-product-variation-gallery' ),
+							'desc'  => esc_html__( 'How the gallery reacts when a shopper picks a different variation.', 'woo-product-variation-gallery' ),
+						],
+						[
 							'title'   => esc_html__( 'Reset Variation Gallery', 'woo-product-variation-gallery' ),
 							'type'    => 'switch',
 							'default' => true,
@@ -145,6 +163,14 @@ class Options {
 					'rtwpvg_advanced_setting_fields',
 					[
 						[
+							'id'    => 'card_zoom_lightbox',
+							'type'  => 'card',
+							// Card titles are rendered by React as text nodes, which escape on
+							// output — pre-escaping here would double-encode the ampersand.
+							'title' => __( 'Zoom & Lightbox', 'woo-product-variation-gallery' ),
+							'desc'  => esc_html__( 'Magnifier on hover and the full-screen lightbox shoppers open from the main image.', 'woo-product-variation-gallery' ),
+						],
+						[
 							'title'   => esc_html__( 'Zoom Gallery image', 'woo-product-variation-gallery' ),
 							'type'    => 'switch',
 							'default' => true,
@@ -159,10 +185,37 @@ class Options {
 							'id'      => 'lightbox',
 						],
 						[
-							'title' => esc_html__( 'LightBox on image click', 'woo-product-variation-gallery' ),
-							'type'  => 'switch',
-							'desc'  => esc_html__( 'Open the lightbox when clicking directly on the main gallery image, instead of requiring the lightbox icon click.', 'woo-product-variation-gallery' ),
-							'id'    => 'lightbox_image_click',
+							'title'     => esc_html__( 'LightBox on image click', 'woo-product-variation-gallery' ),
+							'type'      => 'switch',
+							'desc'      => esc_html__( 'Open the lightbox when clicking directly on the main gallery image, instead of requiring the lightbox icon click.', 'woo-product-variation-gallery' ),
+							'id'        => 'lightbox_image_click',
+							'condition' => [
+								'field' => 'lightbox',
+								'value' => true,
+							],
+						],
+						[
+							'title'     => esc_html__( 'Zoom Button Position', 'woo-product-variation-gallery' ),
+							'type'      => 'select',
+							'default'   => 'top-right',
+							'desc'      => esc_html__( 'Set the position of the lightbox/zoom icon on the main gallery image.', 'woo-product-variation-gallery' ),
+							'id'        => 'zoom_position',
+							'options'   => [
+								'top-right'    => esc_html__( 'Top right', 'woo-product-variation-gallery' ),
+								'top-left'     => esc_html__( 'Top left', 'woo-product-variation-gallery' ),
+								'bottom-right' => esc_html__( 'Bottom right', 'woo-product-variation-gallery' ),
+								'bottom-left'  => esc_html__( 'Bottom left', 'woo-product-variation-gallery' ),
+							],
+							'condition' => [
+								'field' => 'lightbox',
+								'value' => true,
+							],
+						],
+						[
+							'id'    => 'card_main_image',
+							'type'  => 'card',
+							'title' => esc_html__( 'Main Image', 'woo-product-variation-gallery' ),
+							'desc'  => esc_html__( 'Transition, navigation and sizing of the large gallery image.', 'woo-product-variation-gallery' ),
 						],
 						[
 							'title'   => esc_html__( 'Main Image Transition Effect', 'woo-product-variation-gallery' ),
@@ -174,6 +227,47 @@ class Options {
 								'slide' => esc_html__( 'Slide', 'woo-product-variation-gallery' ),
 								'fade'  => esc_html__( 'Fade', 'woo-product-variation-gallery' ),
 							],
+						],
+						[
+							'title'     => esc_html__( 'Slider Navigation (Arrow)', 'woo-product-variation-gallery' ),
+							'type'      => 'switch',
+							'default'   => true,
+							'desc'      => esc_html__( 'Show previous/next navigation arrows on the main gallery slider. Requires the pro version.', 'woo-product-variation-gallery' ),
+							'id'        => 'slider_arrow',
+							'is_pro'    => true,
+							// The grid layout has no slider, so arrows do not apply.
+							'condition' => [
+								'field'   => 'thumbnail_position',
+								'value'   => 'grid',
+								'compare' => '!=',
+							],
+						],
+						[
+							'title'     => esc_html__( 'Slider Adaptive Height', 'woo-product-variation-gallery' ),
+							'type'      => 'switch',
+							'default'   => true,
+							'desc'      => esc_html__( 'Automatically adjust the slider height based on the current slide image dimensions. Disable to use a fixed height.', 'woo-product-variation-gallery' ),
+							'id'        => 'slider_adaptive_height',
+							'condition' => [
+								'field'   => 'thumbnail_position',
+								'value'   => 'grid',
+								'compare' => '!=',
+							],
+						],
+						[
+							'title'   => esc_html__( 'Remove Featured/Thumbnail Image', 'woo-product-variation-gallery' ),
+							'type'    => 'switch',
+							'default' => false,
+							'desc'    => esc_html__( 'Enable this option to remove the Featured/Thumbnail image from the slider when a variation is selected.', 'woo-product-variation-gallery' ),
+							'id'      => 'remove_featured_thumbnail',
+						],
+						[
+							// Not "Thumbnails": the General section already owns a card by that
+							// name for column counts and spacing.
+							'id'    => 'card_thumbnail_layout',
+							'type'  => 'card',
+							'title' => esc_html__( 'Thumbnail Layout', 'woo-product-variation-gallery' ),
+							'desc'  => esc_html__( 'Position, size and scrolling of the thumbnail strip.', 'woo-product-variation-gallery' ),
 						],
 						[
 							'title'   => esc_html__( 'Thumbnail Style', 'woo-product-variation-gallery' ),
@@ -198,35 +292,25 @@ class Options {
 							'options' => Functions::only_registered_image_size(),
 						],
 						[
-							'title'   => esc_html__( 'Slider Navigation (Arrow)', 'woo-product-variation-gallery' ),
-							'type'    => 'switch',
-							'default' => true,
-							'desc'    => esc_html__( 'Show previous/next navigation arrows on the main gallery slider. Requires the pro version.', 'woo-product-variation-gallery' ),
-							'id'      => 'slider_arrow',
-							'is_pro'  => true,
+							'title'     => esc_html__( 'Thumbnail Slider', 'woo-product-variation-gallery' ),
+							'type'      => 'switch',
+							'default'   => true,
+							'desc'      => esc_html__( 'Enable sliding/scrolling behavior for thumbnail images when there are more thumbnails than visible slots. Requires the pro version.', 'woo-product-variation-gallery' ),
+							'id'        => 'thumbnail_slide',
+							'is_pro'    => true,
+							// Left/right positions force the thumbnail slider on and
+							// the grid layout has none, so this only applies at the
+							// bottom position.
+							'condition' => [
+								'field' => 'thumbnail_position',
+								'value' => 'bottom',
+							],
 						],
 						[
-							'title'   => esc_html__( 'Slider Adaptive Height', 'woo-product-variation-gallery' ),
-							'type'    => 'switch',
-							'default' => true,
-							'desc'    => esc_html__( 'Automatically adjust the slider height based on the current slide image dimensions. Disable to use a fixed height.', 'woo-product-variation-gallery' ),
-							'id'      => 'slider_adaptive_height',
-						],
-						[
-							'title'   => esc_html__( 'Remove Featured/Thumbnail Image', 'woo-product-variation-gallery' ),
-							'type'    => 'switch',
-							'default' => false,
-							'desc'    => esc_html__( 'Enable this option to remove the Featured/Thumbnail image from the slider when a variation is selected.', 'woo-product-variation-gallery' ),
-							'id'      => 'remove_featured_thumbnail',
-						],
-
-						[
-							'title'   => esc_html__( 'Thumbnail Slider', 'woo-product-variation-gallery' ),
-							'type'    => 'switch',
-							'default' => true,
-							'desc'    => esc_html__( 'Enable sliding/scrolling behavior for thumbnail images when there are more thumbnails than visible slots. Requires the pro version.', 'woo-product-variation-gallery' ),
-							'id'      => 'thumbnail_slide',
-							'is_pro'  => true,
+							'id'    => 'card_loading',
+							'type'  => 'card',
+							'title' => esc_html__( 'Loading', 'woo-product-variation-gallery' ),
+							'desc'  => esc_html__( 'What shoppers see while gallery images load or switch between variations.', 'woo-product-variation-gallery' ),
 						],
 						[
 							'title'   => esc_html__( 'Preloader', 'woo-product-variation-gallery' ),
@@ -236,10 +320,14 @@ class Options {
 							'id'      => 'preloader',
 						],
 						[
-							'id'    => 'preloader_image',
-							'type'  => 'image',
-							'title' => esc_html__( 'Preloader Image', 'woo-product-variation-gallery' ),
-							'desc'  => esc_html__( 'Upload a custom preloader image to replace the default loading animation. Recommended size: 60x60 pixels.', 'woo-product-variation-gallery' ),
+							'id'        => 'preloader_image',
+							'type'      => 'image',
+							'title'     => esc_html__( 'Preloader Image', 'woo-product-variation-gallery' ),
+							'desc'      => esc_html__( 'Upload a custom preloader image to replace the default loading animation. Recommended size: 60x60 pixels.', 'woo-product-variation-gallery' ),
+							'condition' => [
+								'field' => 'preloader',
+								'value' => true,
+							],
 						],
 						[
 							'title'   => esc_html__( 'Gallery Change Effect', 'woo-product-variation-gallery' ),
@@ -252,19 +340,6 @@ class Options {
 								'blur' => esc_html__( 'Blur', 'woo-product-variation-gallery' ),
 								'fade' => esc_html__( 'Fade', 'woo-product-variation-gallery' ),
 								'gray' => esc_html__( 'Gray', 'woo-product-variation-gallery' ),
-							],
-						],
-						[
-							'title'   => esc_html__( 'Zoom Button Position', 'woo-product-variation-gallery' ),
-							'type'    => 'select',
-							'default' => 'top-right',
-							'desc'    => esc_html__( 'Set the position of the lightbox/zoom icon on the main gallery image.', 'woo-product-variation-gallery' ),
-							'id'      => 'zoom_position',
-							'options' => [
-								'top-right'    => esc_html__( 'Top right', 'woo-product-variation-gallery' ),
-								'top-left'     => esc_html__( 'Top left', 'woo-product-variation-gallery' ),
-								'bottom-right' => esc_html__( 'Bottom right', 'woo-product-variation-gallery' ),
-								'bottom-left'  => esc_html__( 'Bottom left', 'woo-product-variation-gallery' ),
 							],
 						],
 					]
@@ -317,7 +392,7 @@ class Options {
 			'tools'           => [
 				'id'     => 'tools',
 				'title'  => esc_html__( 'Tools', 'woo-product-variation-gallery' ),
-				'desc'   => esc_html__( 'Manage plugin data, script loading, and slider library settings.', 'woo-product-variation-gallery' ),
+				'desc'   => esc_html__( 'Manage plugin data and script loading settings.', 'woo-product-variation-gallery' ),
 				'active' => apply_filters( 'rtwpvg_tools_setting_active', false ),
 				'fields' => apply_filters(
 					'rtwpvg_tools_setting_fields',
@@ -329,18 +404,28 @@ class Options {
 							'desc'  => esc_html__( 'When enabled, all plugin data will be permanently removed from the database upon plugin deletion. Keep disabled to preserve settings if you plan to reinstall.', 'woo-product-variation-gallery' ),
 						],
 						[
-							'id'      => 'upgrade_slider_scripts',
-							'type'    => 'switch',
-							'title'   => esc_html__( 'Upgrade Slider Scripts ', 'woo-product-variation-gallery' ) . '<span style="color:red">(New)</span>',
-							'desc'    => '<span style="color:red">' . __( 'Upgrade slider script from Slick Carousel to Swiper Slider. Uncheck if you don\'t want to upgrade slider library. Note: Slick will be phased out in the future.', 'woo-product-variation-gallery' ) . '</span>',
-							'default' => true,
-						],
-						[
 							'id'      => 'load_scripts',
 							'type'    => 'checkbox',
 							'title'   => esc_html__( 'Load Scripts', 'woo-product-variation-gallery' ),
 							'desc'    => esc_html__( 'By default, gallery scripts load only on product and shop pages. Enable this to load scripts site-wide, useful if you display products via shortcodes or custom templates on other pages.', 'woo-product-variation-gallery' ),
 							'default' => false,
+						],
+					]
+				),
+			],
+			'license'         => [
+				'id'     => 'license',
+				'title'  => esc_html__( 'License', 'woo-product-variation-gallery' ),
+				'desc'   => esc_html__( 'Add your licence code here', 'woo-product-variation-gallery' ),
+				'active' => apply_filters( 'rtwpvg_license_setting_active', false ),
+				'fields' => apply_filters(
+					'rtwpvg_license_setting_fields',
+					[
+						[
+							'id'    => 'license_key',
+							'type'  => 'license',
+							'title' => esc_html__( 'Licence key', 'woo-product-variation-gallery' ),
+							'desc'  => esc_html__( 'Enter your license key and activate it to unlock Pro features and updates.', 'woo-product-variation-gallery' ),
 						],
 					]
 				),
@@ -398,6 +483,12 @@ class Options {
 				),
 			],
 		];
+
+		// The licensing UI is only meaningful with Pro active: the free plugin ships
+		// the field and its AJAX plumbing, but there is nothing to license without it.
+		if ( ! rtwpvg()->active_pro() ) {
+			unset( $fields['license'] );
+		}
 
 		return apply_filters( 'rtwpvg_settings_fields', $fields );
 	}

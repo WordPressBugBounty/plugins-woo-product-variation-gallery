@@ -27,42 +27,24 @@ class ScriptLoader {
 		$gallery_md_width           = absint( apply_filters( 'rtwpvg_gallery_md_width', rtwpvg()->get_option( 'gallery_md_width', 4 ) ) );
 		$gallery_sm_width           = absint( apply_filters( 'rtwpvg_gallery_sm_width', rtwpvg()->get_option( 'gallery_sm_width', 4 ) ) );
 		$gallery_xsm_width          = absint( apply_filters( 'rtwpvg_gallery_xsm_width', rtwpvg()->get_option( 'gallery_xsm_width', 2 ) ) );
-		$using_swiper               = rtwpvg()->get_option( 'upgrade_slider_scripts' );
 		$gallery_sm_width           = $gallery_sm_width < 100 ? $gallery_sm_width : 100;
 		$gallery_xsm_width          = $gallery_xsm_width < 100 ? $gallery_xsm_width : 100;
 
 		$thumbnail_position = apply_filters( 'rtwpvg_thumbnail_position', 'bottom' );
 
-		if ( $using_swiper ) {
-			wp_enqueue_script( 'swiper', esc_url( rtwpvg()->get_assets_uri( '/js/swiper-bundle.min.js' ) ), [ 'jquery' ], '8.4.5', true );
-			wp_enqueue_style( 'swiper', esc_url( rtwpvg()->get_assets_uri( '/css/swiper-bundle.min.css' ) ), [], '8.4.5' );
-			wp_enqueue_script(
-				'rtwpvg',
-				esc_url( rtwpvg()->get_assets_uri( "/js/rtwpvg.js" ) ),
-				[
-					'jquery',
-					'wp-util',
-					'imagesloaded',
-				],
-				$this->version,
-				true
-			);
-		} else {
-			// legacy support
-			wp_enqueue_script( 'rtwpvg-slider', esc_url( rtwpvg()->get_assets_uri( "/js/slick.js" ) ), [ 'jquery' ], '1.8.1', true );
-			wp_enqueue_style( 'rtwpvg-slider', esc_url( rtwpvg()->get_assets_uri( "/css/slick.css" ) ), [], '1.8.1' );
-			wp_enqueue_script(
-				'rtwpvg',
-				esc_url( rtwpvg()->get_assets_uri( "/js/slick-rtwpvg.js" ) ),
-				[
-					'jquery',
-					'wp-util',
-					'imagesloaded',
-				],
-				$this->version,
-				true
-			);
-		}
+		wp_enqueue_script( 'swiper', esc_url( rtwpvg()->get_assets_uri( '/js/swiper-bundle.min.js' ) ), [ 'jquery' ], '14.2.0', true );
+		wp_enqueue_style( 'swiper', esc_url( rtwpvg()->get_assets_uri( '/css/swiper-bundle.min.css' ) ), [], '14.2.0' );
+		wp_enqueue_script(
+			'rtwpvg',
+			esc_url( rtwpvg()->get_assets_uri( "/js/rtwpvg.js" ) ),
+			[
+				'jquery',
+				'wp-util',
+				'imagesloaded',
+			],
+			$this->version,
+			true
+		);
 
 		wp_localize_script(
 			'rtwpvg',
@@ -84,17 +66,11 @@ class ScriptLoader {
 					'gallery_md_width'          => $gallery_md_width,
 					'gallery_sm_width'          => $gallery_sm_width,
 					'gallery_xsm_width'         => $gallery_xsm_width,
-					'using_swiper'              => boolval( $using_swiper ),
 				]
 			)
 		);
 
-		if ( $using_swiper ) {
-			wp_enqueue_style( 'rtwpvg', esc_url( rtwpvg()->get_assets_uri( "/css/rtwpvg.css" ) ), [ 'dashicons' ], $this->version );
-		} else {
-			// legacy support
-			wp_enqueue_style( 'rtwpvg', esc_url( rtwpvg()->get_assets_uri( "/css/slick-rtwpvg.css" ) ), [ 'dashicons' ], $this->version );
-		}
+		wp_enqueue_style( 'rtwpvg', esc_url( rtwpvg()->get_assets_uri( "/css/rtwpvg.css" ) ), [ 'dashicons' ], $this->version );
 		$this->add_inline_style();
 	}
 
@@ -105,7 +81,19 @@ class ScriptLoader {
 			wp_dequeue_script( 'wc-admin-variation-meta-boxes' );
 			wp_enqueue_script( 'wc-admin-variation-meta-boxes' );
 		}
-		if ( ( isset( $_GET['post_type'] ) && $_GET['post_type'] == 'product' ) || $screen_id === 'product' || ( ( isset( $_GET['page'] ) && $_GET['page'] == "wc-settings" ) && ( isset( $_GET['tab'] ) && $_GET['tab'] == "rtwpvg" ) ) ) { // phpcs:ignore
+
+		// The React settings app: only its stylesheet is enqueued here — the
+		// bundle itself is printed inline by SettingsAPI so optimization
+		// plugins can't strip it. wp.media powers the image fields.
+		if ( 'woocommerce_page_' . SettingsAPI::PAGE_SLUG === $screen_id ) {
+			$suffix = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
+			wp_enqueue_media();
+			wp_enqueue_style( 'rtwpvg-settings', esc_url( rtwpvg()->get_assets_uri( "css/settings{$suffix}.css" ) ), [], $this->version );
+
+			return;
+		}
+
+		if ( ( isset( $_GET['post_type'] ) && $_GET['post_type'] == 'product' ) || $screen_id === 'product' ) { // phpcs:ignore
 			wp_enqueue_style( 'wp-color-picker' );
 			if ( apply_filters( 'rtwpvg_disable_alpha_color_picker', false ) ) {
 				wp_enqueue_script( 'wp-color-picker' );

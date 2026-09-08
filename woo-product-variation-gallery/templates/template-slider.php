@@ -12,9 +12,8 @@ defined('ABSPATH') || exit;
     <# thumbnailSrc = (  data.rtwpvg_video_link ) ? data.video_thumbnail_src : data.gallery_thumbnail_src #>
     <# videoWidth = ( data.rtwpvg_video_width ) ? data.rtwpvg_video_width : 'auto' #>
     <# videoHeight = ( data.rtwpvg_video_height ) ? data.rtwpvg_video_height : '100%' #>
-    <# swiperClass = ( rtwpvg.using_swiper ) ? 'swiper-slide' : '' #>
 
-    <div class="rtwpvg-gallery-image {{swiperClass}} {{hasVideo}} rtwpvg-gallery-image-{{data.image_id}}">
+    <div class="rtwpvg-gallery-image swiper-slide {{hasVideo}} rtwpvg-gallery-image-{{data.image_id}}">
         <# if(data.rtwpvg_video_link ) { #>
         <# if(data.rtwpvg_video_embed_type == 'video') { #>
         <div class="rtwpvg-single-video-container">
