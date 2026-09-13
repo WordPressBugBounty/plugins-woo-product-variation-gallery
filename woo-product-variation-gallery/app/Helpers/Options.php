@@ -271,17 +271,34 @@ class Options {
 						],
 						[
 							'title'   => esc_html__( 'Thumbnail Style', 'woo-product-variation-gallery' ),
-							'desc'    => esc_html__( 'Set the position of thumbnail images relative to the main gallery image. Pro version offers additional positions like left, right, and dot navigation. Note: When the thumbnail position is set to Left or Right, the thumbnail slider is automatically enabled.', 'woo-product-variation-gallery' ),
+							'desc'    => esc_html__( 'Set the position of thumbnail images relative to the main gallery image. Pro version adds the grid layout. Note: When the thumbnail position is set to Left or Right, the thumbnail slider is automatically enabled.', 'woo-product-variation-gallery' ),
 							'id'      => 'thumbnail_position',
-							'is_pro'  => true,
 							'type'    => 'select',
 							'default' => 'bottom',
+							// Grid Style is appended by the pro plugin; every other
+							// position ships with the free version.
 							'options' => apply_filters(
 								'rtwpvg_thumbnail_style',
 								[
 									'bottom' => esc_html__( 'Position Bottom', 'woo-product-variation-gallery' ),
+									'left'   => esc_html__( 'Position Left - Thumbnail Carousel', 'woo-product-variation-gallery' ),
+									'right'  => esc_html__( 'Position Right - Thumbnail Carousel', 'woo-product-variation-gallery' ),
 								]
 							),
+						],
+						[
+							'title'     => esc_html__( 'Thumbnail Slider', 'woo-product-variation-gallery' ),
+							'type'      => 'switch',
+							'default'   => true,
+							'desc'      => esc_html__( 'Enable sliding/scrolling behavior for thumbnail images when there are more thumbnails than visible slots.', 'woo-product-variation-gallery' ),
+							'id'        => 'thumbnail_slide',
+							// Left/right positions force the thumbnail slider on and
+							// the grid layout has none, so this only applies at the
+							// bottom position.
+							'condition' => [
+								'field' => 'thumbnail_position',
+								'value' => 'bottom',
+							],
 						],
 						[
 							'title'   => esc_html__( 'Gallery Thumbnail Size', 'woo-product-variation-gallery' ),
@@ -290,21 +307,6 @@ class Options {
 							'type'    => 'select',
 							'default' => '',
 							'options' => Functions::only_registered_image_size(),
-						],
-						[
-							'title'     => esc_html__( 'Thumbnail Slider', 'woo-product-variation-gallery' ),
-							'type'      => 'switch',
-							'default'   => true,
-							'desc'      => esc_html__( 'Enable sliding/scrolling behavior for thumbnail images when there are more thumbnails than visible slots. Requires the pro version.', 'woo-product-variation-gallery' ),
-							'id'        => 'thumbnail_slide',
-							'is_pro'    => true,
-							// Left/right positions force the thumbnail slider on and
-							// the grid layout has none, so this only applies at the
-							// bottom position.
-							'condition' => [
-								'field' => 'thumbnail_position',
-								'value' => 'bottom',
-							],
 						],
 						[
 							'id'    => 'card_loading',

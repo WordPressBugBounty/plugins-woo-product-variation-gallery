@@ -2,14 +2,14 @@
 # This file is distributed under the GPLv3.
 msgid ""
 msgstr ""
-"Project-Id-Version: Variation Images Gallery for WooCommerce 2.4.4\n"
+"Project-Id-Version: Variation Images Gallery for WooCommerce 2.4.5\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/woo-product-variation-gallery\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-09-08T07:00:27+00:00\n"
+"POT-Creation-Date: 2026-09-13T05:23:05+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: woo-product-variation-gallery\n"
@@ -39,11 +39,11 @@ msgstr ""
 msgid "User permission error"
 msgstr ""
 
-#: app/Controllers/Hooks.php:505
+#: app/Controllers/Hooks.php:556
 msgid "Variation Image/Video Gallery"
 msgstr ""
 
-#: app/Controllers/Hooks.php:539
+#: app/Controllers/Hooks.php:590
 msgid "Add Gallery Images"
 msgstr ""
 
@@ -106,93 +106,93 @@ msgstr ""
 msgid "Variation Gallery"
 msgstr ""
 
-#: app/Controllers/ProductMeta.php:139
+#: app/Controllers/ProductMeta.php:141
 #: app/Helpers/Options.php:24
 msgid "Thumbnail Items"
 msgstr ""
 
-#: app/Controllers/ProductMeta.php:143
+#: app/Controllers/ProductMeta.php:145
 #: app/Helpers/Options.php:273
 msgid "Thumbnail Style"
 msgstr ""
 
-#: app/Controllers/ProductMeta.php:145
-#: app/Controllers/ProductMeta.php:151
-#: app/Controllers/ProductMeta.php:157
-#: app/Controllers/ProductMeta.php:163
+#: app/Controllers/ProductMeta.php:147
+#: app/Controllers/ProductMeta.php:153
+#: app/Controllers/ProductMeta.php:159
+#: app/Controllers/ProductMeta.php:165
 msgid "— Global Setting —"
 msgstr ""
 
-#: app/Controllers/ProductMeta.php:149
+#: app/Controllers/ProductMeta.php:151
 msgid "Transition Effect"
 msgstr ""
 
-#: app/Controllers/ProductMeta.php:155
+#: app/Controllers/ProductMeta.php:157
 msgid "Image Zoom"
 msgstr ""
 
-#: app/Controllers/ProductMeta.php:161
+#: app/Controllers/ProductMeta.php:163
 msgid "Lightbox"
 msgstr ""
 
-#: app/Controllers/ProductMeta.php:172
+#: app/Controllers/ProductMeta.php:174
 msgid "Pro Feature"
 msgstr ""
 
-#: app/Controllers/ProductMeta.php:173
+#: app/Controllers/ProductMeta.php:175
 msgid "Per-Product Gallery Settings"
 msgstr ""
 
-#: app/Controllers/ProductMeta.php:175
+#: app/Controllers/ProductMeta.php:177
 msgid "Override global gallery settings per product — thumbnail style, grid presets, transition effects, zoom, lightbox, and thumbnail items."
 msgstr ""
 
-#: app/Controllers/ProductMeta.php:179
+#: app/Controllers/ProductMeta.php:181
 #: app/Controllers/SettingsAPI.php:384
 msgid "Upgrade to Pro"
 msgstr ""
 
-#: app/Controllers/ScriptLoader.php:103
+#: app/Controllers/ScriptLoader.php:108
 msgid "Clear"
 msgstr ""
 
-#: app/Controllers/ScriptLoader.php:104
+#: app/Controllers/ScriptLoader.php:109
 msgid "Default"
 msgstr ""
 
-#: app/Controllers/ScriptLoader.php:105
+#: app/Controllers/ScriptLoader.php:110
 msgid "Select Color"
 msgstr ""
 
-#: app/Controllers/ScriptLoader.php:106
+#: app/Controllers/ScriptLoader.php:111
 msgid "Clear color"
 msgstr ""
 
-#: app/Controllers/ScriptLoader.php:107
+#: app/Controllers/ScriptLoader.php:112
 msgid "Select default color"
 msgstr ""
 
-#: app/Controllers/ScriptLoader.php:108
+#: app/Controllers/ScriptLoader.php:113
 msgid "Color value"
 msgstr ""
 
-#: app/Controllers/ScriptLoader.php:134
+#: app/Controllers/ScriptLoader.php:139
 msgid "Choose Image"
 msgstr ""
 
-#: app/Controllers/ScriptLoader.php:135
+#: app/Controllers/ScriptLoader.php:140
 msgid "Choose Video"
 msgstr ""
 
-#: app/Controllers/ScriptLoader.php:136
+#: app/Controllers/ScriptLoader.php:141
 msgid "Add Images"
 msgstr ""
 
-#: app/Controllers/ScriptLoader.php:137
+#: app/Controllers/ScriptLoader.php:142
 msgid "Add Video"
 msgstr ""
 
-#: app/Controllers/ScriptLoader.php:138
+#: app/Controllers/ScriptLoader.php:143
 msgid "Are you sure to delete?"
 msgstr ""
 
@@ -341,7 +341,7 @@ msgid "Upgrade to pro"
 msgstr ""
 
 #. translators: %s template
-#: app/Helpers/Functions.php:274
+#: app/Helpers/Functions.php:283
 #, php-format
 msgid "%s does not exist."
 msgstr ""
@@ -589,7 +589,7 @@ msgid "Slide"
 msgstr ""
 
 #: app/Helpers/Options.php:228
-#: app/Helpers/Options.php:341
+#: app/Helpers/Options.php:343
 msgid "Fade"
 msgstr ""
 
@@ -626,161 +626,169 @@ msgid "Position, size and scrolling of the thumbnail strip."
 msgstr ""
 
 #: app/Helpers/Options.php:274
-msgid "Set the position of thumbnail images relative to the main gallery image. Pro version offers additional positions like left, right, and dot navigation. Note: When the thumbnail position is set to Left or Right, the thumbnail slider is automatically enabled."
+msgid "Set the position of thumbnail images relative to the main gallery image. Pro version adds the grid layout. Note: When the thumbnail position is set to Left or Right, the thumbnail slider is automatically enabled."
 msgstr ""
 
-#: app/Helpers/Options.php:282
+#: app/Helpers/Options.php:283
 msgid "Position Bottom"
 msgstr ""
 
-#: app/Helpers/Options.php:287
-msgid "Gallery Thumbnail Size"
+#: app/Helpers/Options.php:284
+msgid "Position Left - Thumbnail Carousel"
 msgstr ""
 
-#: app/Helpers/Options.php:288
-msgid "Select the registered image size to use for gallery thumbnails. Choose from available WordPress image sizes configured in your site."
+#: app/Helpers/Options.php:285
+msgid "Position Right - Thumbnail Carousel"
 msgstr ""
 
-#: app/Helpers/Options.php:295
+#: app/Helpers/Options.php:290
 msgid "Thumbnail Slider"
 msgstr ""
 
-#: app/Helpers/Options.php:298
-msgid "Enable sliding/scrolling behavior for thumbnail images when there are more thumbnails than visible slots. Requires the pro version."
+#: app/Helpers/Options.php:293
+msgid "Enable sliding/scrolling behavior for thumbnail images when there are more thumbnails than visible slots."
 msgstr ""
 
-#: app/Helpers/Options.php:312
+#: app/Helpers/Options.php:304
+msgid "Gallery Thumbnail Size"
+msgstr ""
+
+#: app/Helpers/Options.php:305
+msgid "Select the registered image size to use for gallery thumbnails. Choose from available WordPress image sizes configured in your site."
+msgstr ""
+
+#: app/Helpers/Options.php:314
 msgid "Loading"
 msgstr ""
 
-#: app/Helpers/Options.php:313
+#: app/Helpers/Options.php:315
 msgid "What shoppers see while gallery images load or switch between variations."
 msgstr ""
 
-#: app/Helpers/Options.php:316
+#: app/Helpers/Options.php:318
 msgid "Preloader"
 msgstr ""
 
-#: app/Helpers/Options.php:319
+#: app/Helpers/Options.php:321
 msgid "Show a loading animation while the gallery images are being loaded. Improves perceived performance on slower connections."
 msgstr ""
 
-#: app/Helpers/Options.php:325
+#: app/Helpers/Options.php:327
 msgid "Preloader Image"
 msgstr ""
 
-#: app/Helpers/Options.php:326
+#: app/Helpers/Options.php:328
 msgid "Upload a custom preloader image to replace the default loading animation. Recommended size: 60x60 pixels."
 msgstr ""
 
-#: app/Helpers/Options.php:333
+#: app/Helpers/Options.php:335
 msgid "Gallery Change Effect"
 msgstr ""
 
-#: app/Helpers/Options.php:336
+#: app/Helpers/Options.php:338
 msgid "Choose the visual effect applied to the gallery when switching between variations. Select No effect to keep the gallery fully visible during the transition."
 msgstr ""
 
-#: app/Helpers/Options.php:339
+#: app/Helpers/Options.php:341
 msgid "No effect"
 msgstr ""
 
-#: app/Helpers/Options.php:340
+#: app/Helpers/Options.php:342
 msgid "Blur"
 msgstr ""
 
-#: app/Helpers/Options.php:342
+#: app/Helpers/Options.php:344
 msgid "Gray"
 msgstr ""
 
-#: app/Helpers/Options.php:350
+#: app/Helpers/Options.php:352
 msgid "Style"
 msgstr ""
 
-#: app/Helpers/Options.php:351
+#: app/Helpers/Options.php:353
 msgid "Customize the colors of slider navigation arrows. Requires the pro version."
 msgstr ""
 
-#: app/Helpers/Options.php:360
+#: app/Helpers/Options.php:362
 msgid "Arrow background"
 msgstr ""
 
-#: app/Helpers/Options.php:361
+#: app/Helpers/Options.php:363
 msgid "Set the background color of the slider navigation arrows. Supports alpha transparency."
 msgstr ""
 
-#: app/Helpers/Options.php:369
+#: app/Helpers/Options.php:371
 msgid "Arrow background hover"
 msgstr ""
 
-#: app/Helpers/Options.php:370
+#: app/Helpers/Options.php:372
 msgid "Set the background color of the slider navigation arrows on mouse hover."
 msgstr ""
 
-#: app/Helpers/Options.php:378
+#: app/Helpers/Options.php:380
 msgid "Arrow text color"
 msgstr ""
 
-#: app/Helpers/Options.php:379
+#: app/Helpers/Options.php:381
 msgid "Set the color of the arrow icon inside the slider navigation buttons."
 msgstr ""
 
-#: app/Helpers/Options.php:385
+#: app/Helpers/Options.php:387
 msgid "Arrow text hover color"
 msgstr ""
 
-#: app/Helpers/Options.php:386
+#: app/Helpers/Options.php:388
 msgid "Set the color of the arrow icon inside the slider navigation buttons on mouse hover."
 msgstr ""
 
-#: app/Helpers/Options.php:394
+#: app/Helpers/Options.php:396
 msgid "Tools"
 msgstr ""
 
-#: app/Helpers/Options.php:395
+#: app/Helpers/Options.php:397
 msgid "Manage plugin data and script loading settings."
 msgstr ""
 
-#: app/Helpers/Options.php:403
+#: app/Helpers/Options.php:405
 msgid "Enable to delete all data"
 msgstr ""
 
-#: app/Helpers/Options.php:404
+#: app/Helpers/Options.php:406
 msgid "When enabled, all plugin data will be permanently removed from the database upon plugin deletion. Keep disabled to preserve settings if you plan to reinstall."
 msgstr ""
 
-#: app/Helpers/Options.php:409
+#: app/Helpers/Options.php:411
 msgid "Load Scripts"
 msgstr ""
 
-#: app/Helpers/Options.php:410
+#: app/Helpers/Options.php:412
 msgid "By default, gallery scripts load only on product and shop pages. Enable this to load scripts site-wide, useful if you display products via shortcodes or custom templates on other pages."
 msgstr ""
 
-#: app/Helpers/Options.php:418
+#: app/Helpers/Options.php:420
 msgid "License"
 msgstr ""
 
-#: app/Helpers/Options.php:419
+#: app/Helpers/Options.php:421
 msgid "Add your licence code here"
 msgstr ""
 
-#: app/Helpers/Options.php:427
+#: app/Helpers/Options.php:429
 msgid "Licence key"
 msgstr ""
 
-#: app/Helpers/Options.php:428
+#: app/Helpers/Options.php:430
 msgid "Enter your license key and activate it to unlock Pro features and updates."
 msgstr ""
 
-#: app/Helpers/Options.php:435
+#: app/Helpers/Options.php:437
 msgid "Related Plugins"
 msgstr ""
 
-#: app/Helpers/Options.php:436
+#: app/Helpers/Options.php:438
 msgid "You can try our premium plugins"
 msgstr ""
 
-#: templates/swiper-product-images.php:199
+#: templates/swiper-product-images.php:195
 msgid "Awaiting product image"
 msgstr ""

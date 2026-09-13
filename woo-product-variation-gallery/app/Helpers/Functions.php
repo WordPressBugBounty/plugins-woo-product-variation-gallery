@@ -15,6 +15,15 @@ class Functions {
 	public static $slug = 'rtwpvg';
 
 	/**
+	 * Whether a `get_available_variation()` build is already on the stack.
+	 *
+	 * @see self::get_product_variation()
+	 *
+	 * @var bool
+	 */
+	protected static $building_available_variation = false;
+
+	/**
 	 * Cached gallery transient version.
 	 *
 	 * Bumped whenever the cached image-props shape or the ID-list building logic
@@ -396,15 +405,36 @@ class Functions {
 	}
 
 	/**
-	 * @param $product_id int
-	 * @param $variation_id int
+	 * Get WooCommerce's available-variation data for a single variation.
 	 *
-	 * @return array|bool
+	 * This call is re-entrant on WooCommerce 11.1+: `get_available_variation()`
+	 * renders `single-product/product-image.php` to build its own gallery markup,
+	 * and that template is ours — which calls straight back in here. Left unguarded
+	 * the two keep re-entering each other until the memory limit is hit. The static
+	 * flag breaks the loop at the second level; the inner render only feeds
+	 * WooCommerce's `gallery_images_html`, which this plugin blanks out anyway.
+	 *
+	 * @param int $product_id   Parent product ID.
+	 * @param int $variation_id Variation ID.
+	 *
+	 * @return array|bool Variation data, or false when called re-entrantly.
 	 */
 	public static function get_product_variation( $product_id, $variation_id ) {
-		$variable_product = new WC_Product_Variable( absint( $product_id ) );
+		if ( self::$building_available_variation ) {
+			return false;
+		}
 
-		return $variable_product->get_available_variation( absint( $variation_id ) );
+		self::$building_available_variation = true;
+
+		try {
+			$variable_product = new WC_Product_Variable( absint( $product_id ) );
+
+			return $variable_product->get_available_variation( absint( $variation_id ) );
+		} finally {
+			// Reset even when WooCommerce throws, so one failure cannot leave every
+			// later gallery on the request permanently short-circuited.
+			self::$building_available_variation = false;
+		}
 	}
 
 	/**

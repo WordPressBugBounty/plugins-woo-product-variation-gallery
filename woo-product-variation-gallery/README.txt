@@ -4,7 +4,7 @@ Tags: product variation gallery, woocommerce variation image gallery, additional
 Requires at least: 6.0
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 2.4.4
+Stable tag: 2.4.5
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -32,6 +32,8 @@ This plugin is easy to use and included detail settings there is no limit to use
 * UNLIMITED additional images for each product variation
 * Drag & Drop custom sorting option.
 * Delete option for Variation images.
+* Thumbnail position (Left/ Right/ Bottom).
+* Thumbnail slider.
 * Zoom option for variation images.
 * Zoom button position control option.
 * Light box for variation images.
@@ -40,9 +42,9 @@ This plugin is easy to use and included detail settings there is no limit to use
 * Compatible with [Variation Swatches for WooCommerce](https://wordpress.org/plugins/woo-product-variation-swatches/) plugin.
 
 == Pro Features ==
-* Thumbnail Slider.
-* Thumbnail position (Left/ Right/ Bottom)
-* Support Video at gallery
+* **Grid Layout** for variation gallery images.
+* **Video Gallery Support** — Add videos from YouTube, Vimeo, TikTok, or upload your own video.
+* **Gallery Styles per Product** — Choose a different gallery style for each product.
 
 == Need Any Help? ==
 * For any bug, support or suggestion please submit your ticket [here](https://www.radiustheme.com/ticket-support/).
@@ -127,16 +129,25 @@ Yes, it is.
 
 == Changelog ==
 
+= 2.4.5 (Sep 13, 2026) =
+
+Added: Left/Right/Bottom gallery slider is now free.
+Fixed: Fatal memory error on the WooCommerce product list and other admin screens.
+Fixed: Variation gallery migration no longer stalls on large stores, and a single problem variation can no longer block it.
+
 = 2.4.4 (Sep 08, 2026) =
 
 Added: Latest WooCommerce compatibility.
 Added: Support for the WooCommerce 11.1 native variation gallery; existing galleries are migrated automatically.
 Added: New Variation Gallery settings page under the WooCommerce menu with sidebar navigation and search.
+Added: Thumbnail position (Left/Right/Bottom) and thumbnail slider are now free features.
+Changed: Variation Gallery product data tab is now available for every product type, not just variable products.
 Changed: Updated the Swiper slider library to 14.2.0.
 Changed: Removed Slick Carousel; all galleries now use Swiper.
 Changed: Settings now save automatically; the old settings tab redirects to the new page.
 Fixed: Gallery no longer renders an empty slide/thumbnail for images deleted from the media library.
 Fixed: Thumbnail slider now initializes in Elementor single-product templates that omit the Add to Cart widget.
+Fixed: Zoom, LightBox, LightBox on image click and preloader now turn off when their setting is disabled.
 
 [See changelog for all versions.](https://raw.githubusercontent.com/radiustheme/changelog/refs/heads/main/woo-product-variation-gallery.txt)
 

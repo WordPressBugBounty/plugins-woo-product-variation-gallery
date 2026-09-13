@@ -43,6 +43,8 @@ class Hooks {
 		add_action( 'wp_ajax_rtwpvg_get_variation_gallery', [ $this, 'ajax_get_variation_gallery' ] );
 		add_action( 'wp_ajax_nopriv_rtwpvg_get_variation_gallery', [ $this, 'ajax_get_variation_gallery' ] );
 
+		add_filter( 'rtwpvg_thumbnail_position', [ $this, 'thumbnail_position' ] );
+
 		add_filter( 'rtwpvg_inline_style', [ $this, 'rtwpvg_add_inline_style' ], 9 );
 		add_action( 'woocommerce_update_product', [ $this, 'delete_cache_data' ], 10, 1 );
 		add_action( 'delete_attachment', [ $this, 'delete_attachment_cache_data' ], 10, 1 );
@@ -295,8 +297,30 @@ class Hooks {
 		return $styles;
 	}
 
+	/**
+	 * Swap WooCommerce's product image templates for this plugin's gallery.
+	 *
+	 * Admin screens are left alone. WooCommerce 11.1+ renders
+	 * `single-product/product-image.php` once per variation while building
+	 * `get_available_variation()` data, and screens such as the product list or the
+	 * variations metabox trigger that build without ever displaying a storefront
+	 * gallery — so overriding the template there buys nothing and only feeds our own
+	 * template back into `get_available_variation()`. AJAX is excluded from the
+	 * bail-out because front-end quick views are served through admin-ajax.php and
+	 * do need the gallery.
+	 *
+	 * @param string $template      Resolved template path.
+	 * @param string $template_name Template name being located.
+	 *
+	 * @return string
+	 */
 	function gallery_template_override( $template, $template_name ) {
 		global $product;
+
+		if ( is_admin() && ! wp_doing_ajax() ) {
+			return $template;
+		}
+
 		if ( is_a( $product, 'WC_Product' ) ) {
 			$disabled = get_post_meta( $product->get_id(), '_rtwpvg_disable_valiation_gallery', true );
 			if ( 'yes' === $disabled ) {
@@ -416,6 +440,33 @@ class Hooks {
 				}
 			}
 		}
+	}
+
+	/**
+	 * Resolve the saved thumbnail position.
+	 *
+	 * Bottom, left and right ship with the free version. The grid layout needs the
+	 * pro templates, so a stored `grid` value falls back to the bottom position
+	 * whenever pro is not active — otherwise a downgraded site would render a
+	 * layout it has no template for. Pro registers its own callback on this filter
+	 * later, which adds the per-product override on top of this value.
+	 *
+	 * @param string $position Default position.
+	 *
+	 * @return string
+	 */
+	public function thumbnail_position( $position ) {
+		$saved = rtwpvg()->get_option( 'thumbnail_position', 'bottom' );
+
+		if ( ! $saved ) {
+			return $position;
+		}
+
+		if ( ! rtwpvg()->active_pro() && ! in_array( $saved, [ 'bottom', 'left', 'right' ], true ) ) {
+			return 'bottom';
+		}
+
+		return $saved;
 	}
 
 	public function enable_theme_support() {

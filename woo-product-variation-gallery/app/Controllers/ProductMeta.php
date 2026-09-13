@@ -92,7 +92,9 @@ class ProductMeta {
 		$tabs['rtwpvg_gallery'] = [
 			'label'    => esc_html__( 'Variation Gallery', 'woo-product-variation-gallery' ),
 			'target'   => 'rtwpvg_gallery_options',
-			'class'    => [ 'show_if_variable' ],
+			// No show_if_* / hide_if_* class: the gallery settings apply to every
+			// product type, so WooCommerce must never hide the tab on type change.
+			'class'    => [],
 			'priority' => 65,
 		];
 

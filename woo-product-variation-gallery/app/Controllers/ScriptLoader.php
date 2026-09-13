@@ -52,12 +52,17 @@ class ScriptLoader {
 			apply_filters(
 				'rtwpvg_js_options',
 				[
-					'reset_on_variation_change' => rtwpvg()->get_option( 'reset_on_variation_change' ),
-					'enable_zoom'               => rtwpvg()->get_option( 'zoom' ),
-					'hasPreloader'              => rtwpvg()->get_option( 'preloader' ),
-					'enable_lightbox'           => rtwpvg()->get_option( 'lightbox' ),
-					'lightbox_image_click'      => rtwpvg()->get_option( 'lightbox_image_click' ),
-					'enable_thumbnail_slide'    => rtwpvg()->active_pro() && ( in_array( $thumbnail_position, [ 'left', 'right' ] ) || rtwpvg()->get_option( 'thumbnail_slide' ) ) ? true : false,
+					// Cast to bool before localizing: wp_localize_script stringifies
+					// scalars, so a disabled switch stored as int 0 would reach JS as
+					// the string "0", which is truthy. Booleans become "1" / "".
+					'reset_on_variation_change' => (bool) rtwpvg()->get_option( 'reset_on_variation_change' ),
+					'enable_zoom'               => (bool) rtwpvg()->get_option( 'zoom' ),
+					'hasPreloader'              => (bool) rtwpvg()->get_option( 'preloader' ),
+					'enable_lightbox'           => (bool) rtwpvg()->get_option( 'lightbox' ),
+					'lightbox_image_click'      => (bool) rtwpvg()->get_option( 'lightbox_image_click' ),
+					// Left/right positions force the slider on; at the bottom position
+					// the setting decides.
+					'enable_thumbnail_slide'    => in_array( $thumbnail_position, [ 'left', 'right' ], true ) || (bool) rtwpvg()->get_option( 'thumbnail_slide' ),
 					'thumbnails_columns'        => $gallery_thumbnails_columns,
 					'is_vertical'               => in_array( $thumbnail_position, [ 'left', 'right' ] ) ? true : false,
 					'thumbnail_position'        => $thumbnail_position,

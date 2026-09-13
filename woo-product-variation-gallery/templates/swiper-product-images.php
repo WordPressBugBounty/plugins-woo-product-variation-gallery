@@ -145,18 +145,14 @@ if ( in_array( $thumbnail_position, [ 'left', 'right' ] ) && $post_thumbnail_id 
 	}
 }
 
-$is_thumbnail_slide = rtwpvg()->get_option( 'thumbnail_slide' );
+$is_thumbnail_slide = (bool) rtwpvg()->get_option( 'thumbnail_slide' );
 $per_product_slide  = get_post_meta( $product_id, '_rtwpvg_thumbnail_slide', true );
 if ( ! empty( $per_product_slide ) ) {
 	$is_thumbnail_slide = 'yes' === $per_product_slide;
 }
 // For left/right positions, slider is always enabled.
-if ( in_array( $thumbnail_position, [ 'left', 'right' ] ) ) {
+if ( in_array( $thumbnail_position, [ 'left', 'right' ], true ) ) {
 	$is_thumbnail_slide = true;
-}
-// The thumbnail slider is a Pro feature; force it off when Pro is not active.
-if ( ! rtwpvg()->active_pro() ) {
-	$is_thumbnail_slide = false;
 }
 ?>
 

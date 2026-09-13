@@ -15,6 +15,34 @@
 		}
 		return true;
 	}
+	/**
+	* Read an attachment ID as a number.
+	*
+	* WooCommerce stores "no variation image" as `_thumbnail_id` = `0`, so the
+	* rendered `upload_image_id` input carries the string `"0"` — truthy in JS.
+	* Every ID read goes through here so an unset image is never mistaken for a
+	* real attachment.
+	*
+	* @param {jQuery|String|Number} value Input holding the ID, or the ID itself.
+	*
+	* @return {Number} Positive attachment ID, or 0 when unset.
+	*/
+	function attachmentId(value) {
+		const raw = value && value.jquery ? value.val() : value;
+		const id = parseInt(raw, 10);
+		return id > 0 ? id : 0;
+	}
+	/**
+	* Placeholder image WooCommerce renders in an empty variation image slot.
+	*
+	* Localised by core on the product editor; falls back to an empty string so a
+	* missing global never writes `undefined` into a `src`.
+	*
+	* @return {String}
+	*/
+	function placeholderImgSrc() {
+		return typeof woocommerce_admin_meta_boxes_variations !== "undefined" && woocommerce_admin_meta_boxes_variations.woocommerce_placeholder_img_src || "";
+	}
 	function imageUploader() {
 		$(document).off("click", ".rtwpvg-add-image");
 		$(document).off("click", ".rtwpvg-gallery-edit");
@@ -184,7 +212,7 @@
 		event.stopPropagation();
 		const imgList = $(event.currentTarget).parents("li.image");
 		const imageIdField = imgList.find("input");
-		const imageId = imageIdField.val();
+		const imageId = attachmentId(imageIdField);
 		const frame = wp.media({
 			title: "Edit Image",
 			button: { text: "Update Image" },
@@ -192,12 +220,13 @@
 			multiple: false
 		});
 		frame.on("open", function() {
-			if (imageId) {
-				const selection = frame.state().get("selection");
-				const attachment = wp.media.attachment(imageId);
-				attachment.fetch();
-				selection.add(attachment);
-			}
+			if (!imageId) return;
+			const selection = frame.state().get("selection");
+			const attachment = wp.media.attachment(imageId);
+			attachment.fetch().fail(function() {
+				selection.reset();
+			});
+			selection.add(attachment);
 		});
 		frame.on("select", function() {
 			const attachment = frame.state().get("selection").first().toJSON();
@@ -240,7 +269,9 @@
 			$button.attr("data-tip", "Edit Image");
 			$button.closest(".form-flex-box").addClass("rtwpvg-variation-image-layout");
 			const heroSrc = $button.closest(".woocommerce_variation").find(".rtwpvg-gallery-wrapper").data("hero-src");
-			if (heroSrc) $button.find("img").eq(0).attr("src", heroSrc).removeAttr("srcset sizes");
+			const $image = $button.find("img").eq(0);
+			if (heroSrc) $image.attr("src", heroSrc).removeAttr("srcset sizes");
+			else if (!$image.attr("src")) $image.attr("src", placeholderImgSrc()).removeAttr("srcset sizes");
 			$button.append($actions);
 		});
 		syncVariationImageActions();
@@ -272,7 +303,7 @@
 			const $row = $(this);
 			const $actions = $row.find(".rtwpvg-variation-image-actions");
 			if (!$actions.length) return;
-			const hasImage = !!$row.find(".upload_image_id").val();
+			const hasImage = attachmentId($row.find(".upload_image_id")) > 0;
 			$actions.toggleClass("is-empty", !hasImage);
 			$row.find(".upload_image_button").toggleClass("remove", hasImage);
 		});
@@ -280,7 +311,7 @@
 	function variationImageVideo(event) {
 		event.preventDefault();
 		event.stopPropagation();
-		const imageId = $(event.currentTarget).closest(".upload_image").find(".upload_image_id").val();
+		const imageId = attachmentId($(event.currentTarget).closest(".upload_image").find(".upload_image_id"));
 		if (!imageId) return;
 		openVideoModal(imageId, null);
 	}
@@ -303,7 +334,7 @@
 	*/
 	function openVariationImageFrame($button) {
 		const $input = $button.closest(".upload_image").find(".upload_image_id");
-		const imageId = $input.val();
+		const imageId = attachmentId($input);
 		const frame = wp.media({
 			title: rtwpvg_admin.choose_image,
 			button: { text: rtwpvg_admin.add_image },
@@ -311,12 +342,13 @@
 			multiple: false
 		});
 		frame.on("open", function() {
-			if (imageId) {
-				const selection = frame.state().get("selection");
-				const attachment = wp.media.attachment(imageId);
-				attachment.fetch();
-				selection.add(attachment);
-			}
+			if (!imageId) return;
+			const selection = frame.state().get("selection");
+			const attachment = wp.media.attachment(imageId);
+			attachment.fetch().fail(function() {
+				selection.reset();
+			});
+			selection.add(attachment);
 		});
 		frame.on("select", function() {
 			const attachment = frame.state().get("selection").first().toJSON();
@@ -357,8 +389,8 @@
 		$actions.find(".rtwpvg-media-video").on("click", function(event) {
 			event.preventDefault();
 			event.stopPropagation();
-			const imageId = $("#_thumbnail_id").val();
-			if (!imageId || imageId === "-1") return;
+			const imageId = attachmentId($("#_thumbnail_id"));
+			if (!imageId) return;
 			openVideoModal(imageId, null);
 		});
 		$actions.find(".rtwpvg-media-edit").on("click", function(event) {
