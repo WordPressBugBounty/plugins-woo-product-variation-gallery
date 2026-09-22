@@ -4,7 +4,7 @@ Tags: product variation gallery, woocommerce variation image gallery, additional
 Requires at least: 6.0
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 2.4.5
+Stable tag: 2.4.6
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -88,6 +88,9 @@ Yes, it supports any kinds of product quick view.
 
 Yes, it is.
 
+= Where do I report security bugs found in this plugin? =
+
+Please report security bugs found in the source code of the undefined plugin through the [Patchstack Vulnerability Disclosure  Program](https://patchstack.com/database/vdp/9e5fbb58-cd00-4d66-9348-09e86df50831). The Patchstack team will assist you with verification, CVE assignment, and notify the developers of this plugin.
 == Installation ==
 
 = Using The WordPress Dashboard =
@@ -128,6 +131,12 @@ Yes, it is.
 9. Tools Settings
 
 == Changelog ==
+
+= 2.4.6 (Sep 21, 2026) =
+
+Fixed: Only the first gallery worked when a page had more than one, such as separate desktop and mobile Elementor widgets.
+Fixed: Gallery with left/right thumbnails could stretch endlessly after switching between desktop and mobile.
+Fixed: Lightbox listed duplicate images when a page had more than one gallery.
 
 = 2.4.5 (Sep 13, 2026) =
 

@@ -2,14 +2,14 @@
 # This file is distributed under the GPLv3.
 msgid ""
 msgstr ""
-"Project-Id-Version: Variation Images Gallery for WooCommerce 2.4.5\n"
+"Project-Id-Version: Variation Images Gallery for WooCommerce 2.4.6\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/woo-product-variation-gallery\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-09-13T05:23:05+00:00\n"
+"POT-Creation-Date: 2026-09-21T07:42:52+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: woo-product-variation-gallery\n"
@@ -37,6 +37,76 @@ msgstr ""
 
 #: app/Controllers/BlackFridayV2.php:126
 msgid "User permission error"
+msgstr ""
+
+#: app/Controllers/DeactivationFeedback.php:72
+msgid "Bug or issue detected"
+msgstr ""
+
+#: app/Controllers/DeactivationFeedback.php:73
+msgid "Conflicts with my theme or another plugin"
+msgstr ""
+
+#: app/Controllers/DeactivationFeedback.php:74
+msgid "I found a better plugin"
+msgstr ""
+
+#: app/Controllers/DeactivationFeedback.php:75
+msgid "I no longer need the plugin"
+msgstr ""
+
+#: app/Controllers/DeactivationFeedback.php:76
+msgid "It's a temporary deactivation"
+msgstr ""
+
+#: app/Controllers/DeactivationFeedback.php:108
+msgid "Quick Feedback"
+msgstr ""
+
+#: app/Controllers/DeactivationFeedback.php:112
+msgid "Having trouble?"
+msgstr ""
+
+#. translators: %s: Support ticket link.
+#: app/Controllers/DeactivationFeedback.php:116
+#, php-format
+msgid "For faster and more accurate support, please %s — our support agent will personally review and resolve your issue."
+msgstr ""
+
+#: app/Controllers/DeactivationFeedback.php:121
+msgid "open a support ticket"
+msgstr ""
+
+#: app/Controllers/DeactivationFeedback.php:128
+msgid "If you’d prefer not to open a support ticket, please take a moment to share why you’re deactivating Variation Images Gallery for WooCommerce:"
+msgstr ""
+
+#: app/Controllers/DeactivationFeedback.php:145
+msgid "Please share the plugin name"
+msgstr ""
+
+#: app/Controllers/DeactivationFeedback.php:155
+msgid "Please let us know about any issues you are facing with the plugin. How can we improve the plugin?"
+msgstr ""
+
+#: app/Controllers/DeactivationFeedback.php:159
+msgid "Write something here. How can we improve the plugin?"
+msgstr ""
+
+#: app/Controllers/DeactivationFeedback.php:589
+msgid "Choose the reason"
+msgstr ""
+
+#: app/Controllers/DeactivationFeedback.php:595
+msgid "Please provide more details regarding the issue so we can address it in future updates."
+msgstr ""
+
+#: app/Controllers/DeactivationFeedback.php:667
+msgid "Submit & Deactivate"
+msgstr ""
+
+#: app/Controllers/DeactivationFeedback.php:671
+msgid "Skip & Deactivate"
 msgstr ""
 
 #: app/Controllers/Hooks.php:556

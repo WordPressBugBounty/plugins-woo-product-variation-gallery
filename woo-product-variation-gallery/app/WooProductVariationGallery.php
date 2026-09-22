@@ -11,6 +11,7 @@ use Rtwpvg\Controllers\ScriptLoader;
 use Rtwpvg\Controllers\ThemeSupport;
 use Rtwpvg\Controllers\Notifications;
 use Rtwpvg\Controllers\VariationGalleryMigration;
+use Rtwpvg\Controllers\DeactivationFeedback;
 
 defined( 'ABSPATH' ) or die( 'Keep Quit' );
 
@@ -40,6 +41,12 @@ if ( ! class_exists( 'WooProductVariationGallery' ) ) :
 			new Notifications();
             // new Offer();
             new BlackFridayV2();
+
+			// Registered before the WooCommerce gate so the deactivation feedback
+			// modal is still available when WooCommerce is inactive.
+			if ( is_admin() ) {
+				DeactivationFeedback::init();
+			}
 
 			if ( $this->is_valid_php_version() && $this->is_wc_active() ) {
 				add_action( 'init', [ $this, 'settings_api' ], 6 );

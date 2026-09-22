@@ -1,14 +1,27 @@
 (() => {//#region src/js/frontend.js
 (function($) {
 	"use strict";
+	var rtwpvgInstanceUid = 0;
 	/**
 	* @param $slider
 	* @constructor
 	*/
 	$.fn.rtWpVGallery = function() {
+		if (this.length > 1) {
+			this.each(function() {
+				$(this).rtWpVGallery();
+			});
+			return this;
+		}
 		this._item = $(this);
 		if (this._item.data("rtwpvg_flicker_fix_initialized")) return this;
 		this._item.data("rtwpvg_flicker_fix_initialized", true);
+		this._ns = this._item.data("rtwpvg_ns");
+		if (!this._ns) {
+			this._ns = ".rtwpvg_" + ++rtwpvgInstanceUid;
+			this._item.data("rtwpvg_ns", this._ns);
+		}
+		this._item.data("rtwpvg_instance", this);
 		this._target = this._item.parent();
 		this._product = this._item.closest(".product");
 		this._default_gallery_images = this.data("default-images") || [];
@@ -124,6 +137,20 @@
 					setVerticalHeight();
 				});
 				setVerticalHeight();
+				if (that._verticalRO) {
+					that._verticalRO.disconnect();
+					that._verticalRO = null;
+				}
+				if ("undefined" !== typeof ResizeObserver && that._slider.get(0)) {
+					that._lastVerticalWidth = Math.round(that._slider.width());
+					that._verticalRO = new ResizeObserver(function() {
+						var width = Math.round(that._slider.width());
+						if (!width || width === that._lastVerticalWidth) return;
+						that._lastVerticalWidth = width;
+						setVerticalHeight();
+					});
+					that._verticalRO.observe(that._slider.get(0));
+				}
 			}
 			if (!this.enable_thumbnail_slide) {
 				this._thumbnail.addClass("loaded-thumbnail-no-slider");
@@ -546,11 +573,24 @@
 		};
 		this.loadVariationGallery = function() {
 			const that = this;
-			this._variation_form.off("reset_image.rtwpvg");
-			this._variation_form.off("click.rtwpvg");
-			this._variation_form.off("show_variation.rtwpvg");
-			this._variation_form.off("change.rtwpvg_flicker_fix");
-			this._variation_form.on("change.rtwpvg_flicker_fix", "select,input", function() {
+			const ns = this._ns;
+			var boundInstances = this._variation_form.data("rtwpvg_bound_instances") || [];
+			boundInstances = boundInstances.filter(function(entry) {
+				if (entry.ns === ns) return false;
+				if (entry.el && $.contains(document.documentElement, entry.el)) return true;
+				that._variation_form.off(entry.ns);
+				return false;
+			});
+			boundInstances.push({
+				ns,
+				el: this._item.get(0)
+			});
+			this._variation_form.data("rtwpvg_bound_instances", boundInstances);
+			this._variation_form.off("reset_image" + ns);
+			this._variation_form.off("click" + ns);
+			this._variation_form.off("show_variation" + ns);
+			this._variation_form.off("change.rtwpvg_flicker_fix" + ns);
+			this._variation_form.on("change.rtwpvg_flicker_fix" + ns, "select,input", function() {
 				that._rtwpvgUserInteracted = true;
 			});
 			var scheduleReset = function() {
@@ -561,20 +601,20 @@
 					that.resetGallery();
 				}, 60);
 			};
-			if (rtwpvg.reset_on_variation_change) this._variation_form.on("reset_image.rtwpvg", function(event) {
+			if (rtwpvg.reset_on_variation_change) this._variation_form.on("reset_image" + ns, function(event) {
 				scheduleReset();
 			});
-			else this._variation_form.on("click.rtwpvg", ".show_variation", function(event) {
+			else this._variation_form.on("click" + ns, ".show_variation", function(event) {
 				that._rtwpvgUserInteracted = true;
 				scheduleReset();
 			});
-			this._variation_form.on("click.rtwpvg", ".reset_variations", function() {
+			this._variation_form.on("click" + ns, ".reset_variations", function() {
 				that._rtwpvgUserInteracted = true;
 				clearTimeout(that._resetTimer);
 				that._currentVariationId = 0;
 				that.resetGallery();
 			});
-			this._variation_form.on("show_variation.rtwpvg", function(event, variation) {
+			this._variation_form.on("show_variation" + ns, function(event, variation) {
 				clearTimeout(that._resetTimer);
 				that.loadVariationGalleryImages(variation);
 			});
